@@ -1,0 +1,25 @@
+name: tutorial
+channels:
+- conda-forge
+dependencies:
+- python=3.7.3
+- jupyterlab=1.0.1
+- matplotlib=3.1.1
+- descartes=1.1.0
+- pandas=0.24.2
+- cartopy=0.17.0
+- fiona=1.8.4
+- shapely=1.6.4
+- geopandas=0.5.1
+- h5py=2.9.0
+- requests=2.22.0
+- plotly=4.0.0
+- geopy=1.20.0
+- xarray=0.14.0
+- pyresample=1.13.2
+- hvplot=0.5.2
+- awscli=1.16.296
+- rasterio=1.1.1
+- holoviews=1.12.7
+- datashader=0.8.0
+- netcdf4=1.5.3
