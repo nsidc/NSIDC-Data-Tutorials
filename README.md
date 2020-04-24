@@ -10,13 +10,13 @@ This combined repository includes tutorials and code resources provided by the N
 
 ### SnowEx_ASO_Snow_Depth
 
-#### Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC 
+<ins>Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC</ins> 
 
 Originally demonstrated through the NASA Earthdata Webinar series, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
 
 ### ICESat-2_MODIS_Arctic_Sea_Ice
 
-#### Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data
+<ins>Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data</ins>
 
 This tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice. 
 
