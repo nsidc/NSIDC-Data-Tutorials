@@ -1,10 +1,10 @@
-# placeholder - coming soon
-
+# Snow Depth and Snow Cover Data Exploration 
 
 ## Summary 
 
+This tutorial demonstrates how to access and compare coincident snow data across in-situ, airborne, and satellite platforms from NASA's SnowEx, ASO, and MODIS data sets, respectively. All data are available fromh the NASA National Snow and Ice Data Center Distributed Active Archive Center, or NSIDC DAAC. 
 
-Learning Objectives:
+## Key Learning Objectives
 
 1. Learn about the coverage, resolution, and structure of snow data sets from NASA's SnowEx, ASO, and MODIS data sets. 
 
