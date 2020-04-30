@@ -31,7 +31,7 @@ The Binder button above allows you to explore and run the notebook in a shared c
 
 1. Install [Docker](https://docs.docker.com/install/). Use the left-hand navigation to select the appropriate install depending on operating system.
 
-2. Download the [NSIDC-Data-Access-Notebook repository from Github](https://github.com/nsidc/NSIDC-Data-Tutorials/archive/master.zip).
+2. Download the [NSIDC-Data-Tutorials repository from Github](https://github.com/nsidc/NSIDC-Data-Tutorials/archive/master.zip).
 
 3. Unzip the file, and open a terminal window in the `NSIDC-Data-Tutorials` folder's location.
 
@@ -62,7 +62,7 @@ The initialization will take some time and will require 5.6 GB of space. Once th
 
 1. Install [Docker](https://docs.docker.com/docker-for-windows/install/).
 
-2. Download the [NSIDC-Data-Access-Notebook repository from Github](https://github.com/nsidc/NSIDC-Data-Tutorials/archive/master.zip).
+2. Download the [NSIDC-Data-Tutorials repository from Github](https://github.com/nsidc/NSIDC-Data-Tutorials/archive/master.zip).
 
 3. Unzip the file, and open a terminal window (use Command Prompt or PowerShell, not PowerShell ISE) in the `NSIDC-Data-Tutorials` folder's location.
 
