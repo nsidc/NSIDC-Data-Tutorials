@@ -1,4 +1,4 @@
-name: tutorial
+name: tutorials
 channels:
 - conda-forge
 dependencies:
@@ -10,7 +10,7 @@ dependencies:
 - cartopy=0.17.0
 - fiona=1.8.4
 - shapely=1.6.4
-- geopandas=0.5.1
+- geopandas=0.7.0
 - h5py=2.9.0
 - requests=2.22.0
 - plotly=4.0.0

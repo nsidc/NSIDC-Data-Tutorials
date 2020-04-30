@@ -24,6 +24,81 @@ This tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetti
 
 The Binder button above allows you to explore and run the notebook in a shared cloud computing environment without the need to install dependencies on your local machine. Note that this option will not directly download data to your computer; instead the data will be downloaded to the cloud environment.
 
+## Usage with Docker
+
+### On Mac OSX or Linux
+
+
+1. Install [Docker](https://docs.docker.com/install/). Use the left-hand navigation to select the appropriate install depending on operating system.
+
+2. Download the [NSIDC-Data-Access-Notebook repository from Github](https://github.com/nsidc/NSIDC-Data-Tutorials/archive/master.zip).
+
+3. Unzip the file, and open a terminal window in the `NSIDC-Data-Tutorials` folder's location.
+
+4. From the terminal window, launch the docker container using the following command, replacing [path/notebook_folder] with your path and notebook folder name:
+
+
+```docker run -p 8888:8888 -v [path/notebook_folder]:/home/jovyan jupyter/datascience-notebook```
+
+
+Example:
+
+
+```docker run -p 8888:8888 -v /Users/name/Desktop/NSIDC-Data-Access-Notebook:/home/jovyan jupyter/datascience-notebook```
+
+
+The initialization will take some time and will require 5.6 GB of space. Once the startup is complete you will see a line of output similar to this:
+
+```http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f```
+
+6. Copy everything from the :8888 to the end. Open up a web browser and in the address field type localhost, paste the copied text, and hit return. The address should look something like this:
+
+`localhost:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
+
+7. You will be brought to the Jupyter Lab interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the `notebooks` folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
+
+
+### On Windows
+
+1. Install [Docker](https://docs.docker.com/docker-for-windows/install/).
+
+2. Download the [NSIDC-Data-Access-Notebook repository from Github](https://github.com/nsidc/NSIDC-Data-Tutorials/archive/master.zip).
+
+3. Unzip the file, and open a terminal window (use Command Prompt or PowerShell, not PowerShell ISE) in the `NSIDC-Data-Tutorials` folder's location.
+
+5. From the terminal window, launch the docker container using the following command, replacing [path\notebook_folder] with your path and notebook folder name:
+
+```docker run -p 8888:8888 -v [path\notebook_folder]:/home/jovyan jupyter/datascience-notebook```
+
+Example:
+
+```docker run -p 8888:8888 -v C:\notebook_folder:/home/jovyan jupyter/datascience-notebook```
+
+The initialization will take some time and will require 5.6 GB of space. Once the startup is complete you will see a line of output similar to this:
+
+```
+To access the notebook, open this file in a browser:
+        file:///home/jovyan/.local/share/jupyter/runtime/nbserver-6-open.html
+    Or copy and paste one of these URLs:
+        http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f
+```
+
+6. Follow the instructions and copy one of the URLs into a web browser and hit return. The address should look something like this:
+
+`http://127.0.0.1:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
+
+7. You will now see the NSIDC-Data-Tutorials repository within the Jupyter Notebook interface. Navigate to /notebooks/ to open the notebooks. 
+
+8. After opening the notebook, add the following lines to the first Import Packages code block to install geopandas manually: 
+
+```
+import sys
+!{sys.executable} -m pip install geopandas
+import geopandas as gpd
+```
+
+9. You can now interact with the notebook to explore and access data.
+
 ## Usage with Conda
 
 Install miniconda3 (Python 3.7) for your platform from [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
