@@ -3,7 +3,6 @@ channels:
 - conda-forge
 dependencies:
 - python=3.7.*
-- jupyterlab=1.0.1
 - matplotlib=3.1.1
 - descartes=1.1.0
 - pandas=0.24.2
@@ -21,7 +20,6 @@ dependencies:
 - awscli=1.16.296
 - rasterio=1.1.1
 - holoviews=1.12.7
-- datashader=0.8.0
 - netcdf4=1.5.3
 - jupyter-offlinenotebook
 

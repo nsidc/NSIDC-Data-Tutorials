@@ -11,8 +11,6 @@ RUN apt-get update \
 
 USER $NB_UID
 
-RUN conda config --add channels conda-forge
-
 RUN conda install -c conda-forge --quiet --yes --freeze-installed \
 'matplotlib=3.1.1' \
 'descartes=1.1.0' \
@@ -20,7 +18,7 @@ RUN conda install -c conda-forge --quiet --yes --freeze-installed \
 'cartopy=0.17.0' \
 'fiona=1.8.4' \
 'shapely=1.6.4' \
-'geopandas=0.5.1' \
+'geopandas=0.7.0' \
 'h5py=2.9.0' \
 'requests=2.22.0' \
 'plotly=4.0.0' \
@@ -31,8 +29,8 @@ RUN conda install -c conda-forge --quiet --yes --freeze-installed \
 'awscli=1.16.296' \
 'rasterio=1.1.1' \
 'holoviews=1.12.7' \
-'netcdf4=1.5.3' && conda install -y -c conda-forge  'datashader=0.8.0' && \
-conda clean -i -l -t -y  && \
+'netcdf4=1.5.3' && \
+conda clean --yes --all  && \
 npm cache clean --force && \
 rm -rf /opt/conda/lib/python3.7/site-packages/awscli/examples \
 && find /opt/conda/ -follow -type f -name '*.a' -delete \
@@ -40,3 +38,7 @@ rm -rf /opt/conda/lib/python3.7/site-packages/awscli/examples \
 && find /opt/conda/ -follow -type f -name '*.js.map' -delete \
 && find /opt/conda/lib/python*/site-packages/bokeh/server/static -follow -type f -name '*.js' ! -name '*.min.js' -delete
 
+RUN fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
+USER $NB_UID
