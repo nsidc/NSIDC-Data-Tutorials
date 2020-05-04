@@ -11,7 +11,6 @@ RUN apt-get update \
 
 USER $NB_UID
 
-WORKDIR $HOME
 ADD environment.yml $HOME
 RUN conda env update -f environment.yml -n base && conda clean --force --yes --all  && rm $HOME/environment.yml && \
 npm cache clean --force && \
