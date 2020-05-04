@@ -41,16 +41,6 @@ from urllib.request import urlopen, Request, build_opener, HTTPCookieProcessor
 import getpass
 
 
-def print_cmr_metadata(entry, fields=['dataset_id', 'version_id']):
-    '''
-    Prints metadata from query to CMR collections.json
-
-    entry - Metadata entry for a dataset
-    fields - list of metdata fields to print
-    '''
-    print(', '.join([f"{field}: {entry[field]}" for field in fields]))
-
-
 def granule_info(data_dict):
     '''
     Prints number of granules based on inputted data set short name, version, bounding box, and temporal range. Queries the CMR and pages over results.
@@ -317,6 +307,7 @@ def cmr_download(urls):
             credentials = get_credentials(url)
 
         filename = url.split('/')[-1]
+        filename = (filename[:255]) if len(filename) > 255 else filename
         print('{0}/{1}: {2}'.format(str(index).zfill(len(str(url_count))),
                                     url_count,
                                     filename))
