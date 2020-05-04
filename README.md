@@ -38,24 +38,30 @@ The Binder button above allows you to explore and run the notebook in a shared c
 4. From the terminal window, launch the docker container using the following command, replacing [path/notebook_folder] with your path and notebook folder name:
 
 
-```docker run -p 8888:8888 -v [path/notebook_folder]:/home/jovyan jupyter/datascience-notebook```
-
-
+```bash
+docker run --name tutorials -p 8888:8888 -v [path/notebook_folder]:/home/jovyan/work nsidc/tutorials
+```
 Example:
+```bash
+docker run --name tutorials -p 8888:8888 -v /Users/name/Desktop/NSIDC-Data-Tutorials:/home/jovyan/work nsidc/tutorials
+```
+If you want to mount a directory with write permissions you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container) this is important if you want to persist your work or download data to a local directory and not just the docker container.
 
+```bash
+docker run --name tutorials -e NB_UID=$(id -u) --user root -p 8888:8888 -v  /Users/name/Desktop/NSIDC-Data-Tutorials:/home/jovyan/work nsidc/tutorials
+```
 
-```docker run -p 8888:8888 -v /Users/name/Desktop/NSIDC-Data-Access-Notebook:/home/jovyan jupyter/datascience-notebook```
+The initialization will take some time and will require 2.6 GB of space. Once the startup is complete you will see a line of output similar to this:
 
+```bash 
+http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f
+```
 
-The initialization will take some time and will require 5.6 GB of space. Once the startup is complete you will see a line of output similar to this:
+5. Copy everything from the :8888 to the end. Open up a web browser and in the address field type localhost, paste the copied text, and hit return. The address should look something like this:
 
-```http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f```
+> `localhost:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
 
-6. Copy everything from the :8888 to the end. Open up a web browser and in the address field type localhost, paste the copied text, and hit return. The address should look something like this:
-
-`localhost:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
-
-7. You will be brought to the Jupyter Lab interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the `notebooks` folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
+6. You will be brought to the Jupyter Lab interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the **`work`** folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
 
 
 ### On Windows
@@ -68,13 +74,21 @@ The initialization will take some time and will require 5.6 GB of space. Once th
 
 5. From the terminal window, launch the docker container using the following command, replacing [path\notebook_folder] with your path and notebook folder name:
 
-```docker run -p 8888:8888 -v [path\notebook_folder]:/home/jovyan jupyter/datascience-notebook```
+```bash
+docker run --name tutorials -p 8888:8888 -v [path\notebook_folder]:/home/jovyan/work nsidc/tutorials 
+```
 
 Example:
 
-```docker run -p 8888:8888 -v C:\notebook_folder:/home/jovyan jupyter/datascience-notebook```
+```bash 
+docker run --name tutorials -p 8888:8888 -v C:\notebook_folder:/home/jovyan/work nsidc/tutorials
+```
 
-The initialization will take some time and will require 5.6 GB of space. Once the startup is complete you will see a line of output similar to this:
+If you want to mount a directory with write permissions you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container)
+```bash
+docker run --name tutorials --user root -p 8888:8888 -v C:\notebook_folder:/home/jovyan/work nsidc/tutorials
+```
+The initialization will take some time and will require 2.6 GB of space. Once the startup is complete you will see a line of output similar to this:
 
 ```
 To access the notebook, open this file in a browser:
@@ -87,17 +101,9 @@ To access the notebook, open this file in a browser:
 
 `http://127.0.0.1:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
 
-7. You will now see the NSIDC-Data-Tutorials repository within the Jupyter Notebook interface. Navigate to /notebooks/ to open the notebooks. 
+7. You will now see the NSIDC-Data-Tutorials repository within the Jupyter Notebook interface. Navigate to **/work** to open the notebooks. 
 
-8. After opening the notebook, add the following lines to the first Import Packages code block to install geopandas manually: 
-
-```
-import sys
-!{sys.executable} -m pip install geopandas
-import geopandas as gpd
-```
-
-9. You can now interact with the notebook to explore and access data.
+8. You can now interact with the notebooks to explore and access data.
 
 ## Usage with Conda
 
@@ -129,5 +135,8 @@ jupyter lab
 
 This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.  
 
+> **NOTE:** Conda environments change(break) even with pinned down dependencies, if you run into an issue with the dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
+
 
  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
