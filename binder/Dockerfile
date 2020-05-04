@@ -11,7 +11,7 @@ RUN apt-get update \
 
 USER $NB_UID
 
-ADD environment.yml $HOME
+COPY environment.yml $HOME
 RUN conda env update -f environment.yml -n base && conda clean --force --yes --all  && rm $HOME/environment.yml && \
 npm cache clean --force && \
 rm -rf /opt/conda/lib/python3.7/site-packages/awscli/examples \
