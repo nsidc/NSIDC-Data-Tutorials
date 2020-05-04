@@ -26,7 +26,7 @@ jobs:
             fi
             echo "TAG: ${TAG}"
 
-            docker build -t ${DOCKER_IMAGE}:${TAG}
+            docker build -t ${DOCKER_IMAGE}:${TAG} .
 
             mkdir -p build
             docker save -o build/saved-docker-image.tar ${DOCKER_IMAGE}:${TAG}
