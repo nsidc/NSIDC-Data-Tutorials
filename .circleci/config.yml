@@ -26,10 +26,10 @@ jobs:
             fi
             echo "TAG: ${TAG}"
 
-            docker build -t ${DOCKER_IMAGE}:${TAG} .
+            docker build -t ${DOCKER_IMAGE}:${TAG} ~/tutorials/binder/Dockerfile
 
             mkdir -p build
-            docker save -o build/saved-docker-image.tar ${DOCKER_IMAGE}:${TAG} ~/tutorials/binder/Dockerfile
+            docker save -o build/saved-docker-image.tar ${DOCKER_IMAGE}:${TAG}
             echo "${DOCKER_IMAGE}:${TAG}" > build/docker-image-name.txt
       - persist_to_workspace:
           root: ~/tutorials
