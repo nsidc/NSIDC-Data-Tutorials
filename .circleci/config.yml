@@ -3,7 +3,7 @@ version: 2
 setup: &setup
   docker:
     - image: docker:17.05.0-ce-git
-  working_directory: ~/binder
+  working_directory: ~/NSIDC-Data-Tutorials/binder
 
 jobs:
 
@@ -32,7 +32,7 @@ jobs:
             docker save -o build/saved-docker-image.tar ${DOCKER_IMAGE}:${TAG}
             echo "${DOCKER_IMAGE}:${TAG}" > build/docker-image-name.txt
       - persist_to_workspace:
-          root: ~/binder
+          root: ~/NSIDC-Data-Tutorials/binder
           paths:
             - build
 
@@ -41,7 +41,7 @@ jobs:
     steps:
       - setup_remote_docker
       - attach_workspace:
-          at: ~/binder
+          at: ~/NSIDC-Data-Tutorials/binder
       - deploy:
           name: Publish Docker image
           command: |
