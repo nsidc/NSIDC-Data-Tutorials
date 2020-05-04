@@ -2,6 +2,8 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorial/master?urlpath=lab/tree/notebooks)
 
+[![CircleCI](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials.svg?style=svg)](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials)
+
 ## Summary
 
 This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize the data provided by the NSIDC DAAC. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. 
