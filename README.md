@@ -6,7 +6,7 @@
 
 ## Summary
 
-This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize the data provided by the NSIDC DAAC. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. 
+This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize the data provided by the NSIDC DAAC. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives.
 
 ## Tutorials
 
@@ -20,7 +20,7 @@ Originally demonstrated through the NASA Earthdata Webinar series, this tutorial
 
 Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data
 
-This tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice. 
+This tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
 
 ## Usage with Binder
 
@@ -55,7 +55,7 @@ docker run --name tutorials -e NB_UID=$(id -u) --user root -p 8888:8888 -v  /Use
 
 The initialization will take some time and will require 2.6 GB of space. Once the startup is complete you will see a line of output similar to this:
 
-```bash 
+```bash
 http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f
 ```
 
@@ -82,7 +82,7 @@ docker run --name tutorials -p 8888:8888 -v [path\notebook_folder]:/home/jovyan/
 
 Example:
 
-```bash 
+```bash
 docker run --name tutorials -p 8888:8888 -v C:\notebook_folder:/home/jovyan/work nsidc/tutorials
 ```
 
@@ -137,8 +137,13 @@ jupyter lab
 
 This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.  
 
-> **NOTE:** Conda environments change(break) even with pinned down dependencies, if you run into an issue with the dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
+> **NOTE:** Some times Conda environments change(break) even with pinned down dependencies, if you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
 
 
- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+### Credit
 
+This software is developed by the National Snow and Ice Data Center with funding from multiple sources.
+
+### License
+
+This repository is licensed under the MIT license. [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
