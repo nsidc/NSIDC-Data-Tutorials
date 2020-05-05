@@ -307,7 +307,7 @@ def cmr_download(urls):
             credentials = get_credentials(url)
 
         filename = url.split('/')[-1]
-        filename = (filename[:255]) if len(filename) > 255 else filename
+        filename = 'nsidc_api_output.zip' if filename.startswith('request') else filename
         print('{0}/{1}: {2}'.format(str(index).zfill(len(str(url_count))),
                                     url_count,
                                     filename))
