@@ -140,10 +140,10 @@ This should open a browser window with the JupyterLab IDE, showing your current 
 > **NOTE:** Some times Conda environments change(break) even with pinned down dependencies, if you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
 
 
-### Credit
+## Credit
 
 This software is developed by the National Snow and Ice Data Center with funding from multiple sources.
 
-### License
+## License
 
 This repository is licensed under the MIT license. [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
