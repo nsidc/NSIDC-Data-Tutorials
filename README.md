@@ -6,21 +6,21 @@
 
 ## Summary
 
-This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize the data provided by the NSIDC DAAC. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives.
+This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives.
 
 ## Tutorials
 
-### SnowEx_ASO_Snow_Depth
+### SnowEx_ASO_MODIS_Snow
 
-Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC
+Snow Depth and Snow Cover Data Exploration
 
-Originally demonstrated through the NASA Earthdata Webinar series, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
+Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
 
 ### ICESat-2_MODIS_Arctic_Sea_Ice
 
 Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data
 
-This tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
+Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
 
 ## Usage with Binder
 
@@ -47,7 +47,7 @@ Example:
 ```bash
 docker run --name tutorials -p 8888:8888 -v /Users/name/Desktop/NSIDC-Data-Tutorials:/home/jovyan/work nsidc/tutorials
 ```
-If you want to mount a directory with write permissions you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container) this is important if you want to persist your work or download data to a local directory and not just the docker container.
+If you want to mount a directory with write permissions, you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container). This is important if you want to persist your work or download data to a local directory and not just the docker container. Run the example command below for this option:
 
 ```bash
 docker run --name tutorials -e NB_UID=$(id -u) --user root -p 8888:8888 -v  /Users/name/Desktop/NSIDC-Data-Tutorials:/home/jovyan/work nsidc/tutorials
@@ -55,15 +55,17 @@ docker run --name tutorials -e NB_UID=$(id -u) --user root -p 8888:8888 -v  /Use
 
 The initialization will take some time and will require 2.6 GB of space. Once the startup is complete you will see a line of output similar to this:
 
-```bash
-http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f
+``` 
+To access the notebook, open this file in a browser:
+        file:///home/jovyan/.local/share/jupyter/runtime/nbserver-6-open.html
+    Or copy and paste one of these URLs:
+        http://4dc97ddd7a0d:8888/?token=f002a50e25b6f623aa775312737ba8a23ffccfd4458faa6f
+     or http://127.0.0.1:8888/?token=f002a50e25b6f623aa775312737ba8a23ffccfd4458faa6f
 ```
 
-5. Copy everything from the :8888 to the end. Open up a web browser and in the address field type localhost, paste the copied text, and hit return. The address should look something like this:
+5. Open up a web browser and copy one of the URLs as instructed above. 
 
-> `localhost:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
-
-6. You will be brought to the Jupyter Lab interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the **`work`** folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
+6. You will be brought to a Jupyter Notebook interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the **`work`** folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
 
 
 ### On Windows
