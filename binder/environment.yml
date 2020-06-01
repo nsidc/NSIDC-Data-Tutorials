@@ -22,6 +22,5 @@ dependencies:
 - netcdf4=1.5.3
 - jupyterlab
 - ipywidgets
-- nodejs
 - jupyter-offlinenotebook
 
