@@ -15,7 +15,7 @@ date_range_slider = widgets.SelectionRangeSlider(
     index=index,
     description='Date Range',
     orientation='horizontal',
-    layout={'width': '500px'}
+    layout={'width': '100%'}
 )
 
 dataset = widgets.Dropdown(
