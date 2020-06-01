@@ -24,12 +24,6 @@ dataset = widgets.Dropdown(
     disabled=False,
 )
 
-region = widgets.Dropdown(
-    options=['south', 'north'],
-    description='Hemisphere:',
-    disabled=False,
-)
-
 hemisphere = {
     'north': {
         'base_map': basemaps.NASAGIBS.BlueMarble3413,
@@ -49,27 +43,38 @@ ITRF = widgets.Dropdown(
     disabled=False,
 )
 
-def print_date_range(date_range):
-    print(date_range)
+# def print_date_range(date_range):
+#     print(date_range)
 
-widgets.interact(
-    print_date_range,
-    date_range=date_range_slider
-);
+# widgets.interact(
+#     print_date_range,
+#     date_range=date_range_slider
+# );
 
 def bounding_box(points):
     x_coordinates, y_coordinates = zip(*points)
 
     return [(min(x_coordinates), min(y_coordinates)), (max(x_coordinates), max(y_coordinates))]
 
-def build_url(dc):
-    base_url = 'http://staging.valkyrie-vm.apps.nsidc.org/1.0/'
+def build_params(dc):
     if dc.last_draw['geometry'] is None:
         print('You need to select an area using the box tool')
         return None
     coords = [list(coord) for coord in bounding_box(dc.last_draw['geometry']['coordinates'][0])]
     bbox = f'{coords[0][0]},{coords[0][1]},{coords[1][0]},{coords[1][1]}'
-    start = date_range_slider.value[0].date().strftime('%Y-%m-%d')
-    end = date_range_slider.value[1].date().strftime('%Y-%m-%d')
-    url = base_url + f'{dataset.value}?bbox={bbox}%2Ctime_range={start},{end}'
-    return url
+    d1 = date_range_slider.value[0].date()
+    d2 = date_range_slider.value[1].date()
+    if (d2-d1).days > 180:
+        print('Remember this is a tutorial, if you want more than a year of data please contact NSIDC support')
+        print('...Adjust the time range slider and try again!')
+        return None
+    start = d1.strftime('%Y-%m-%d')
+    end = d2.strftime('%Y-%m-%d')
+
+    params = {
+        'time_range': f'{start},{end}',
+        'bbox': bbox
+    }
+    if ITRF.value != '' :
+        params['itrf'] = ITRF.value
+    return params
