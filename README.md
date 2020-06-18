@@ -39,14 +39,22 @@ The Binder button above allows you to explore and run the notebook in a shared c
 
 4. From the terminal window, launch the docker container using the following command, replacing [path/notebook_folder] with your path and notebook folder name:
 
-
 ```bash
 docker run --name tutorials -p 8888:8888 -v [path/notebook_folder]:/home/jovyan/work nsidc/tutorials
 ```
+
 Example:
+
 ```bash
 docker run --name tutorials -p 8888:8888 -v /Users/name/Desktop/NSIDC-Data-Tutorials:/home/jovyan/work nsidc/tutorials
 ```
+
+Or, with docker-compose:
+
+```bash
+docker-compose up -d
+```
+
 If you want to mount a directory with write permissions, you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container). This is important if you want to persist your work or download data to a local directory and not just the docker container. Run the example command below for this option:
 
 ```bash
@@ -55,7 +63,7 @@ docker run --name tutorials -e NB_UID=$(id -u) --user root -p 8888:8888 -v  /Use
 
 The initialization will take some time and will require 2.6 GB of space. Once the startup is complete you will see a line of output similar to this:
 
-``` 
+```
 To access the notebook, open this file in a browser:
         file:///home/jovyan/.local/share/jupyter/runtime/nbserver-6-open.html
     Or copy and paste one of these URLs:
@@ -63,7 +71,7 @@ To access the notebook, open this file in a browser:
      or http://127.0.0.1:8888/?token=f002a50e25b6f623aa775312737ba8a23ffccfd4458faa6f
 ```
 
-5. Open up a web browser and copy one of the URLs as instructed above. 
+5. Open up a web browser and copy one of the URLs as instructed above.
 
 6. You will be brought to a Jupyter Notebook interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the **`work`** folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
 
@@ -79,7 +87,7 @@ To access the notebook, open this file in a browser:
 5. From the terminal window, launch the docker container using the following command, replacing [path\notebook_folder] with your path and notebook folder name:
 
 ```bash
-docker run --name tutorials -p 8888:8888 -v [path\notebook_folder]:/home/jovyan/work nsidc/tutorials 
+docker run --name tutorials -p 8888:8888 -v [path\notebook_folder]:/home/jovyan/work nsidc/tutorials
 ```
 
 Example:
@@ -88,10 +96,18 @@ Example:
 docker run --name tutorials -p 8888:8888 -v C:\notebook_folder:/home/jovyan/work nsidc/tutorials
 ```
 
+Or, with docker-compose:
+
+```bash
+docker-compose up -d
+```
+
 If you want to mount a directory with write permissions you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container)
+
 ```bash
 docker run --name tutorials --user root -p 8888:8888 -v C:\notebook_folder:/home/jovyan/work nsidc/tutorials
 ```
+
 The initialization will take some time and will require 2.6 GB of space. Once the startup is complete you will see a line of output similar to this:
 
 ```
@@ -105,7 +121,7 @@ To access the notebook, open this file in a browser:
 
 `http://127.0.0.1:8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f`
 
-7. You will now see the NSIDC-Data-Tutorials repository within the Jupyter Notebook interface. Navigate to **/work** to open the notebooks. 
+7. You will now see the NSIDC-Data-Tutorials repository within the Jupyter Notebook interface. Navigate to **/work** to open the notebooks.
 
 8. You can now interact with the notebooks to explore and access data.
 
@@ -137,7 +153,7 @@ Launch the notebook locally with the following command:
 jupyter lab
 ```
 
-This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.  
+This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.
 
 > **NOTE:** Some times Conda environments change(break) even with pinned down dependencies, if you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
 
