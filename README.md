@@ -52,7 +52,7 @@ docker run --name tutorials -p 8888:8888 -v /Users/name/Desktop/NSIDC-Data-Tutor
 Or, with docker-compose:
 
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 If you want to mount a directory with write permissions, you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container). This is important if you want to persist your work or download data to a local directory and not just the docker container. Run the example command below for this option:
@@ -70,6 +70,8 @@ To access the notebook, open this file in a browser:
         http://4dc97ddd7a0d:8888/?token=f002a50e25b6f623aa775312737ba8a23ffccfd4458faa6f
      or http://127.0.0.1:8888/?token=f002a50e25b6f623aa775312737ba8a23ffccfd4458faa6f
 ```
+
+If you started your container with the `-d`/`--detach` option, check `docker logs tutorials` for this output.
 
 5. Open up a web browser and copy one of the URLs as instructed above.
 
@@ -99,7 +101,7 @@ docker run --name tutorials -p 8888:8888 -v C:\notebook_folder:/home/jovyan/work
 Or, with docker-compose:
 
 ```bash
-docker-compose up -d
+docker-compose up
 ```
 
 If you want to mount a directory with write permissions you need to grant the container the same permissions as the one on the directory to be mounted and tell it that has "root" access (within the container)
@@ -116,6 +118,8 @@ To access the notebook, open this file in a browser:
     Or copy and paste one of these URLs:
         http://(6a8bfa6a8518 or 127.0.0.1):8888/?token=2d72e03269b59636d9e31937fcb324f5bdfd0c645a6eba3f
 ```
+
+If you started your container with the `-d`/`--detach` option, check `docker logs tutorials` for this output.
 
 6. Follow the instructions and copy one of the URLs into a web browser and hit return. The address should look something like this:
 
