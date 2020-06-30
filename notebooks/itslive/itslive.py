@@ -1,9 +1,10 @@
 import requests
+from joblib import Parallel, delayed
 from datetime import datetime
 from ipyleaflet import Map
 import ipywidgets as widgets
 from IPython.display import Javascript
-
+import os
 
 
 from utils import (north_3413, south_3031, projections, draw_control, projection_control,
@@ -11,6 +12,7 @@ from utils import (north_3413, south_3031, projections, draw_control, projection
 
 
 class itslive_ui:
+
     def __init__(self, hemisphere):
         self.properties = {
             'start_date': datetime(1984, 1, 1),
@@ -69,11 +71,22 @@ class itslive_ui:
         return self.urls
 
 
+    def get_url_size(self, url, sizes):
+        size = 0
+        try:
+            resp = requests.head(url)
+            size = float("{:.2f}".format(int(resp.headers['Content-Length'])/1024))
+        except IOError:
+            sizes.append(size)
+            return
+        sizes.append(size)
+
+
     def calculate_file_sizes(self, max_urls):
         file_sizes = []
-        for url in self.urls[0:max_urls]:
-            resp = requests.head(url['url'])
-            file_sizes.append(float("{:.2f}".format(int(resp.headers['Content-Length'])/1024)))
+        Parallel(n_jobs=8, backend="threading")(
+            delayed(self.get_url_size)(url['url'],file_sizes) for url in self.urls[0:max_urls]
+        )
         return file_sizes
 
 
@@ -97,16 +110,23 @@ class itslive_ui:
         return params
 
 
-    def download_file(self, url):
+    def download_velocity_pairs(self, start, end):
+        file_paths = []
+        Parallel(n_jobs=8, backend="threading")(
+            delayed(self.download_file)(url['url'],file_paths) for url in self.urls[start:end]
+        )
+        return file_paths
+
+
+    def download_file(self, url, file_paths):
         local_filename = url.split('/')[-1]
         # NOTE the stream=True parameter below
         with requests.get(url, stream=True) as r:
             r.raise_for_status()
-            with open('data/' + local_filename, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
+            if not os.path.exists(f'data/{local_filename}'):
+                with open('data/' + local_filename, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        f.write(chunk)
+                file_paths.append(local_filename)
         return local_filename
-
-
-
 
