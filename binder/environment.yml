@@ -2,7 +2,6 @@ name: tutorials
 channels:
 - conda-forge
 dependencies:
-# - python=3.7.*
 - matplotlib-base=3.2.1
 - ipyleaflet=0.13.0
 - descartes=1.1.0
@@ -11,6 +10,7 @@ dependencies:
 - fiona=1.8.4
 - shapely=1.6.4
 - geopandas=0.7.0
+- joblib=0.13.2
 - h5py=2.9.0
 - requests=2.22.0
 - plotly=4.0.0
@@ -23,4 +23,7 @@ dependencies:
 - jupyterlab
 - ipywidgets
 - jupyter-offlinenotebook
+- pip
+- pip:
+  - python-cmr
 

@@ -1,32 +1,7 @@
-import ipywidgets as widgets
 import pandas as pd
-import requests
-from datetime import datetime,date
-from ipyleaflet import Map, projections, basemaps, DrawControl
-from cmr import GranuleQuery
-
-start_date = datetime(1993, 1, 1)
-end_date = datetime(2020, 5, 1)
-datasets_cmr = []
-datasets_valkyrie = []
-
-
-dates = pd.date_range(start_date, end_date, freq='D')
-options = [(date.strftime(' %Y-%m-%d '), date) for date in dates]
-index = (0, len(options)-1)
-
-dc = DrawControl(circlemarker={},
-                 polyline={},
-                 polygon={},
-                 rectangle = {
-                    "shapeOptions": {
-                        "fillColor": "#fca45d",
-                        "color": "#fca45d",
-                        "fillOpacity": 0.5
-                    }
-})
-
-
+import ipywidgets as widgets
+import itertools
+from ipyleaflet import projections, basemaps, DrawControl
 
 north_3413 = {
     'name': 'EPSG:3413',
@@ -68,24 +43,12 @@ south_3031 = {
     ]
 }
 
-date_range_slider = widgets.SelectionRangeSlider(
-    options=options,
-    index=index,
-    description='Date Range',
-    orientation='horizontal',
-    layout={'width': '100%'}
-)
-
-dataset = widgets.SelectMultiple(
-    options=['ATM', 'GLAH06', 'ILVIS2'],
-    value=['ATM'],
-    rows=4,
-    description='Datasets',
-    disabled=False
-)
-
-
-hemisphere = {
+projections = {
+    'global': {
+        'base_map': basemaps.NASAGIBS.BlueMarble,
+        'projection': projections.EPSG3857,
+        'center': (0,0)
+    },
     'north': {
         'base_map': basemaps.NASAGIBS.BlueMarble3413,
         'projection': north_3413,
@@ -98,42 +61,84 @@ hemisphere = {
     }
 }
 
-ITRF = widgets.Dropdown(
-    options=['', 'ITRF2000', 'ITRF2008', 'ITRF2014'],
-    description='ITRF:',
-    disabled=False,
-)
+def dates_slider_control(properties):
+    slider_dates = [(date.strftime(' %Y-%m-%d '), date) for date in
+                    pd.date_range(properties['start_date'],
+                                    properties['end_date'],
+                                    freq='D')]
+    slider_index = (0, len(slider_dates)-1)
+    date_slider_control = widgets.SelectionRangeSlider(
+                options=slider_dates,
+                index=slider_index,
+                description='Date Range',
+                orientation='horizontal',
+                layout={'width': '100%'})
+    return date_slider_control
 
 
-def bounding_box(points):
-    x_coordinates, y_coordinates = zip(*points)
 
-    return [(min(x_coordinates), min(y_coordinates)), (max(x_coordinates), max(y_coordinates))]
+def draw_control(properties):
+    control = DrawControl(circlemarker={},
+                    polyline={},
+                    rectangle = {
+                        "shapeOptions": {
+                        "fillColor": "#fca45d",
+                            "color": "#fca45d",
+                            "fillOpacity": 0.5
+                        }
+    })
+    return control
 
-def build_params():
-    if dc.last_draw['geometry'] is None:
-        print('You need to select an area using the box tool')
-        return None
-    coords = [list(coord) for coord in bounding_box(dc.last_draw['geometry']['coordinates'][0])]
-    bbox = f'{coords[0][0]},{coords[0][1]},{coords[1][0]},{coords[1][1]}'
-    d1 = date_range_slider.value[0].date()
-    d2 = date_range_slider.value[1].date()
-#     if (d2-d1).days > 180:
-#         print('Remember this is a tutorial, if you want more than a year of data please contact NSIDC support')
-#         print('...Adjust the time range slider and try again!')
-#         return None
-    start = d1.strftime('%Y-%m-%d')
-    end = d2.strftime('%Y-%m-%d')
 
-    params = {
-        'time_range': f'{start},{end}',
-        'bbox': bbox
-    }
-    if ITRF.value != '' :
-        params['itrf'] = ITRF.value
-    return params
+def pixels_control(properties):
+    valid_percentages = [str(p) for p in range(0,100,10)]
+    valid_percentages[0] = 1
+    pixels = widgets.Dropdown(
+        options=valid_percentages,
+        disabled=False,
+        layout={'width': 'max-content',
+                'display': 'flex',
+                'description_width': 'initial'}
+    )
+    return pixels
 
-def query_cmr(b):
+def time_delta_control(properties):
+    time_delta = widgets.Dropdown(
+        options=['any', '7','30','90','120', '365'],
+        disabled=False,
+        layout={'width': 'max-content',
+                'display': 'flex',
+                'description_width': 'initial'}
+    )
+    return time_delta
+
+
+def projection_control(properties):
+    control = widgets.Dropdown(
+        options=['global', 'south', 'north'],
+        description='Hemisphere:',
+        disabled=False,
+        value=properties['hemisphere']
+    )
+    return control
+
+def coverage_control():
+    granule_count =  widgets.Button(description="Get Granule Count", )
+    granule_count.on_click(query_cmr)
+
+
+
+
+def format_polygon(geometry):
+    coords = [[str(float("{:.4f}".format(coord[0]))),str(float("{:.4f}".format(coord[1])))] for coord in geometry['coordinates'][0]]
+    coords = list(itertools.chain.from_iterable(coords))
+    polygonstr = ','.join(coords)
+    return polygonstr
+
+
+
+
+def query_(b):
     granules = []
     datasets_cmr = []
     datasets_valkyrie = []
@@ -165,26 +170,9 @@ def query_cmr(b):
         print(granules)
     return granules
 
-granule_count =  widgets.Button(description="Get Granule Count", )
-granule_count.on_click(query_cmr)
+# granule_count =  widgets.Button(description="Get Granule Count", )
+# granule_count.on_click(query_cmr)
 
-
-def ui(region):
-    h = hemisphere[region]
-    base_map = Map(
-        center=h['center'],
-        zoom=1,
-        basemap=h['base_map'],
-        crs=h['projection'])
-    base_map.add_control(dc)
-    display(dataset, ITRF, date_range_slider, base_map, granule_count)
-
-
-region = widgets.Dropdown(
-    options=['south', 'north'],
-    description='Hemisphere:',
-    disabled=False,
-)
 
 def post_orders(params):
     responses = []
@@ -201,3 +189,4 @@ def post_orders(params):
         # now we are going to return the response from Valkyrie
         responses.append({d: response.json()})
     return responses
+
