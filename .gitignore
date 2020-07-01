@@ -16,7 +16,7 @@ notebook/static/*/built/
 notebook/static/built/
 notebook/static/*/js/main.min.js*
 notebook/static/lab/*bundle.js
-notebooks/itslive/data
+notebooks/itslive/data/*.nc
 .python-version
 node_modules
 *.py[co]
