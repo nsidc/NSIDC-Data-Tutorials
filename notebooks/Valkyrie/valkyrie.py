@@ -23,6 +23,8 @@ class valkyrie_ui:
             'polygon': '',
             'hemisphere': hemisphere
         }
+        self.api_url = 'https://staging.hermes.apps.int.nsidc.org/api/orders/'
+        self.nasa_username = None
 
         self.granules = []
         self.projections = projections
@@ -48,8 +50,12 @@ class valkyrie_ui:
 
 
     def render(self):
+        max_zoom = 8
+        if self.h.value != 'global':
+            max_zoom = 4
         self.map = Map(center=self.projections[self.h.value]['center'],
                        zoom=1,
+                       max_zoom=max_zoom,
                        basemap=self.projections[self.h.value]['base_map'],
                        crs=self.projections[self.h.value]['projection'])
 
@@ -101,7 +107,7 @@ class valkyrie_ui:
 
 
     def set_earthdata_user(self, username):
-        self.user = username
+        self.nasa_username = username
 
 
     def query_cmr(self, event):
@@ -172,7 +178,7 @@ class valkyrie_ui:
             },
             "fulfillment": "valkyrie",
             "delivery": "valkyrie",
-            "uid": self.username
+            "uid": f"{self.nasa_username}"
             }
             if 'itrf' in params:
                 hermes_params['selection_criteria']['filters']['valkyrie_itrf'] = params['itrf']
@@ -181,14 +187,18 @@ class valkyrie_ui:
                 hermes_params['selection_criteria']['filters']['valkyrie_epoch'] = params['epoch']
 
 
-            base_url = 'https://staging.hermes.apps.int.nsidc.org/api/'
-            response = requests.post(base_url, json=hermes_params)
+            base_url = self.api_url
+            response = requests.post(base_url, json=hermes_params, verify=False)
             # now we are going to return the response from Valkyrie
             responses.append({d: response.json()})
         return responses
 
 
     def post_valkyrie_order(self, params):
+        order = {}
+        if self.nasa_username is None:
+            print('You need to use your NASA Earth Credentials, see instructions above')
+            return None
         hermes_params = {
         "selection_criteria": {
             "filters": {
@@ -200,7 +210,7 @@ class valkyrie_ui:
         },
         "fulfillment": "valkyrie",
         "delivery": "valkyrie",
-        "uid": self.username
+        "uid": f"{self.nasa_username}"
         }
         if 'itrf' in params:
             hermes_params['selection_criteria']['filters']['valkyrie_itrf'] = params['itrf']
@@ -208,7 +218,8 @@ class valkyrie_ui:
         if 'epoch' in params:
             hermes_params['selection_criteria']['filters']['valkyrie_epoch'] = params['epoch']
 
-        base_url = 'https://staging.hermes.apps.int.nsidc.org/api/'
-        response = requests.post(base_url, json=hermes_params)
+        base_url = self.api_url
+        order['request'] = hermes_params
+        order['response'] = requests.post(base_url, json=hermes_params, verify=False)
         # now we are going to return the response from Valkyrie
-        return response
+        return order
