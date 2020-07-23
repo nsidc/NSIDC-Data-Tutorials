@@ -1,4 +1,5 @@
 import os
+from base64 import b64encode
 import requests
 from joblib import Parallel, delayed
 from datetime import datetime
@@ -6,16 +7,22 @@ from ipyleaflet import Map
 import ipywidgets as widgets
 from IPython.display import Javascript
 from cmr import GranuleQuery
-
+from requests.auth import HTTPBasicAuth
 
 from valkyrie_controls import (epoch_control, dates_slider_control, draw_control, cmr_counts_control,
-                   projection_control, itrf_control, datasets_control, projections)
+                               projection_control, itrf_control, datasets_control, projections,
+                               nasa_password_control, nasa_username_control, nasa_set_credentials_control)
 
 
 
 class valkyrie_ui:
 
     def __init__(self, hemisphere):
+        """
+        Interface to talk to the Valkyrie API. The UI renders the northern hemisphere by default
+        The UI can be rendered with the render() method.
+        You can use the state of the widgets to place order(s) to Valkyrie or use the method directly.
+        """
         self.properties = {
             'start_date': datetime(1993, 1, 1),
             'end_date': datetime(2020, 1, 1),
@@ -23,8 +30,11 @@ class valkyrie_ui:
             'polygon': '',
             'hemisphere': hemisphere
         }
-        self.api_url = 'https://staging.hermes.apps.int.nsidc.org/api/orders/'
-        self.nasa_username = None
+        self.session = None
+        self.credentials = None
+
+        self.hermes_api_url = 'https://staging.nsidc.org/apps/orders/api'
+        self.valkyrie_api_url = 'http://staging.valkyrie-vm.apps.nsidc.org/1.0'
 
         self.granules = []
         self.projections = projections
@@ -47,6 +57,33 @@ class valkyrie_ui:
                            self.itrf_control,
                            self.epoch_control,
                            self.date_range]
+        self.username = nasa_username_control(None)
+        self.password = nasa_password_control(None)
+        self.credentials_button = nasa_set_credentials_control(None)
+        self.credentials_button.on_click(self.set_credentials)
+
+
+    def set_credentials(self, event):
+        if (self.username.value != '' and self.password.value != ''):
+            self.credentials = {
+                'username': self.username.value,
+                'password': self.password.value
+            }
+            session = self.create_earthdata_authenticated_session()
+            if session is None:  # type: ignore
+                print('Invalid credentials')
+                self.credentials = None
+            else:
+                print(f'Logged in to NASA EarthData with username: {self.credentials["username"]}')
+
+        else:
+            print('enter your NASA Earth login credentials')
+            self.credentials = None
+            return None
+
+
+    def render_credentials(self):
+        display(self.username, self.password, self.credentials_button)
 
 
     def render(self):
@@ -106,11 +143,7 @@ class valkyrie_ui:
         return params
 
 
-    def set_earthdata_user(self, username):
-        self.nasa_username = username
-
-
-    def query_cmr(self, event):
+    def query_cmr(self, params):
         if self.dc.last_draw['geometry'] is None:
             print('You need to select an area using the box tool')
             return None
@@ -134,8 +167,10 @@ class valkyrie_ui:
                 temporal=(d1,d2),
                 bounding_box = bbox).get_all()
             self.granules[d['name']] = g
-        if event is not None:
-            print(self.granules)
+        if params is not None:
+            for dataset in self.granules:
+                size = round(sum(float(g['granule_size']) for g in self.granules[dataset]), 2)
+                print(f'{dataset}: {len(self.granules[dataset])} granules found. Approx download size: {size} MB')
         return self.granules
 
 
@@ -161,56 +196,75 @@ class valkyrie_ui:
         return local_filename
 
 
-    def post_valkyrie_orders(self):
+    def post_data_orders(self, params, service):
+        if self.session is None or self.credentials is None:
+            print('You need to login into NASA EarthData before placing a Valkyrie Order')
+            return None
         params = self.build_params()
         hermes_params = None
+        username = self.credentials['username']
 
         responses = []
         for dataset in self.datasets_valkyrie:
-            hermes_params = {
-            "selection_criteria": {
-                "filters": {
-                    "bounding_box": params['bbox'],
-                    "dataset_short_name": dataset,
-                    "time_start": params['start'],
-                    "time_end": params['end']
-                }
-            },
-            "fulfillment": "valkyrie",
-            "delivery": "valkyrie",
-            "uid": f"{self.nasa_username}"
-            }
-            if 'itrf' in params:
-                hermes_params['selection_criteria']['filters']['valkyrie_itrf'] = params['itrf']
+            if service == 'valkyrie':
+                resp = self.post_valkyrie_order(params)
+            elif service == 'hermes':
+                resp = self.post_hermes_order(params)
+            else:
+                print('service not registered, plase use valkyrie or hermes')
+                return None
+            responses.append(resp)
 
-            if 'epoch' in params:
-                hermes_params['selection_criteria']['filters']['valkyrie_epoch'] = params['epoch']
-
-
-            base_url = self.api_url
-            response = requests.post(base_url, json=hermes_params, verify=False)
-            # now we are going to return the response from Valkyrie
-            responses.append({d: response.json()})
         return responses
 
 
     def post_valkyrie_order(self, params):
         order = {}
-        if self.nasa_username is None:
+        if self.session is None or self.credentials is None:
             print('You need to use your NASA Earth Credentials, see instructions above')
             return None
+        valkyrie_params = {
+            "bbox": params['bbox'],
+            "time_range": f"{params['start']},{params['end']}"
+        }
+        if 'itrf' in params:
+            valkyrie_params['itrf'] = params['itrf']
+
+        if 'epoch' in params:
+            valkyrie_params['epoch'] = params['epoch']
+        dataset = params['dataset']
+        if dataset in ['ILATM1B','BLATM1B', 'ATM']:
+            dataset = 'ATM1B'
+
+        base_url = f'{self.valkyrie_api_url}/{dataset}'
+        # self.session.headers['referer'] = 'https://hermes.apps.int.nsidc.org/api/'
+        # self.session.headers['referer'] = 'https://valkyrie.request'
+        order['request'] = valkyrie_params
+        order['response'] = requests.post(base_url,
+                                          params=valkyrie_params)
+        # now we are going to return the response from Valkyrie
+        return order
+
+
+    def post_hermes_order(self, params):
+        order = {}
+        if self.session is None or self.credentials is None:
+            print('You need to use your NASA Earth Credentials, see instructions above')
+            return None
+        username = self.credentials['username']
         hermes_params = {
         "selection_criteria": {
             "filters": {
-                "bounding_box": params['bbox'],
                 "dataset_short_name": params['dataset'],
+                "dataset_version": "1",
+                "bounding_box": params['bbox'],
                 "time_start": params['start'],
                 "time_end": params['end']
             }
         },
         "fulfillment": "valkyrie",
         "delivery": "valkyrie",
-        "uid": f"{self.nasa_username}"
+        "uid": f"{username}"
         }
         if 'itrf' in params:
             hermes_params['selection_criteria']['filters']['valkyrie_itrf'] = params['itrf']
@@ -218,8 +272,38 @@ class valkyrie_ui:
         if 'epoch' in params:
             hermes_params['selection_criteria']['filters']['valkyrie_epoch'] = params['epoch']
 
-        base_url = self.api_url
+        base_url = f'{self.hermes_api_url}/orders/'
+        self.session.headers['referer'] = 'https://hermes.apps.int.nsidc.org/api/'
+        # self.session.headers['referer'] = 'https://valkyrie.request'
         order['request'] = hermes_params
-        order['response'] = requests.post(base_url, json=hermes_params, verify=False)
+        order['response'] = self.session.post(base_url,
+                                              json=hermes_params,
+                                              verify=False)
         # now we are going to return the response from Valkyrie
         return order
+
+
+    def create_earthdata_authenticated_session(self):
+        s = requests.session()
+        auth_url = f'{self.hermes_api_url}/earthdata/auth/'
+        # print(auth_url)
+        nsidc_resp = s.get(auth_url, timeout=10, allow_redirects=True)
+        auth_cred = HTTPBasicAuth(self.credentials['username'], self.credentials['password'])
+        auth_resp = s.get(nsidc_resp.url,
+                        auth=auth_cred,
+                        allow_redirects=False,
+                        timeout=10)
+        if not (auth_resp.ok):  # type: ignore
+                print(nsidc_resp.url)
+                print(f'Authentication with Earthdata Login failed with:\n{auth_resp.text}')
+                return None
+        resp_hermes = s.get(auth_resp.headers['Location'], allow_redirects=False)
+        if not (resp_hermes.ok):
+                print('NSIDC HERMES could not authenticate')
+                return resp_hermes
+        self.session = s
+        return self.session
+
+
+
+

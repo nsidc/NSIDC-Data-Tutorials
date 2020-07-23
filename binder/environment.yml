@@ -21,10 +21,10 @@ dependencies:
 - awscli=1.16.296
 - rasterio=1.1.1
 - netcdf4=1.5.3
+- vaex=3.0.0
 - jupyterlab
-- ipywidgets
 - jupyter-offlinenotebook
 - pip
 - pip:
+  - area
   - python-cmr
-

@@ -61,6 +61,30 @@ projections = {
     }
 }
 
+def nasa_username_control(properties):
+    control = widgets.Text(
+        value='',
+        description='User:',
+        placeholder='Your NASA Earth username ',
+        disabled=False
+    )
+    return control
+
+
+
+def nasa_password_control(properties):
+    control = widgets.Password(
+        value='',
+        placeholder='Enter password',
+        description='Password:',
+        disabled=False
+    )
+    return control
+
+def nasa_set_credentials_control(properties):
+    set_control =  widgets.Button(description="Verify Credentials", )
+    return set_control
+
 
 def datasets_control(properties):
     dataset = widgets.SelectMultiple(
