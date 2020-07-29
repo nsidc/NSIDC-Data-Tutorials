@@ -216,16 +216,29 @@ class ValkyrieUI:
             self.credentials = None
             return None
 
-    def display_credentials(self):
+    def display_credentials(self, where):
         """
         renders the input controls to get the user's credentials
         note that theey are not enccrypted here.
         """
-        display(self.username, self.password, self.credentials_button)
+        if where == 'vertical':
+            if not hasattr(self, 'sc'):
+                self.sc = Sidecar(title='Map Widget')
+            with self.sc:
+                display(self.username, self.password, self.credentials_button)
+        else:
+            display(self.username, self.password, self.credentials_button)
 
-    def display_controls(self):
-        for component in self.controls:
-            display(component)
+    def display_controls(self, where):
+        if where == 'vertical':
+            if not hasattr(self, 'sc'):
+                self.sc = Sidecar(title='Map Widget')
+            with self.sc:
+                for component in self.controls:
+                    display(component)
+        else:
+            for component in self.controls:
+                display(component)
 
     def display_map(self, map_output, hemisphere=None, extra_layers=False):
         """
@@ -268,6 +281,8 @@ class ValkyrieUI:
                 display(self.out)
             with self.out:
                 display(self.map)
+                for component in self.controls:
+                    display(component)
 
         else:
             with self.out:

@@ -237,9 +237,9 @@ class ValkyrieClient:
 
     def display(self, what, where='horizontal', hemisphere='north', extra_layers=False):
         if 'credentials' in what:
-            self.controls.display_credentials()
+            self.controls.display_credentials(where)
         if 'controls' in what:
-            self.controls.display_controls()
+            self.controls.display_controls(where)
         if 'map' in what:
             self.controls.display_map(where, hemisphere, extra_layers)
 
