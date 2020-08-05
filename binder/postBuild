@@ -1,6 +1,7 @@
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install jupyter-offlinenotebook
-jupyter labextension install bqplot
-jupyter labextension install jupyter-matplotlib
-jupyter labextension install jupyter-vuetify
-jupyter labextension install @jupyter-widgets/jupyterlab-sidecar
+jupyter labextension install --clean @jupyter-widgets/jupyterlab-manager \
+jupyter-offlinenotebook \
+bqplot \
+jupyter-matplotlib \
+jupyter-vuetify \
+@jupyter-widgets/jupyterlab-sidecar \
+@jupyterlab/geojson-extension
