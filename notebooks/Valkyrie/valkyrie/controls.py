@@ -240,7 +240,7 @@ class ValkyrieUI:
             for component in self.controls:
                 display(component)
 
-    def display_map(self, map_output, hemisphere=None, extra_layers=False):
+    def display_map(self, map_output, hemisphere=None, extra_layers=True):
         """
         Will render the UI using ipyleaflet and jupyter widgets
         """

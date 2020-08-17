@@ -66,7 +66,7 @@ class ValkyrieClient:
             params['epoch'] = epoch
         return params
 
-    def query_cmr(self, params):
+    def _query_cmr_(self):
         datasets = self.controls.dataset.value
         if self.controls.dc.last_draw['geometry'] is None:
             print('You need to select an area using the box tool')
@@ -91,11 +91,34 @@ class ValkyrieClient:
                 temporal=(d1, d2),
                 bounding_box=bbox).get_all()
             self.granules[d['name']] = g
-        if params is not None:
-            for dataset in self.granules:
-                size = round(sum(float(g['granule_size']) for g in self.granules[dataset]), 2)
-                print(f'{dataset}: {len(self.granules[dataset])} granules found. Approx download size: {size} MB')
         return self.granules
+
+    def query_cmr(self, datasets=[], params=None):
+        """
+        Queries CMR for one or more data sets short-names using the spatio-temporal constraints defined in params.
+        Returns a json list of CMR records.
+        """
+        if params is None:
+            return self._query_cmr_()
+        self.granules = {}
+
+        for d in datasets:
+            cmr_api = GranuleQuery()
+            g = cmr_api.parameters(
+                short_name=d,
+                temporal=(params['start'], params['end']),
+                bounding_box=params['bbox']).get_all()
+            self.granules[d] = g
+
+        return self.granules
+
+    def cmr_download_size(self, granules):
+        sizes = {}
+        for dataset in granules:
+            size = round(sum(float(g['granule_size']) for g in self.granules[dataset]), 2)
+            sizes[dataset] = size
+            print(f'{dataset}: {len(self.granules[dataset])} granules found. Approx download size: {size} MB')
+        return sizes
 
     def download_cmr_granules(self, dataset, start, end):
         """
@@ -234,6 +257,21 @@ class ValkyrieClient:
             return resp_hermes
         self.session = s
         return self.session
+
+    def order_status(self, order):
+        order_status_url = order['response'].json()['status_url']
+        order_status = requests.get(order_status_url).json()
+        return order_status
+
+    def download_order(self, url, file_name):
+        order_data = requests.get(url, stream=True)
+        if file_name == '' or file_name is None:
+            file_name = url.split('/')[-1].replace('.hdf5', '')
+        with open(f'data/{file_name}.h5', 'wb') as f:
+            for chunk in order_data.iter_content(chunk_size=1024):
+                if chunk:
+                    f.write(chunk)
+        return f'data/{file_name}.h5'
 
     def display(self, what, where='horizontal', hemisphere='north', extra_layers=False):
         if 'credentials' in what:
