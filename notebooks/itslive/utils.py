@@ -1,4 +1,5 @@
 import pandas as pd
+from shapely.geometry import box
 import ipywidgets as widgets
 import itertools
 from ipyleaflet import projections, basemaps, DrawControl
@@ -76,16 +77,21 @@ def dates_slider_control(properties):
     return date_slider_control
 
 
-
 def draw_control(properties):
-    control = DrawControl(circlemarker={},
-                    polyline={},
-                    rectangle = {
-                        "shapeOptions": {
-                        "fillColor": "#fca45d",
-                            "color": "#fca45d",
-                            "fillOpacity": 0.5
-                        }
+    control = DrawControl(circlemarker={
+            "shapeOptions": {
+                "fillColor": "#efed69",
+                "color": "#efed69",
+                "fillOpacity": 1.0
+            }
+        },
+        polyline={},
+        rectangle={
+            "shapeOptions": {
+                "fillColor": "#fca45d",
+                "color": "#fca45d",
+                "fillOpacity": 0.5
+            }
     })
     return control
 
@@ -104,7 +110,7 @@ def pixels_control(properties):
 
 def time_delta_control(properties):
     time_delta = widgets.Dropdown(
-        options=['any', '7','30','90','120', '365'],
+        options=['any', '17','33','67','135', '365'],
         disabled=False,
         layout={'width': 'max-content',
                 'display': 'flex',
@@ -127,15 +133,32 @@ def coverage_control():
     granule_count.on_click(query_cmr)
 
 
-
-
 def format_polygon(geometry):
     coords = [[str(float("{:.4f}".format(coord[0]))),str(float("{:.4f}".format(coord[1])))] for coord in geometry['coordinates'][0]]
     coords = list(itertools.chain.from_iterable(coords))
     polygonstr = ','.join(coords)
     return polygonstr
 
+def get_minimal_bbox(geometry):
+    """
+    a very rough approximation of a small bbox less than 1km of a given lon-lat point
+    params: geometry, a geojson point geometry
+    """
+    lon = geometry['coordinates'][0]
+    lat = geometry['coordinates'][1]
+    if lon < 0.0:
+        lon_offset = -0.001
+    else:
+        lon_offset = 0.001
+    if lat < 0.0:
+        lat_offset = -0.001
+    else:
+        lat_offset = 0.001
 
+    bbox = box(lon - lon_offset, lat - lat_offset, lon + lon_offset, lat + lat_offset)
+    coords = [[str(float("{:.4f}".format(coord[0]))),str(float("{:.4f}".format(coord[1])))] for coord in bbox.exterior.coords]
+    coords = list(itertools.chain.from_iterable(coords))
+    return ','.join(coords)
 
 
 def query_(b):
@@ -190,3 +213,11 @@ def post_orders(params):
         responses.append({d: response.json()})
     return responses
 
+
+def transform_coord(proj1, proj2, lon, lat):
+    """Transform coordinates from proj1 to proj2 (EPSG num)."""
+    # Set full EPSG projection strings
+    proj1 = pyproj.Proj("+init=EPSG:"+proj1)
+    proj2 = pyproj.Proj("+init=EPSG:"+proj2)
+    # Convert coordinates
+    return pyproj.transform(proj1, proj2, lon, lat)

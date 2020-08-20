@@ -4,11 +4,16 @@ from datetime import datetime
 from ipyleaflet import Map
 import ipywidgets as widgets
 from IPython.display import Javascript
+import xarray as xr
 import os
+import glob
+import pyproj
+from collections import defaultdict
 
-
-from utils import (north_3413, south_3031, projections, draw_control, projection_control,
-                   dates_slider_control, pixels_control, time_delta_control, format_polygon)
+from utils import (north_3413, south_3031, projections, draw_control,
+                   projection_control, dates_slider_control, pixels_control,
+                   time_delta_control, format_polygon, get_minimal_bbox,
+                   transform_coord)
 
 
 class itslive_ui:
@@ -82,10 +87,10 @@ class itslive_ui:
         sizes.append(size)
 
 
-    def calculate_file_sizes(self, max_urls):
+    def calculate_file_sizes(self, urls, max_urls):
         file_sizes = []
         Parallel(n_jobs=8, backend="threading")(
-            delayed(self.get_url_size)(url['url'],file_sizes) for url in self.urls[0:max_urls]
+            delayed(self.get_url_size)(url['url'],file_sizes) for url in urls[0:max_urls]
         )
         return file_sizes
 
@@ -94,7 +99,10 @@ class itslive_ui:
         if self.dc.last_draw['geometry'] is None:
             print('You need to select an area using the box tool or the polygon drawing tool')
             return None
-        polygon_coords = format_polygon(self.dc.last_draw['geometry'])
+        if self.dc.last_draw['geometry']['type'] == 'Point':
+            polygon_coords = get_minimal_bbox(self.dc.last_draw['geometry'])
+        else:
+            polygon_coords = format_polygon(self.dc.last_draw['geometry'])
         start = self.date_range.value[0].date().strftime('%Y-%m-%d')
         end = self.date_range.value[1].date().strftime('%Y-%m-%d')
         pixels = self.pixels.value
@@ -109,11 +117,44 @@ class itslive_ui:
             params['time_delta'] = self.time_delta.value
         return params
 
+    def _get_temporal_coverage(self, url):
+        file_name = url.split('/')[-1].replace('.nc','')
+        projection = url.split('/')[-2]
+        file_components = file_name.split('_')
+        start_date = datetime.strptime(file_components[3], "%Y%m%d").date()
+        end_date = datetime.strptime(file_components[4], "%Y%m%d").date()
+        mid_date = start_date + (end_date - start_date) / 2
 
-    def download_velocity_pairs(self, start, end):
+        coverage = {
+            'url': url,
+            'start': start_date,
+            'end': end_date,
+            'mid_date': mid_date
+        }
+        return coverage
+
+    def filter_urls(self, urls, max_files_per_year, months):
+        # LE07_L1TP_008012_20030417_20170125_01_T1_X_LE07_L1TP_008012_20030401_20170126_01_T1_G0240V01_P095.nc
+        filtered_urls = []
+        files_by_year = defaultdict(list)
+        for url in urls:
+            coverage = self._get_temporal_coverage(url)
+            if coverage['mid_date'].month in months:
+                # print(f"month: {coverage['mid_date'].month}")
+                if coverage['mid_date'].year in files_by_year:
+                    if len(files_by_year[coverage['mid_date'].year]) < max_files_per_year:
+                        files_by_year[coverage['mid_date'].year].append(url)
+                        filtered_urls.append(url)
+                else:
+                    files_by_year[coverage['mid_date'].year].append(url)
+                    filtered_urls.append(url)
+        return filtered_urls
+
+
+    def download_velocity_pairs(self, urls, start, end):
         file_paths = []
         Parallel(n_jobs=8, backend="threading")(
-            delayed(self.download_file)(url['url'],file_paths) for url in self.urls[start:end]
+            delayed(self.download_file)(url, file_paths) for url in urls[start:end]
         )
         return file_paths
 
@@ -129,4 +170,19 @@ class itslive_ui:
                         f.write(chunk)
                 file_paths.append(local_filename)
         return local_filename
+
+    def load_velocity_pairs(self, directory):
+        velocity_pairs = []
+        for file in glob.glob(directory + '/*.nc'):
+            ds = xr.open_dataset(file)
+            velocity_pairs.append(ds)
+        return velocity_pairs
+
+    def transform_coord(self, proj1, proj2, lon, lat):
+        """Transform coordinates from proj1 to proj2 (EPSG num)."""
+        # Set full EPSG projection strings
+        proj1 = pyproj.Proj("+init=EPSG:"+proj1)
+        proj2 = pyproj.Proj("+init=EPSG:"+proj2)
+        # Convert coordinates
+        return pyproj.transform(proj1, proj2, lon, lat)
 
