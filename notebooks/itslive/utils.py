@@ -53,20 +53,21 @@ projections = {
     'north': {
         'base_map': basemaps.NASAGIBS.BlueMarble3413,
         'projection': north_3413,
-        'center': (90,0)
+        'center': (90, 0)
     },
     'south': {
         'base_map': basemaps.NASAGIBS.BlueMarble3031,
         'projection': south_3031,
-        'center': (-90,0)
+        'center': (-90, 0)
     }
 }
+
 
 def dates_slider_control(properties):
     slider_dates = [(date.strftime(' %Y-%m-%d '), date) for date in
                     pd.date_range(properties['start_date'],
-                                    properties['end_date'],
-                                    freq='D')]
+                                  properties['end_date'],
+                                  freq='D')]
     slider_index = (0, len(slider_dates)-1)
     date_slider_control = widgets.SelectionRangeSlider(
                 options=slider_dates,
@@ -79,25 +80,21 @@ def dates_slider_control(properties):
 
 def draw_control(properties):
     control = DrawControl(circlemarker={
-            "shapeOptions": {
-                "fillColor": "#efed69",
-                "color": "#efed69",
-                "fillOpacity": 1.0
-            }
-        },
-        polyline={},
-        rectangle={
-            "shapeOptions": {
-                "fillColor": "#fca45d",
-                "color": "#fca45d",
-                "fillOpacity": 0.5
-            }
-    })
+                "shapeOptions": {
+                    "fillColor": "#efed69",
+                    "color": "#efed69",
+                    "fillOpacity": 1.0
+                }
+            },
+            polygon={},
+            polyline={},
+            rectangle={}
+    )
     return control
 
 
 def pixels_control(properties):
-    valid_percentages = [str(p) for p in range(0,100,10)]
+    valid_percentages = [str(p) for p in range(0, 100, 10)]
     valid_percentages[0] = 1
     pixels = widgets.Dropdown(
         options=valid_percentages,
@@ -108,9 +105,10 @@ def pixels_control(properties):
     )
     return pixels
 
+
 def time_delta_control(properties):
     time_delta = widgets.Dropdown(
-        options=['any', '17','33','67','135', '365'],
+        options=['any', '17', '33', '67', '135', '365'],
         disabled=False,
         layout={'width': 'max-content',
                 'display': 'flex',
@@ -127,10 +125,6 @@ def projection_control(properties):
         value=properties['hemisphere']
     )
     return control
-
-def coverage_control():
-    granule_count =  widgets.Button(description="Get Granule Count", )
-    granule_count.on_click(query_cmr)
 
 
 def format_polygon(geometry):
@@ -160,64 +154,3 @@ def get_minimal_bbox(geometry):
     coords = list(itertools.chain.from_iterable(coords))
     return ','.join(coords)
 
-
-def query_(b):
-    granules = []
-    datasets_cmr = []
-    datasets_valkyrie = []
-    d1 = date_range_slider.value[0].date()
-    d2 = date_range_slider.value[1].date()
-    if dc.last_draw['geometry'] is None:
-        print('You need to select an area using the box tool')
-        return None
-    coords = [list(coord) for coord in bounding_box(dc.last_draw['geometry']['coordinates'][0])]
-    bbox = (coords[0][0],coords[0][1],coords[1][0],coords[1][1])
-    if 'ATM' in dataset.value:
-        datasets_cmr.extend([{'name':'ILATM1B'},{'name':'BLATM1B'}])
-        datasets_valkyrie.append('ATM1B')
-    if 'GLAH06' in dataset.value:
-        datasets_cmr.append({'name':'GLAH06'})
-        datasets_valkyrie.append('GLAH06')
-    if 'ILVIS2' in dataset.value:
-        datasets_cmr.append({'name': 'ILVIS2', 'version': '002'})
-        datasets_valkyrie.append('ILVIS2')
-
-    for d in datasets_cmr:
-        cmr_api = GranuleQuery()
-        g = cmr_api.parameters(
-            short_name=d['name'],
-            temporal=(d1,d2),
-            bounding_box = bbox).hits()
-        granules.append({d['name']: g})
-    if b is not None:
-        print(granules)
-    return granules
-
-# granule_count =  widgets.Button(description="Get Granule Count", )
-# granule_count.on_click(query_cmr)
-
-
-def post_orders(params):
-    responses = []
-    datasets_valkyrie = []
-    if 'ATM' in dataset.value:
-        datasets_valkyrie.append('ATM1B')
-    if 'GLAH06' in dataset.value:
-        datasets_valkyrie.append('GLAH06')
-    if 'ILVIS2' in dataset.value:
-        datasets_valkyrie.append('ILVIS2')
-    for d in datasets_valkyrie:
-        base_url = f'http://staging.valkyrie-vm.apps.nsidc.org/1.0/{d}'
-        response = requests.post(base_url, params=params)
-        # now we are going to return the response from Valkyrie
-        responses.append({d: response.json()})
-    return responses
-
-
-def transform_coord(proj1, proj2, lon, lat):
-    """Transform coordinates from proj1 to proj2 (EPSG num)."""
-    # Set full EPSG projection strings
-    proj1 = pyproj.Proj("+init=EPSG:"+proj1)
-    proj2 = pyproj.Proj("+init=EPSG:"+proj2)
-    # Convert coordinates
-    return pyproj.transform(proj1, proj2, lon, lat)

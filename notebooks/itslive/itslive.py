@@ -3,7 +3,6 @@ from joblib import Parallel, delayed
 from datetime import datetime
 from ipyleaflet import Map
 import ipywidgets as widgets
-from IPython.display import Javascript
 import xarray as xr
 import os
 import glob
@@ -12,8 +11,7 @@ from collections import defaultdict
 
 from utils import (north_3413, south_3031, projections, draw_control,
                    projection_control, dates_slider_control, pixels_control,
-                   time_delta_control, format_polygon, get_minimal_bbox,
-                   transform_coord)
+                   time_delta_control, format_polygon, get_minimal_bbox)
 
 
 class itslive_ui:
@@ -33,17 +31,18 @@ class itslive_ui:
         self.dc = draw_control(self.properties)
         self.date_range = dates_slider_control(self.properties)
         self.pixels = pixels_control(self.properties)
-        self.pixels_control = widgets.HBox([widgets.Label('Minimum % of valid pixels per image pair:'),
-                                            self.pixels])
+        self.pixels_control = widgets.HBox([
+            widgets.Label('Minimum % of valid pixels per image pair:'),
+            self.pixels])
         self.time_delta = time_delta_control(self.properties)
-        self.time_delta_control = widgets.HBox([widgets.Label('Days of separation between image pairs:'),
-                                                self.time_delta])
+        self.time_delta_control = widgets.HBox([
+            widgets.Label('Maximum days of separation between image pairs:'),
+            self.time_delta])
 
         self.components = [self.h,
                            self.pixels_control,
                            self.time_delta_control,
                            self.date_range]
-
 
     def render(self):
         self.map = Map(center=self.projections[self.h.value]['center'],
@@ -57,14 +56,12 @@ class itslive_ui:
             display(component)
         display(self.map)
 
-
     def update_coverages(self):
         base_url = 'https://staging.itslive-search.apps.nsidc.org/velocities/coverage/'
         params = self.build_params()
         resp = requests.get(base_url, params=params, verify=False)
         self.coverage = resp.json()
         return self.coverage
-
 
     def get_granule_urls(self):
         base_url = 'https://staging.itslive-search.apps.nsidc.org/velocities/urls/'
@@ -74,7 +71,6 @@ class itslive_ui:
         resp = requests.get(base_url, params=params, verify=False)
         self.urls = resp.json()
         return self.urls
-
 
     def get_url_size(self, url, sizes):
         size = 0
@@ -86,14 +82,12 @@ class itslive_ui:
             return
         sizes.append(size)
 
-
     def calculate_file_sizes(self, urls, max_urls):
         file_sizes = []
         Parallel(n_jobs=8, backend="threading")(
             delayed(self.get_url_size)(url['url'],file_sizes) for url in urls[0:max_urls]
         )
         return file_sizes
-
 
     def build_params(self):
         if self.dc.last_draw['geometry'] is None:
@@ -118,8 +112,7 @@ class itslive_ui:
         return params
 
     def _get_temporal_coverage(self, url):
-        file_name = url.split('/')[-1].replace('.nc','')
-        projection = url.split('/')[-2]
+        file_name = url.split('/')[-1].replace('.nc', '')
         file_components = file_name.split('_')
         start_date = datetime.strptime(file_components[3], "%Y%m%d").date()
         end_date = datetime.strptime(file_components[4], "%Y%m%d").date()
@@ -150,14 +143,12 @@ class itslive_ui:
                     filtered_urls.append(url)
         return filtered_urls
 
-
     def download_velocity_pairs(self, urls, start, end):
         file_paths = []
         Parallel(n_jobs=8, backend="threading")(
             delayed(self.download_file)(url, file_paths) for url in urls[start:end]
         )
         return file_paths
-
 
     def download_file(self, url, file_paths):
         local_filename = url.split('/')[-1]
@@ -168,7 +159,7 @@ class itslive_ui:
                 with open('data/' + local_filename, 'wb') as f:
                     for chunk in r.iter_content(chunk_size=8192):
                         f.write(chunk)
-                file_paths.append(local_filename)
+            file_paths.append(local_filename)
         return local_filename
 
     def load_velocity_pairs(self, directory):
