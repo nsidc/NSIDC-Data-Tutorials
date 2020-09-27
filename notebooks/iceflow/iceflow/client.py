@@ -5,13 +5,13 @@ from datetime import datetime
 from cmr import GranuleQuery
 from requests.auth import HTTPBasicAuth
 
-from .controls import ValkyrieUI
+from .controls import IceFlowUI
 
 
-class ValkyrieClient:
+class IceflowClient:
     def __init__(self):
         """
-        Interface to talk to the Valkyrie API. The UI renders the northern hemisphere by default
+        Interface to talk to the IceFlow API. The UI renders the northern hemisphere by default
         The UI can be rendered with the render() method.
         You can use the state of the widgets to place order(s) to Valkyrie or use the method directly.
         """
@@ -23,10 +23,11 @@ class ValkyrieClient:
         }
         self.session = None
         self.credentials = None
-        self.hermes_api_url = 'https://staging.nsidc.org/apps/orders/api'
-        self.valkyrie_api_url = 'http://staging.valkyrie-vm.apps.nsidc.org/1.0'
+        self.hermes_api_url = 'https://nsidc.org/apps/orders/api'
+        self.iceflow_api_url = 'http://valkyrie-vm.apps.nsidc.org/1.0'
         self.granules = []
-        self.controls = ValkyrieUI(self.properties)
+        # TODO: ugly dependency injection. refactor
+        self.controls = IceFlowUI(self.properties, self.query_cmr_button, self.post_iceflow_order)
 
     def bounding_box(self, points):
         x_coordinates, y_coordinates = zip(*points)
@@ -36,7 +37,7 @@ class ValkyrieClient:
         """
         returns the current selection parameters based on the widgets and map state
         """
-        self.datasets_valkyrie = []
+        self.datasets_iceflow = []
         if self.controls.dc.last_draw['geometry'] is None:
             print('You need to select an area using the box tool')
             return None
@@ -49,11 +50,11 @@ class ValkyrieClient:
         datasets = self.controls.dataset.value
 
         if 'ATM' in datasets:
-            self.datasets_valkyrie.append('ATM1B')
+            self.datasets_iceflow.append('ATM1B')
         if 'GLAH06' in datasets:
-            self.datasets_valkyrie.append('GLAH06')
+            self.datasets_iceflow.append('GLAH06')
         if 'ILVIS2' in datasets:
-            self.datasets_valkyrie.append('ILVIS2')
+            self.datasets_iceflow.append('ILVIS2')
         params = {
             'start': start,
             'end': end,
@@ -91,7 +92,11 @@ class ValkyrieClient:
                 temporal=(d1, d2),
                 bounding_box=bbox).get_all()
             self.granules[d['name']] = g
+        self.cmr_download_size(self.granules)
         return self.granules
+
+    def query_cmr_button(self, event):
+        self._query_cmr_()
 
     def query_cmr(self, datasets=[], params=None):
         """
@@ -101,15 +106,17 @@ class ValkyrieClient:
         if params is None:
             return self._query_cmr_()
         self.granules = {}
-
+        bbox = [float(coord) for coord in params['bbox'].split(',')]
         for d in datasets:
             cmr_api = GranuleQuery()
             g = cmr_api.parameters(
                 short_name=d,
-                temporal=(params['start'], params['end']),
-                bounding_box=params['bbox']).get_all()
+                temporal=(datetime.strptime(params['start'], '%Y-%m-%d'),
+                          datetime.strptime(params['end'], '%Y-%m-%d')),
+                bounding_box=(bbox[0], bbox[1], bbox[2], bbox[3])).get_all()
             self.granules[d] = g
 
+        self.cmr_download_size(self.granules)
         return self.granules
 
     def cmr_download_size(self, granules):
@@ -145,7 +152,7 @@ class ValkyrieClient:
                 file_paths.append(local_filename)
         return local_filename
 
-    def post_data_orders(self, params, service='valkyrie'):
+    def post_data_orders(self, params, service='iceflow'):
         """
         Post a data order to either Valkyrie or Hermes. Talking directly to Hermes will be deprecated soon.
         """
@@ -155,42 +162,42 @@ class ValkyrieClient:
         if params is None:
             params = self.build_params()
         responses = []
-        for dataset in self.datasets_valkyrie:
-            if service == 'valkyrie':
-                resp = self.post_valkyrie_order(params)
+        for dataset in self.datasets_iceflow:
+            if service == 'iceflow':
+                resp = self.post_iceflow_order(params)
             elif service == 'hermes':
                 resp = self.post_hermes_order(params)
             else:
-                print('service not registered, plase use valkyrie or hermes')
+                print('service not registered, plase use iceflow or hermes')
                 return None
             responses.append(resp)
 
         return responses
 
-    def post_valkyrie_order(self, params):
+    def post_iceflow_order(self, params):
         order = {}
         if self.session is None:
             print('You need to use your NASA Earth Credentials, see instructions above')
             return None
-        valkyrie_params = {
+        iceflow_params = {
             "bbox": params['bbox'],
             "time_range": f"{params['start']},{params['end']}"
         }
         if 'itrf' in params:
-            valkyrie_params['itrf'] = params['itrf']
+            iceflow_params['itrf'] = params['itrf']
 
         if 'epoch' in params:
-            valkyrie_params['epoch'] = params['epoch']
+            iceflow_params['epoch'] = params['epoch']
         dataset = params['dataset']
         if dataset in ['ILATM1B', 'BLATM1B', 'ATM']:
             dataset = 'ATM1B'
 
-        base_url = f'{self.valkyrie_api_url}/{dataset}'
+        base_url = f'{self.iceflow_api_url}/{dataset}'
         # self.session.headers['referer'] = 'https://hermes.apps.int.nsidc.org/api/'
-        # self.session.headers['referer'] = 'https://valkyrie.request'
-        order['request'] = valkyrie_params
+        # self.session.headers['referer'] = 'https://iceflow.request'
+        order['request'] = iceflow_params
         order['response'] = requests.post(base_url,
-                                          params=valkyrie_params)
+                                          params=iceflow_params)
         # now we are going to return the response from Valkyrie
         return order
 
@@ -203,7 +210,7 @@ class ValkyrieClient:
         if 'provider' in params:
             provider = params['provider']
         else:
-            provider = 'valkyrie'
+            provider = 'iceflow'
         hermes_params = {
             "selection_criteria": {
                 "filters": {
@@ -219,15 +226,15 @@ class ValkyrieClient:
             "uid": f"{username}"
         }
         if 'itrf' in params:
-            hermes_params['selection_criteria']['filters']['valkyrie_itrf'] = params['itrf']
+            hermes_params['selection_criteria']['filters']['iceflow_itrf'] = params['itrf']
 
         if 'epoch' in params:
-            hermes_params['selection_criteria']['filters']['valkyrie_epoch'] = params['epoch']
+            hermes_params['selection_criteria']['filters']['iceflow_epoch'] = params['epoch']
 
         base_url = f'{self.hermes_api_url}/orders/'
         # TODO: Need to implement a client regex and refactor Hermes
         self.session.headers['referer'] = 'https://hermes.apps.int.nsidc.org/api/'
-        # self.session.headers['referer'] = 'https://valkyrie.request'
+        # self.session.headers['referer'] = 'https://iceflow.request'
         order['request'] = hermes_params
         order['response'] = self.session.post(base_url,
                                               json=hermes_params,
@@ -240,8 +247,8 @@ class ValkyrieClient:
         auth_url = f'{self.hermes_api_url}/earthdata/auth/'
         nsidc_resp = s.get(auth_url, timeout=10, allow_redirects=True)
         if user is None and password is None:
-            user = self.controls.credentials['username']
-            password = self.controls.credentials['password']
+            user = self.controls.username.value
+            password = self.controls.password.value
         auth_cred = HTTPBasicAuth(user, password)
         auth_resp = s.get(nsidc_resp.url,
                           auth=auth_cred,

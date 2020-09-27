@@ -28,6 +28,5 @@ dependencies:
 - sidecar
 - pip
 - pip:
-  - area
   - git+git://github.com/icesat2py/icepyx@development
   - python-cmr

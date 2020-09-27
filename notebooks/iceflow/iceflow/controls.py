@@ -85,11 +85,12 @@ def format_polygon(geometry):
     return polygonstr
 
 
-class ValkyrieUI:
+class IceFlowUI:
     """
     builds widgets for the user interface
     """
-    def __init__(self, properties):
+    def __init__(self, properties, query_cmr, post_iceflow_order):
+        self.query_cmr = query_cmr
         self.out = widgets.Output(layout={'border': '1px solid black'})
         self.credentials = None
         self.start_date = properties['start_date']
@@ -157,15 +158,15 @@ class ValkyrieUI:
             orientation='horizontal',
             layout={'width': '100%'})
 
+        self.granule_count = widgets.Button(description="Get Granule Count", )
         self.selection_controls = widgets.VBox([self.projection,
                                                 self.dataset,
                                                 self.is2,
                                                 self.itrf,
                                                 self.epoch,
-                                                self.dates_range])
+                                                self.dates_range,
+                                                self.granule_count])
         self.controls.append(self.selection_controls)
-        # self.controls.append(self.dates_range)
-        self.granule_count = widgets.Button(description="Get Granule Count", )
         self.layers_control = LayersControl(position='topright')
         self.search_control = SearchControl(
             position="topleft",
@@ -192,6 +193,7 @@ class ValkyrieUI:
         self.dates_range.observe(self.dates_changed, 'value')
         self.projection.observe(self.hemisphere_change)
         self.credentials_button.on_click(self.set_credentials)
+        self.granule_count.on_click(self.query_cmr)
 
     def hemisphere_change(self, change):
         if change['type'] == 'change' and change['name'] == 'value':
@@ -202,6 +204,7 @@ class ValkyrieUI:
             start, end = change['new']
             self.start_date = start
             self.end_date = end
+            # TODO: keep selection state
             # we filter the geopandas datafram to only display flights within the user range
             self.display_map(self.map_output)
 

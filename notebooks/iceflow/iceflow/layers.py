@@ -13,10 +13,10 @@ itslive_layer = TileLayer(opacity=1.0,
                           min_zoom=1,
                           max_zoom=4)
 
-df_north = geopandas.read_file('./valkyrie/files/ib_north.json')
+df_north = geopandas.read_file('./iceflow/files/ib_north.json')
 df_north['date'] = pd.to_datetime(df_north['timestamp'])
 
-df_south = geopandas.read_file('./valkyrie/files/ib_south.json')
+df_south = geopandas.read_file('./iceflow/files/ib_south.json')
 df_south['date'] = pd.to_datetime(df_south['timestamp'])
 
 
