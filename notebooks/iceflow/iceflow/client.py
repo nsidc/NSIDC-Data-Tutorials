@@ -287,5 +287,3 @@ class IceflowClient:
             self.controls.display_controls(where)
         if 'map' in what:
             self.controls.display_map(where, hemisphere, extra_layers)
-
-
