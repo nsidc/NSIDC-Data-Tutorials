@@ -1,5 +1,4 @@
 jupyter labextension install --clean @jupyter-widgets/jupyterlab-manager \
-jupyter-offlinenotebook \
 bqplot \
 jupyter-matplotlib \
 jupyter-vuetify \
