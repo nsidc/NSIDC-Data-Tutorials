@@ -166,7 +166,8 @@ class itslive_ui:
             velocity_pairs.append(ds)
         return velocity_pairs
 
-    def transform_coord(self, proj1, proj2, lon, lat):
+    @staticmethod
+    def transform_coord(proj1, proj2, lon, lat):
         """Transform coordinates from proj1 to proj2 (EPSG num)."""
         # Set full EPSG projection strings
         proj1 = pyproj.Proj("+init=EPSG:"+proj1)
