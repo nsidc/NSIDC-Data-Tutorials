@@ -100,7 +100,7 @@ class ITSCube:
             else:
                 self.layers = xr.concat([self.layers, self.velocities[each_date]], 'mid_date')
 
-    def plot_velocities(self):
+    def plot_layers(self):
         """
         Plot cube's velocities in date order. Each layer has its own x/y coordinate labels based on data values 
         present in the layer. This method provides a better insight into data variation within each layer.
@@ -117,7 +117,7 @@ class ITSCube:
         plt.tight_layout()
         plt.draw()
 
-    def plot_layers(self):
+    def plot(self):
         """
         Plot cube's layers in date order. All layers share the same x/y coordinate labels.
         """
