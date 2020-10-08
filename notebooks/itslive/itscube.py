@@ -29,6 +29,7 @@ class ITSCube:
         self.dir = data_dir
         
         # Load velocity pairs from all files in specified directory
+        # TODO: Change the logic - might not need to load all the data at once. Read one file at a time?
         self.file_data = []
         for each_file in glob.glob(self.dir + os.sep + '*.nc'):
             ds = xr.open_dataset(each_file)
@@ -72,7 +73,7 @@ class ITSCube:
             projected_lat = round(centroid_coords[1])
             mid_date = datetime.strptime(ds.img_pair_info.date_center,'%Y%m%d')
 
-            # the neighboring pixels(each is 240m) 10 x 10 window
+            # the neighboring pixels (each is 240m)
             mask_lon = (ds.x >= projected_lon - mean_offset_meters) & (ds.x <= projected_lon + mean_offset_meters)
             mask_lat = (ds.y >= projected_lat - mean_offset_meters) & (ds.y <= projected_lat + mean_offset_meters)
 
@@ -90,6 +91,7 @@ class ITSCube:
             if np.any(cube_v.notnull()):
                 # There might be multiple layers for the mid_date, use filename to detect which one to include
                 # into the cube: the one in target projection.                
+                cube_v.attrs['projection'] = str(ds.UTM_Projection.spatial_epsg)
                 self.velocities[mid_date] = cube_v
                 
         # Construct xarray to hold layers by concatenating layer objects along 'mid_date' dimension
@@ -99,6 +101,8 @@ class ITSCube:
                                         
             else:
                 self.layers = xr.concat([self.layers, self.velocities[each_date]], 'mid_date')
+                
+        return centroid_in_proj
 
     def plot_layers(self):
         """
@@ -107,19 +111,29 @@ class ITSCube:
         """
         num_granules = len(self.velocities)
         
-        # TODO: should add column wrap if there are many layers to display.
-        #       This works fine for 7 layers.
-        fig, axes = plt.subplots(ncols=num_granules, nrows=1, figsize=(num_granules*5, 5))
+        num_cols = 5
+        num_rows = int(num_granules / num_cols)
+        if (num_granules % num_cols) != 0:
+            num_rows += 1
+        
+        fig, axes = plt.subplots(ncols=num_cols, nrows=num_rows, figsize=(num_cols*4, num_rows*4))
+        col_index = 0
+        row_index = 0
         for each_index, each_date in enumerate(sorted(self.velocities.keys())):
-            self.velocities[each_date].plot(ax=axes[each_index])
-            axes[each_index].title.set_text(str(each_date))
-            
-        plt.tight_layout()
-        plt.draw()
+            if col_index == num_cols:
+                col_index = 0
+                row_index += 1
+                
+            self.velocities[each_date].plot(ax=axes[row_index, col_index])
+            axes[row_index, col_index].title.set_text(str(each_date) + ' / ' + str(self.velocities[each_date].attrs['projection']))
+            col_index += 1
 
+        plt.tight_layout()
+        plt.draw()        
+        
     def plot(self):
         """
         Plot cube's layers in date order. All layers share the same x/y coordinate labels.
         """
-        self.layers.plot(x='x', y = 'y', col='mid_date', col_wrap=3, levels=100)
+        self.layers.plot(x='x', y = 'y', col='mid_date', col_wrap=5, levels=100)
         
