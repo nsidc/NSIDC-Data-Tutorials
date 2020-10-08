@@ -38,6 +38,8 @@ class ITSCube:
         # mid_date: velocity values
         self.velocities = {}
         
+        self.layers = None
+        
     # TODO: use polygon (not centroid and mean_offset) to filter out the values to be included into the cube.
     def create(self, centroid, mean_offset_meters = 1200):
         """
@@ -47,7 +49,8 @@ class ITSCube:
             Centroid for the polygon. This is a temporary parameter as polygon will be used 
             to filter out the data points from each layer. Just using itslive.py logic for now.
         mean_offset_meters: int
-            Mean offset in meters (defines a region around centroid). Default is 1200.
+            Mean offset in meters (defines a region around centroid). Default is 1200m, which
+            limits the region to the neighboring 10x10 pixels (each is 240m).
         """
         # Dictionary that maps projection string to centroid coordinates in that projection
         # (to avoid re-calculation of centroid coordinates in different projections)        
@@ -69,16 +72,19 @@ class ITSCube:
             projected_lat = round(centroid_coords[1])
             mid_date = datetime.strptime(ds.img_pair_info.date_center,'%Y%m%d')
 
-            # We are going to calculate the mean value of the neighboring pixels(each is 240m) 10 x 10 window
+            # the neighboring pixels(each is 240m) 10 x 10 window
             mask_lon = (ds.x >= projected_lon - mean_offset_meters) & (ds.x <= projected_lon + mean_offset_meters)
             mask_lat = (ds.y >= projected_lat - mean_offset_meters) & (ds.y <= projected_lat + mean_offset_meters)
 
             cube_v = ds.where(mask_lon & mask_lat , drop=True).v
 
-            # For now just add middle date as an attribute
-            cube_v.attrs['mid_date'] = mid_date
+            # Add middle date as a new coordinate
+            cube_v = cube_v.assign_coords({'mid_date': mid_date})
 
             # TODO: Should add a filename as its source for traceability?
+            
+            # TODO: Should store mid_date within each layer for self-consistency?
+            # cube_v.attrs['mid_date'] = mid_date
 
             # If it's a valid velocity layer, add it to the cube.
             if np.any(cube_v.notnull()):
@@ -86,22 +92,34 @@ class ITSCube:
                 # into the cube: the one in target projection.                
                 self.velocities[mid_date] = cube_v
                 
-        # Construct xarray to hold layers in date order
-        # cube = xr.DataSet({"time": datetime.datetime(2000, 1, 1)})
+        # Construct xarray to hold layers by concatenating layer objects along 'mid_date' dimension
+        for each_index, each_date in enumerate(sorted(self.velocities.keys())):
+            if each_index == 0:
+                self.layers = self.velocities[each_date]
+                                        
+            else:
+                self.layers = xr.concat([self.layers, self.velocities[each_date]], 'mid_date')
 
-    def plot_layers(self):
+    def plot_velocities(self):
         """
-        Plot cube layers in date order.
+        Plot cube's velocities in date order. Each layer has its own x/y coordinate labels based on data values 
+        present in the layer. This method provides a better insight into data variation within each layer.
         """
         num_granules = len(self.velocities)
         
-        # TODO: should split images into multiple rows if there are many of them. 
+        # TODO: should add column wrap if there are many layers to display.
         #       This works fine for 7 layers.
         fig, axes = plt.subplots(ncols=num_granules, nrows=1, figsize=(num_granules*5, 5))
         for each_index, each_date in enumerate(sorted(self.velocities.keys())):
             self.velocities[each_date].plot(ax=axes[each_index])
-            axes[each_index].title.set_text(str(self.velocities[each_date].attrs['mid_date']))
+            axes[each_index].title.set_text(str(each_date))
             
         plt.tight_layout()
         plt.draw()
-    
+
+    def plot_layers(self):
+        """
+        Plot cube's layers in date order. All layers share the same x/y coordinate labels.
+        """
+        self.layers.plot(x='x', y = 'y', col='mid_date', col_wrap=3, levels=100)
+        
