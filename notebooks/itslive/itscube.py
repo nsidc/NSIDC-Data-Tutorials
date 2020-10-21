@@ -1,12 +1,13 @@
+import copy
 from datetime import datetime
 import glob
 import os
 import numpy  as np
-import xarray.plot as xplt
 import matplotlib.pyplot as plt
-
-
+import s3fs
 import xarray as xr
+import xarray.plot as xplt
+
 
 from itslive import itslive_ui
 
@@ -16,83 +17,136 @@ class ITSCube:
     Class to represent ITS_LIVE cube: time series of velocity pairs within a
     polygon of interest.
     """
+    # String representation of Cartesian projection
+    CARTESIAN_PROJECTION = '4326'
     
-    # TODO: provide parameters for the polygon of interest and OpenAPI params, 
-    #       then download the data to be used for the cube construction.
-    #       For now just use already pre-filtered downloaded data from 
-    #       specified data directory.
-    def __init__(self, data_dir):
+    S3_PREFIX = 's3://'
+    HTTP_PREFIX = 'http://'
+    
+    # Token within granule's URL that needs to be removed to get file location within S3 bucket:
+    # if URL is of the 'http://its-live-data.jpl.nasa.gov.s3.amazonaws.com/velocity_image_pair/landsat/v00.0/32628/file.nc' format,
+    # S3 bucket location of the file is 's3://its-live-data.jpl.nasa.gov/velocity_image_pair/landsat/v00.0/32628/file.nc'
+    PATH_URL = ".s3.amazonaws.com"
+    
+    NC_ENGINE = 'h5netcdf'
+    
+    
+    def __init__(self, polygon: tuple, projection: str):
         """
-        data_dir: str
-            Directory that stores velocity granules files as downloaded by ITS_LIVE OpenApi.
+        polygon: tuple
+            Polygon for the tile.
+        projection: str
+            Projection in which polygon is defined.
         """
-        self.dir = data_dir
+        self.proj_polygon = polygon
+        self.cart_polygon = []
+        self.projection   = projection
         
-        # Load velocity pairs from all files in specified directory
-        # TODO: Change the logic - might not need to load all the data at once. Read one file at a time?
-        self.file_data = []
-        for each_file in glob.glob(self.dir + os.sep + '*.nc'):
-            ds = xr.open_dataset(each_file)
-            self.file_data.append(ds)
-            
-        # Dictionary to store filtered (by polygon) velocities:
+        # Convert polygon from its target projection to Cartesian coordinates 
+        # (search API uses Cartesian coordinates)
+        for each in polygon:
+            coords = itslive_ui.transform_coord(projection, ITSCube.CARTESIAN_PROJECTION, each[0], each[1])
+            self.cart_polygon.extend(coords)
+       
+        print(f"Cartesian coords for polygon: {self.cart_polygon}")
+        
+        # Dictionary to store filtered (by polygon/start_date/end_date) velocities:
         # mid_date: velocity values
         self.velocities = {}
-        
+       
         self.layers = None
+
         
-    # TODO: use polygon (not centroid and mean_offset) to filter out the values to be included into the cube.
-    def create(self, centroid, mean_offset_meters = 1200):
+    def create(self, api_params, num_granules=None):
         """
         Create velocity cube.
         
-        centroid: list[2]
-            Centroid for the polygon. This is a temporary parameter as polygon will be used 
-            to filter out the data points from each layer. Just using itslive.py logic for now.
-        mean_offset_meters: int
-            Mean offset in meters (defines a region around centroid). Default is 1200m, which
-            limits the region to the neighboring 10x10 pixels (each is 240m).
+        api_params: dict
+            Search API required parameters.
+        num: int
+            Number of first granules to examine.
+            TODO: This is a temporary solution to a very long time to open remote granules. Should not be used
+                  when running the code at AWS.
         """
-        # Dictionary that maps projection string to centroid coordinates in that projection
-        # (to avoid re-calculation of centroid coordinates in different projections)        
-        centroid_in_proj = {}
-
         # Re-set filtered velocities         
         self.velocities = {}
+        self.layers = None
 
-        for ds in self.file_data:
-            if ds.UTM_Projection.spatial_epsg in centroid_in_proj:
-                centroid_coords = centroid_in_proj[ds.UTM_Projection.spatial_epsg]
+        # Append polygon information to API's parameters
+        params = copy.deepcopy(api_params)
+        params['polygon'] = ",".join([str(each) for each in self.cart_polygon])
+        
+        found_urls = [each['url'] for each in itslive_ui.get_granule_urls(params)]
+        print("Originally found urls: ", len(found_urls))
 
-            else:
-                proj = str(int(ds.UTM_Projection.spatial_epsg))
-                centroid_coords = itslive_ui.transform_coord('4326', proj, centroid[0], centroid[1])
-                centroid_in_proj[ds.UTM_Projection.spatial_epsg] = centroid_coords
+        if len(found_urls) == 0:
+            print(f"No granules are found for the search API parameters: {params}")
+            return
+        
+        # Keep track of skipped granules due to the other than target projection
+        skipped_proj_granules = []
+        # Keep track of skipped granules due to the no data for the polygon of interest
+        skipped_empty_granules = []
 
-            projected_lon = round(centroid_coords[0])
-            projected_lat = round(centroid_coords[1])
-            mid_date = datetime.strptime(ds.img_pair_info.date_center,'%Y%m%d')
-
-            # the neighboring pixels (each is 240m)
-            mask_lon = (ds.x >= projected_lon - mean_offset_meters) & (ds.x <= projected_lon + mean_offset_meters)
-            mask_lat = (ds.y >= projected_lat - mean_offset_meters) & (ds.y <= projected_lat + mean_offset_meters)
-
-            cube_v = ds.where(mask_lon & mask_lat , drop=True).v
-
-            # Add middle date as a new coordinate
-            cube_v = cube_v.assign_coords({'mid_date': mid_date})
-
-            # TODO: Should add a filename as its source for traceability?
+        # TODO: parallelize layer collection?
+        s3 = s3fs.S3FileSystem(anon=True)
+        
+        # Number of granules to examine is specified (it's very slow to examine all granules sequentially)
+        if num_granules:
+            found_urls = found_urls[:num_granules]
+            print(f"Examining only {len(found_urls)} first granules")
             
-            # TODO: Should store mid_date within each layer for self-consistency?
-            # cube_v.attrs['mid_date'] = mid_date
+        for each_url in found_urls:
+            s3_path = each_url.replace(ITSCube.HTTP_PREFIX, ITSCube.S3_PREFIX)
+            s3_path = s3_path.replace(ITSCube.PATH_URL, '')
+            
+            with s3.open(s3_path, mode='rb') as fhandle:
+                with xr.open_dataset(fhandle, engine=ITSCube.NC_ENGINE) as ds:
+                    # Consider granules that have its data in the target projection only
+                    if str(int(ds.UTM_Projection.spatial_epsg)) == self.projection:
+                        # Filter by percent coverage for now:
+#                         url = each_url.replace('.nc', '')
+#                         url_tokens = url.split('_')
+#                         percent = int(url_tokens[-1].replace('P', ''))
+#                         print(f"URL: {each_url} percent={percent}")
+#                         if percent <= 50:
+#                             continue
 
-            # If it's a valid velocity layer, add it to the cube.
-            if np.any(cube_v.notnull()):
-                # There might be multiple layers for the mid_date, use filename to detect which one to include
-                # into the cube: the one in target projection.                
-                cube_v.attrs['projection'] = str(ds.UTM_Projection.spatial_epsg)
-                self.velocities[mid_date] = cube_v
+                        # Consider granules only within target projection
+                        mid_date = datetime.strptime(ds.img_pair_info.date_center,'%Y%m%d')
+
+                        # Define which points are within target polygon.
+                        # TODO: for now just assume it's a "perfect" rectangle defined by 5 points.
+                        mask_lon = (ds.x >= self.proj_polygon[0][0]) & (ds.x <= self.proj_polygon[1][0])
+                        mask_lat = (ds.y >= self.proj_polygon[1][1]) & (ds.y <= self.proj_polygon[2][1])
+
+                        cube_v = ds.where(mask_lon & mask_lat , drop=True).v
+
+                        # If it's a valid velocity layer, add it to the cube.
+                        if np.any(cube_v.notnull()):
+                            # Add middle date as a new coordinate
+                            cube_v = cube_v.assign_coords({'mid_date': mid_date})
+
+                            # TODO: Should store mid_date within each layer for self-consistency?
+                            # cube_v.attrs['mid_date'] = mid_date
+
+                            # TODO: There might be multiple layers for the mid_date, use filename to detect which one to include
+                            #       into the cube: the one in target projection. 
+                            #       Filename does not seem to include the same projection value as
+                            #       ds.UTM_Projection.spatial_epsg - what to look for???
+                            cube_v.attrs['projection'] = str(int(ds.UTM_Projection.spatial_epsg))
+
+                            # Add file URL as its source for traceability
+                            cube_v.attrs['url'] = each_url
+
+                            # Use granule data as cube layer
+                            self.velocities[mid_date] = cube_v.copy()
+
+                        else:
+                            skipped_empty_granules.append(each_url)
+
+                    else:
+                        skipped_proj_granules.append(each_url)
                 
         # Construct xarray to hold layers by concatenating layer objects along 'mid_date' dimension
         for each_index, each_date in enumerate(sorted(self.velocities.keys())):
@@ -101,9 +155,17 @@ class ITSCube:
                                         
             else:
                 self.layers = xr.concat([self.layers, self.velocities[each_date]], 'mid_date')
-                
-        return centroid_in_proj
+        
+        print( "Skipped granules:")
+        print(f"      empty data: {len(skipped_empty_granules)}")
+        print(f"      wrong proj: {len(skipped_proj_granules)}")
 
+
+#         print(f"      empty data: {100.0 * len(skipped_empty_granules)/len(found_urls)}")
+#         print(f"      wrong proj: {100.0 * len(skipped_proj_granules)/len(found_urls)}")
+        return found_urls
+
+        
     def plot_layers(self):
         """
         Plot cube's velocities in date order. Each layer has its own x/y coordinate labels based on data values 
@@ -113,6 +175,8 @@ class ITSCube:
         
         num_cols = 5
         num_rows = int(num_granules / num_cols)
+        print(f"rows={num_rows} cols={num_cols}")
+        
         if (num_granules % num_cols) != 0:
             num_rows += 1
         
@@ -130,6 +194,27 @@ class ITSCube:
 
         plt.tight_layout()
         plt.draw()        
+
+
+    def plot_num_layers(self, num):
+        """
+        Plot cube's velocities in date order. Each layer has its own x/y coordinate labels based on data values 
+        present in the layer. This method provides a better insight into data variation within each layer.
+        """
+        num_granules = len(self.velocities)
+        
+        fig, axes = plt.subplots(ncols=num, figsize=(num*4, 4))
+        col_index = 0
+        for each_index, each_date in enumerate(sorted(self.velocities.keys())):
+               
+            self.velocities[each_date].plot(ax=axes[each_index])
+            axes[each_index].title.set_text(str(each_date) + ' / ' + str(self.velocities[each_date].attrs['projection']))
+            col_index += 1
+
+        plt.tight_layout()
+        plt.draw()        
+
+
         
     def plot(self):
         """
