@@ -39,16 +39,16 @@ class ITSCube:
             Projection in which polygon is defined.
         """
         self.proj_polygon = polygon
-        self.cart_polygon = []
+        self.polygon_coords = []
         self.projection   = projection
         
         # Convert polygon from its target projection to Cartesian coordinates 
         # (search API uses Cartesian coordinates)
         for each in polygon:
             coords = itslive_ui.transform_coord(projection, ITSCube.CARTESIAN_PROJECTION, each[0], each[1])
-            self.cart_polygon.extend(coords)
+            self.polygon_coords.extend(coords)
        
-        print(f"Cartesian coords for polygon: {self.cart_polygon}")
+        print(f"Longitude/latitude coords for polygon: {self.polygon_coords}")
         
         # Dictionary to store filtered (by polygon/start_date/end_date) velocities:
         # mid_date: velocity values
@@ -74,7 +74,7 @@ class ITSCube:
 
         # Append polygon information to API's parameters
         params = copy.deepcopy(api_params)
-        params['polygon'] = ",".join([str(each) for each in self.cart_polygon])
+        params['polygon'] = ",".join([str(each) for each in self.polygon_coords])
         
         found_urls = [each['url'] for each in itslive_ui.get_granule_urls(params)]
         print("Originally found urls: ", len(found_urls))
@@ -157,8 +157,8 @@ class ITSCube:
                 self.layers = xr.concat([self.layers, self.velocities[each_date]], 'mid_date')
         
         print( "Skipped granules:")
-        print(f"      empty data: {len(skipped_empty_granules)}")
-        print(f"      wrong proj: {len(skipped_proj_granules)}")
+        print(f"      empty data: {len(skipped_empty_granules)} ({100.0 * len(skipped_empty_granules)/len(found_urls)}%)")
+        print(f"      wrong proj: {len(skipped_proj_granules)} ({100.0 * len(skipped_proj_granules)/len(found_urls)}%)")
 
 
 #         print(f"      empty data: {100.0 * len(skipped_empty_granules)/len(found_urls)}")
