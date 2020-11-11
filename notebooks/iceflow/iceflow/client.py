@@ -4,8 +4,7 @@ from joblib import Parallel, delayed
 from datetime import datetime
 from cmr import GranuleQuery
 from requests.auth import HTTPBasicAuth
-
-from .controls import IceFlowUI
+from .is2 import is2
 
 
 class IceflowClient:
@@ -17,97 +16,45 @@ class IceflowClient:
         """
         self.properties = {
             'start_date': datetime(1993, 1, 1),
-            'end_date': datetime(2021, 1, 1),
+            'end_date': datetime.now(),
             'polygon': '',
-            'hemisphere': 'north'
+            'bbox': ''
         }
         self.session = None
-        self.credentials = None
+        self.icesat2 = None
         self.hermes_api_url = 'https://nsidc.org/apps/orders/api'
         self.iceflow_api_url = 'http://valkyrie-vm.apps.nsidc.org/1.0'
         self.granules = []
-        # TODO: ugly dependency injection. refactor
-        self.controls = IceFlowUI(self.properties, self.query_cmr_button, self.post_iceflow_order)
+
+    def authenticate(self, user, password, email):
+        if user is not None and password is not None:
+            self.credentials = {
+                'username': user,
+                'password': password,
+                'email': email
+            }
+        else:
+            print('user and password must have valid values')
+            return None
+        return self._create_earthdata_authenticated_session()
 
     def bounding_box(self, points):
+        """
+        returns a bbox array for a given polygon
+        """
         x_coordinates, y_coordinates = zip(*points)
         return [(min(x_coordinates), min(y_coordinates)), (max(x_coordinates), max(y_coordinates))]
 
-    def build_params(self):
+    def query_cmr(self, params=None):
         """
-        returns the current selection parameters based on the widgets and map state
-        """
-        self.datasets_iceflow = []
-        if self.controls.dc.last_draw['geometry'] is None:
-            print('You need to select an area using the box tool')
-            return None
-        coords = [list(coord) for coord in self.bounding_box(self.controls.dc.last_draw['geometry']['coordinates'][0])]
-        bbox = f'{coords[0][0]},{coords[0][1]},{coords[1][0]},{coords[1][1]}'
-        start = self.controls.dates_range.value[0].date().strftime('%Y-%m-%d')
-        end = self.controls.dates_range.value[1].date().strftime('%Y-%m-%d')
-        ITRF = self.controls.itrf.value
-        epoch = self.controls.epoch.value
-        datasets = self.controls.dataset.value
-
-        if 'ATM' in datasets:
-            self.datasets_iceflow.append('ATM1B')
-        if 'GLAH06' in datasets:
-            self.datasets_iceflow.append('GLAH06')
-        if 'ILVIS2' in datasets:
-            self.datasets_iceflow.append('ILVIS2')
-        params = {
-            'start': start,
-            'end': end,
-            'bbox': bbox
-        }
-        if ITRF != 'None' and ITRF is not None:
-            params['itrf'] = ITRF
-
-        if epoch != 'None' and epoch != '':
-            params['epoch'] = epoch
-        return params
-
-    def _query_cmr_(self):
-        datasets = self.controls.dataset.value
-        if self.controls.dc.last_draw['geometry'] is None:
-            print('You need to select an area using the box tool')
-            return None
-        self.granules = {}
-        datasets_cmr = []
-        d1 = self.controls.dates_range.value[0].date()
-        d2 = self.controls.dates_range.value[1].date()
-        coords = [list(coord) for coord in self.bounding_box(self.controls.dc.last_draw['geometry']['coordinates'][0])]
-        bbox = (coords[0][0], coords[0][1], coords[1][0], coords[1][1])
-        if 'ATM' in datasets:
-            datasets_cmr.extend([{'name': 'ILATM1B'}, {'name': 'BLATM1B'}])
-        if 'GLAH06' in datasets:
-            datasets_cmr.append({'name': 'GLAH06'})
-        if 'ILVIS2' in datasets:
-            datasets_cmr.append({'name': 'ILVIS2'})
-
-        for d in datasets_cmr:
-            cmr_api = GranuleQuery()
-            g = cmr_api.parameters(
-                short_name=d['name'],
-                temporal=(d1, d2),
-                bounding_box=bbox).get_all()
-            self.granules[d['name']] = g
-        self.cmr_download_size(self.granules)
-        return self.granules
-
-    def query_cmr_button(self, event):
-        self._query_cmr_()
-
-    def query_cmr(self, datasets=[], params=None):
-        """
-        Queries CMR for one or more data sets short-names using the spatio-temporal constraints defined in params.
-        Returns a json list of CMR records.
+        Queries CMR for one or more data sets short-names using the spatio-temporal
+        constraints defined in params. Returns a json list of CMR records.
         """
         if params is None:
-            return self._query_cmr_()
+            return None
         self.granules = {}
         bbox = [float(coord) for coord in params['bbox'].split(',')]
-        for d in datasets:
+        for d in params['datasets']:
             cmr_api = GranuleQuery()
             g = cmr_api.parameters(
                 short_name=d,
@@ -122,9 +69,9 @@ class IceflowClient:
     def cmr_download_size(self, granules):
         sizes = {}
         for dataset in granules:
-            size = round(sum(float(g['granule_size']) for g in self.granules[dataset]), 2)
+            size = round(sum(float(g['granule_size']) for g in self.granules[dataset]) / 1024, 2)
             sizes[dataset] = size
-            print(f'{dataset}: {len(self.granules[dataset])} granules found. Approx download size: {size} MB')
+            print(f'{dataset}: {len(self.granules[dataset])} granules found. Approx download size: {size} GB')
         return sizes
 
     def download_cmr_granules(self, dataset, start, end):
@@ -152,29 +99,83 @@ class IceflowClient:
                 file_paths.append(local_filename)
         return local_filename
 
-    def post_data_orders(self, params, service='iceflow'):
+    def _parse_order_parameters(self, dataset, params):
+        if dataset in ['ATL03', 'ATL06', 'ATL07', 'ATL08']:
+            provider = 'icepyx'
+        else:
+            provider = 'valkyrie'
+
+        return {
+            'dataset': dataset,
+            'start': params['start'],
+            'end': params['end'],
+            'bbox': params['bbox'],
+            'provider': provider
+        }
+
+    def post_data_orders(self, params):
         """
-        Post a data order to either Valkyrie or Hermes. Talking directly to Hermes will be deprecated soon.
+        Post a data order to either Iceflow or EGI (Icepyx).
         """
-        if self.session is None or self.credentials is None:
-            print('You need to login into NASA EarthData before placing a Valkyrie Order')
+        if self.session is None:
+            print('You need to login into NASA EarthData before placing an IceFLow Order')
             return None
         if params is None:
-            params = self.build_params()
+            print('You need to pass spatio temporal parameters')
+            return None
         responses = []
-        for dataset in self.datasets_iceflow:
-            if service == 'iceflow':
-                resp = self.post_iceflow_order(params)
-            elif service == 'hermes':
-                resp = self.post_hermes_order(params)
+        for dataset in params['datasets']:
+            order_parameters = self._parse_order_parameters(dataset, params)
+            if order_parameters['provider'] == 'icepyx':
+                resp = self._post_icepyx_order(order_parameters)
             else:
-                print('service not registered, plase use iceflow or hermes')
-                return None
+                resp = self._post_iceflow_order(order_parameters)
             responses.append(resp)
 
         return responses
 
-    def post_iceflow_order(self, params):
+    def _post_icepyx_order(self, params):
+        is2_query = self.icesat2.query(params)
+        # Looks like this is synchronous, we need to fork icepyx to improve it.
+        is2_query.download_granules('./data')
+
+    def _post_iceflow_order(self, params):
+        order = {}
+        username = self.credentials['username']
+        if 'provider' in params:
+            provider = params['provider']
+        else:
+            provider = 'valkyrie'
+        hermes_params = {
+            "selection_criteria": {
+                "filters": {
+                    "dataset_short_name": params['dataset'],
+                    "dataset_version": "1",
+                    "bounding_box": params['bbox'],
+                    "time_start": params['start'],
+                    "time_end": params['end']
+                }
+            },
+            "fulfillment": provider,
+            "delivery": provider,
+            "uid": f"{username}"
+        }
+        if 'itrf' in params:
+            hermes_params['selection_criteria']['filters']['iceflow_itrf'] = params['itrf']
+
+        if 'epoch' in params:
+            hermes_params['selection_criteria']['filters']['iceflow_epoch'] = params['epoch']
+
+        base_url = f'{self.hermes_api_url}/orders/'
+        self.session.headers['referer'] = 'https://valkyrie.request'
+        order['request'] = hermes_params
+        order['response'] = self.session.post(base_url,
+                                              json=hermes_params,
+                                              verify=False)
+        # now we are going to return the response from Hermes
+        return order
+
+    def __post_valkyrie_order(self, params):
         order = {}
         if self.session is None:
             print('You need to use your NASA Earth Credentials, see instructions above')
@@ -201,55 +202,11 @@ class IceflowClient:
         # now we are going to return the response from Valkyrie
         return order
 
-    def post_hermes_order(self, params):
-        order = {}
-        if self.session is None or self.credentials is None:
-            print('You need to use your NASA Earth Credentials, see instructions above')
-            return None
-        username = self.credentials['username']
-        if 'provider' in params:
-            provider = params['provider']
-        else:
-            provider = 'iceflow'
-        hermes_params = {
-            "selection_criteria": {
-                "filters": {
-                    "dataset_short_name": params['dataset'],
-                    "dataset_version": "1",
-                    "bounding_box": params['bbox'],
-                    "time_start": params['start'],
-                    "time_end": params['end']
-                }
-            },
-            "fulfillment": provider,
-            "delivery": provider,
-            "uid": f"{username}"
-        }
-        if 'itrf' in params:
-            hermes_params['selection_criteria']['filters']['iceflow_itrf'] = params['itrf']
-
-        if 'epoch' in params:
-            hermes_params['selection_criteria']['filters']['iceflow_epoch'] = params['epoch']
-
-        base_url = f'{self.hermes_api_url}/orders/'
-        # TODO: Need to implement a client regex and refactor Hermes
-        self.session.headers['referer'] = 'https://hermes.apps.int.nsidc.org/api/'
-        # self.session.headers['referer'] = 'https://iceflow.request'
-        order['request'] = hermes_params
-        order['response'] = self.session.post(base_url,
-                                              json=hermes_params,
-                                              verify=False)
-        # now we are going to return the response from Hermes
-        return order
-
-    def create_earthdata_authenticated_session(self, user=None, password=None):
+    def _create_earthdata_authenticated_session(self):
         s = requests.session()
         auth_url = f'{self.hermes_api_url}/earthdata/auth/'
         nsidc_resp = s.get(auth_url, timeout=10, allow_redirects=True)
-        if user is None and password is None:
-            user = self.controls.username.value
-            password = self.controls.password.value
-        auth_cred = HTTPBasicAuth(user, password)
+        auth_cred = HTTPBasicAuth(self.credentials['user'], self.credentials['password'])
         auth_resp = s.get(nsidc_resp.url,
                           auth=auth_cred,
                           allow_redirects=False,
@@ -263,6 +220,8 @@ class IceflowClient:
             print('NSIDC HERMES could not authenticate')
             return resp_hermes
         self.session = s
+        # Now we create a icesat2 instance so we can query for ATL data using icepyx
+        self.icesat2 = is2(self.credentials)
         return self.session
 
     def order_status(self, order):
@@ -279,11 +238,3 @@ class IceflowClient:
                 if chunk:
                     f.write(chunk)
         return f'data/{file_name}.h5'
-
-    def display(self, what, where='horizontal', hemisphere='north', extra_layers=False):
-        if 'credentials' in what:
-            self.controls.display_credentials(where)
-        if 'controls' in what:
-            self.controls.display_controls(where)
-        if 'map' in what:
-            self.controls.display_map(where, hemisphere, extra_layers)
