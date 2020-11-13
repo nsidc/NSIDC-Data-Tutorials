@@ -14,7 +14,7 @@ class is2:
             email=credentials['email'],
             pswd=credentials['password'],
             capability_url=cap_url)
-        self._session.start_session()
+        self._session._start_session()
 
     def query(self, parameters):
         dataset = parameters['dataset']

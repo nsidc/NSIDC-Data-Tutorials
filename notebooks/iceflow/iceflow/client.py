@@ -22,8 +22,8 @@ class IceflowClient:
         }
         self.session = None
         self.icesat2 = None
+        # IceFlow uses Hermes, the NSIDC data ordering API as a proxy
         self.hermes_api_url = 'https://nsidc.org/apps/orders/api'
-        self.iceflow_api_url = 'http://valkyrie-vm.apps.nsidc.org/1.0'
         self.granules = []
 
     def authenticate(self, user, password, email):
@@ -37,6 +37,18 @@ class IceflowClient:
             print('user and password must have valid values')
             return None
         return self._create_earthdata_authenticated_session()
+
+    def _get_dataset_latest_version(self, dataset):
+        """
+        Returns the latest version of a NSIDC-DAAC dataset
+        """
+        try:
+            metadata = requests.get(f'http://nsidc.org/api/dataset/metadata/v2/{dataset}.json').json()
+            latest_version = metadata['newestPublishedMajorVersion']
+        except Exception:
+            print('dataset not found')
+            return None
+        return latest_version
 
     def bounding_box(self, points):
         """
@@ -52,12 +64,24 @@ class IceflowClient:
         """
         if params is None:
             return None
+        # if self.session is None:
+        #     print('You need to login into NASA EarthData')
+        #     return None
         self.granules = {}
         bbox = [float(coord) for coord in params['bbox'].split(',')]
         for d in params['datasets']:
+            latest_version = self._get_dataset_latest_version(d)
+            if latest_version is None:
+                continue
+            if d in ['ILVIS2', 'ILATM1B', 'BLATM1B']:
+                version_padding = 0
+            else:
+                version_padding = 3
+            # print(latest_version)
             cmr_api = GranuleQuery()
             g = cmr_api.parameters(
                 short_name=d,
+                version=f"{str(latest_version).zfill(version_padding)}",
                 temporal=(datetime.strptime(params['start'], '%Y-%m-%d'),
                           datetime.strptime(params['end'], '%Y-%m-%d')),
                 bounding_box=(bbox[0], bbox[1], bbox[2], bbox[3])).get_all()
@@ -103,6 +127,8 @@ class IceflowClient:
         if dataset in ['ATL03', 'ATL06', 'ATL07', 'ATL08']:
             provider = 'icepyx'
         else:
+            if dataset in ['ATM', 'ILATM1B', 'BLATM1B']:
+                dataset = 'ATM1B'  # IceFlow consolidates ATM data
             provider = 'valkyrie'
 
         return {
@@ -175,38 +201,11 @@ class IceflowClient:
         # now we are going to return the response from Hermes
         return order
 
-    def __post_valkyrie_order(self, params):
-        order = {}
-        if self.session is None:
-            print('You need to use your NASA Earth Credentials, see instructions above')
-            return None
-        iceflow_params = {
-            "bbox": params['bbox'],
-            "time_range": f"{params['start']},{params['end']}"
-        }
-        if 'itrf' in params:
-            iceflow_params['itrf'] = params['itrf']
-
-        if 'epoch' in params:
-            iceflow_params['epoch'] = params['epoch']
-        dataset = params['dataset']
-        if dataset in ['ILATM1B', 'BLATM1B', 'ATM']:
-            dataset = 'ATM1B'
-
-        base_url = f'{self.iceflow_api_url}/{dataset}'
-        # self.session.headers['referer'] = 'https://hermes.apps.int.nsidc.org/api/'
-        # self.session.headers['referer'] = 'https://iceflow.request'
-        order['request'] = iceflow_params
-        order['response'] = requests.post(base_url,
-                                          params=iceflow_params)
-        # now we are going to return the response from Valkyrie
-        return order
-
     def _create_earthdata_authenticated_session(self):
         s = requests.session()
         auth_url = f'{self.hermes_api_url}/earthdata/auth/'
         nsidc_resp = s.get(auth_url, timeout=10, allow_redirects=True)
-        auth_cred = HTTPBasicAuth(self.credentials['user'], self.credentials['password'])
+        auth_cred = HTTPBasicAuth(self.credentials['username'], self.credentials['password'])
         auth_resp = s.get(nsidc_resp.url,
                           auth=auth_cred,
                           allow_redirects=False,
