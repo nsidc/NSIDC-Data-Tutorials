@@ -26,6 +26,12 @@ class IceflowClient:
         self.hermes_api_url = 'https://nsidc.org/apps/orders/api'
         self.granules = []
 
+    def valid_session(self):
+        if self.session is None:
+            print('You need to login into NASA EarthData before placing an IceFLow Order')
+            return None
+        return True
+
     def authenticate(self, user, password, email):
         if user is not None and password is not None:
             self.credentials = {
@@ -48,7 +54,11 @@ class IceflowClient:
         except Exception:
             print('dataset not found')
             return None
-        return latest_version
+        if dataset.startswith('ATL'):
+            version = f"{str(latest_version).zfill(3)}"
+        else:
+            version = latest_version
+        return version
 
     def bounding_box(self, points):
         """
@@ -57,6 +67,40 @@ class IceflowClient:
         x_coordinates, y_coordinates = zip(*points)
         return [(min(x_coordinates), min(y_coordinates)), (max(x_coordinates), max(y_coordinates))]
 
+    def _expand_datasets(self, params):
+        """
+        IceFlow consolidates ATM1B and CMR does not. We need to expand the dataset
+        names and versions.
+        """
+        cmr_datasets = []
+        bbox = [float(coord) for coord in params['bbox'].split(',')]
+        temporal = (datetime.strptime(params['start'], '%Y-%m-%d'),
+                    datetime.strptime(params['end'], '%Y-%m-%d'))
+        bbox = (bbox[0], bbox[1], bbox[2], bbox[3])
+        for d in params['datasets']:
+            if d == 'ATM1B':
+                cmr_datasets.extend([{'name': 'ILATM1B',
+                                      'version': None,
+                                      'temporal': temporal,
+                                      'bounding_box': bbox},
+                                    {'name': 'BLATM1B',
+                                     'version': None,
+                                     'temporal': temporal,
+                                     'bounding_box': bbox}])
+            elif d == 'GLAH06' or d == 'ILVIS2':
+                cmr_datasets.append({'name': d,
+                                     'version': None,
+                                     'temporal': temporal,
+                                     'bounding_box': bbox})
+
+            else:
+                latest_version = self._get_dataset_latest_version(d)
+                cmr_datasets.append({'name': d,
+                                     'version': latest_version,
+                                     'temporal': temporal,
+                                     'bounding_box': bbox})
+        return cmr_datasets
+
     def query_cmr(self, params=None):
         """
         Queries CMR for one or more data sets short-names using the spatio-temporal
@@ -64,28 +108,16 @@ class IceflowClient:
         """
         if params is None:
             return None
-        # if self.session is None:
-        #     print('You need to login into NASA EarthData')
-        #     return None
         self.granules = {}
-        bbox = [float(coord) for coord in params['bbox'].split(',')]
-        for d in params['datasets']:
-            latest_version = self._get_dataset_latest_version(d)
-            if latest_version is None:
-                continue
-            if d in ['ILVIS2', 'ILATM1B', 'BLATM1B']:
-                version_padding = 0
-            else:
-                version_padding = 3
-            # print(latest_version)
+        datasets = self._expand_datasets(params)
+        for d in datasets:
             cmr_api = GranuleQuery()
             g = cmr_api.parameters(
-                short_name=d,
-                version=f"{str(latest_version).zfill(version_padding)}",
-                temporal=(datetime.strptime(params['start'], '%Y-%m-%d'),
-                          datetime.strptime(params['end'], '%Y-%m-%d')),
-                bounding_box=(bbox[0], bbox[1], bbox[2], bbox[3])).get_all()
-            self.granules[d] = g
+                short_name=d['name'],
+                version=d['version'],
+                temporal=d['temporal'],
+                bounding_box=d['bounding_box']).get_all()
+            self.granules[d['name']] = g
 
         self.cmr_download_size(self.granules)
         return self.granules
@@ -127,7 +159,7 @@ class IceflowClient:
         if dataset in ['ATL03', 'ATL06', 'ATL07', 'ATL08']:
             provider = 'icepyx'
         else:
-            if dataset in ['ATM', 'ILATM1B', 'BLATM1B']:
+            if dataset in ['ATM1B', 'ILATM1B', 'BLATM1B']:
                 dataset = 'ATM1B'  # IceFlow consolidates ATM data
             provider = 'valkyrie'
 
@@ -139,31 +171,60 @@ class IceflowClient:
             'provider': provider
         }
 
-    def post_data_orders(self, params):
+    def place_data_orders(self, params):
         """
         Post a data order to either Iceflow or EGI (Icepyx).
         """
-        if self.session is None:
-            print('You need to login into NASA EarthData before placing an IceFLow Order')
+        if self.valid_session() is None:
             return None
         if params is None:
             print('You need to pass spatio temporal parameters')
             return None
-        responses = []
+        orders = []
         for dataset in params['datasets']:
             order_parameters = self._parse_order_parameters(dataset, params)
             if order_parameters['provider'] == 'icepyx':
-                resp = self._post_icepyx_order(order_parameters)
+                order = self._post_icepyx_order(order_parameters)
             else:
-                resp = self._post_iceflow_order(order_parameters)
-            responses.append(resp)
+                order = self._post_iceflow_order(order_parameters)
+            orders.append(order)
+        return orders
 
-        return responses
+    def check_order_status(self, order):
+        if self.valid_session() is None:
+            return None
+        if order['provider'] == 'icepyx':
+            return {
+                'status': 'COMPLETE',
+                'url': None
+            }
+        else:
+            order_id = order['response']['order']['order_id']
+            status_url = f'{self.hermes_api_url}/orders/{order_id}'
+            response = self.session.get(status_url).json()
+            status = response['status'].upper()
+            if status == 'COMPLETE':
+                granule_url = response['file_urls']['data'][0]
+            else:
+                granule_url = None
+            response = {
+                'status': status,
+                'url': granule_url
+            }
+            return response
 
     def _post_icepyx_order(self, params):
-        is2_query = self.icesat2.query(params)
-        # Looks like this is synchronous, we need to fork icepyx to improve it.
-        is2_query.download_granules('./data')
+        """
+        Icepyx uses a sync method to download granules, so there is no place order per se,
+        instead we just query for the granules and then download them.
+        """
+        self.is2_query = self.icesat2.query(params)
+        return {
+            'provider': 'icepyx',
+            'dataset': params['dataset'],
+            'request': params,
+            'reponse': self.is2_query
+        }
 
     def _post_iceflow_order(self, params):
         order = {}
@@ -194,10 +255,12 @@ class IceflowClient:
 
         base_url = f'{self.hermes_api_url}/orders/'
         self.session.headers['referer'] = 'https://valkyrie.request'
+        order['provider'] = 'iceflow'
+        order['dataset'] = params['dataset']
         order['request'] = hermes_params
         order['response'] = self.session.post(base_url,
                                               json=hermes_params,
-                                              verify=False)
+                                              verify=False).json()
         # now we are going to return the response from Hermes
         return order
 
@@ -223,15 +286,22 @@ class IceflowClient:
         self.icesat2 = is2(self.credentials)
         return self.session
 
-    def order_status(self, order):
-        order_status_url = order['response'].json()['status_url']
-        order_status = requests.get(order_status_url).json()
-        return order_status
+    def download_order(self, order):
+        if order['provider'] == 'icepyx':
+            order['response'].download_granules('./data')
+        else:
+            status = self.check_order_status(order)
+            if status['status'] == 'COMPLETE':
+                self.download_hdf5(status['url'])
 
-    def download_order(self, url, file_name):
+    def download_hdf5(self, url, file_name=None):
         order_data = requests.get(url, stream=True)
         if file_name == '' or file_name is None:
             file_name = url.split('/')[-1].replace('.hdf5', '')
+        # check if file exist.
+        if os.path.isfile(f'data/{file_name}.h5'):
+            print('File already downloaded, skipping...')
+            return None
         with open(f'data/{file_name}.h5', 'wb') as f:
             for chunk in order_data.iter_content(chunk_size=1024):
                 if chunk:

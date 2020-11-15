@@ -17,7 +17,9 @@ class IceFlowUI:
     def __init__(self):
         self.out = widgets.Output(layout={'border': '1px solid black'})
         self.iceflow = IceflowClient()
+        self.last_orders = None
         self.current_projection = 'north'
+        self.clear = True
         self.controls = []
         self.credentials = None
         self.start_date = datetime(1993, 1, 1)
@@ -54,8 +56,8 @@ class IceFlowUI:
             value='north'
         )
         self.dataset = widgets.SelectMultiple(
-            options=['ILATM1B', 'BLATM1B', 'GLAH06', 'ILVIS2'],
-            value=['ILATM1B'],
+            options=['ATM1B', 'GLAH06', 'ILVIS2'],
+            value=['ATM1B'],
             rows=4,
             description='Datasets',
             disabled=False
@@ -99,15 +101,33 @@ class IceFlowUI:
                                                align_items='stretch', )
         self.print_parameters.style.button_color = 'lightgreen'
         self.print_parameters.layout.width = 'auto'
+
         self.post_order = widgets.Button(description="Place Data Order",
                                          display='flex',
                                          flex_flow='column',
                                          align_items='stretch', )
         self.post_order.style.button_color = 'lightblue'
         self.post_order.layout.width = 'auto'
+
+        self.check_order_status = widgets.Button(description="Order status",
+                                                 display='flex',
+                                                 flex_flow='column',
+                                                 align_items='stretch', )
+        self.check_order_status.style.button_color = 'lightblue'
+        self.check_order_status.layout.width = 'auto'
+
+        self.download_button = widgets.Button(description="Download completed orders",
+                                              display='flex',
+                                              flex_flow='column',
+                                              align_items='stretch', )
+        self.download_button.style.button_color = 'lightblue'
+        self.download_button.layout.width = 'auto'
+
         self.selection_buttons = widgets.HBox([self.granule_count,
                                                self.print_parameters,
-                                               self.post_order])
+                                               self.post_order,
+                                               self.check_order_status,
+                                               self.download_button])
         self.selection_controls = widgets.VBox([self.projection,
                                                 self.dataset,
                                                 self.itrf,
@@ -145,8 +165,10 @@ class IceFlowUI:
         self.projection.observe(self.hemisphere_change)
         self.credentials_button.on_click(self.set_credentials)
         self.granule_count.on_click(self.query_cmr)
-        self.post_order.on_click(self.place_data_orders)
         self.print_parameters.on_click(self.get_parameters)
+        self.post_order.on_click(self.place_data_orders)
+        self.check_order_status.on_click(self.order_statuses)
+        self.download_button.on_click(self.download_orders)
 
     def get_parameters(self, change):
         print(self.build_parameters())
@@ -307,19 +329,53 @@ class IceFlowUI:
     def place_data_orders(self, event=None, params=None):
         if params is None:
             params = self.build_parameters()
-        orders = self.iceflow.post_data_orders(params)
-        return orders
+        self.authenticate()
+        if not self.clear:
+            print("There is an active order being processed," +
+                  " check the status and wait until that's completed to order again")
+            return None
+        self.last_orders = self.iceflow.place_data_orders(params)
+        self.clear = False
+        return self.last_orders
 
     def authenticate(self):
+        if self.credentials is None:
+            print('You need to enter valid EarthData credentials')
+            return None
         user = self.credentials['username']
         password = self.credentials['password']
         email = self.credentials['email']
         session = self.iceflow.authenticate(user, password, email)
         return session
 
-    def order_status(self, orders):
-        for order in orders:
-            status_url = order['response'].json()['status_url']
-            status = requests.get(status_url).json()
-            print(status)
+    def order_status(self, order):
+        status = self.iceflow.check_order_status(order)
+        return status
 
+    def order_statuses(self, envent=None):
+        if self.last_orders is None:
+            print('No active orders')
+            return None
+        self.clear = True
+        for order in self.last_orders:
+            status = self.iceflow.check_order_status(order)['status']
+            if status == 'INPROGRESS':
+                self.clear = False
+            if order['provider'] == 'icepyx':
+                print(f"Order for {order['dataset']} ICESat 2 data is ready to be downloaded")
+            else:
+                print(f"Order {order['response']['order']['order_id']} for {order['dataset']} is {status}")
+
+    def download_order(self, order):
+        order_status = self.iceflow.check_order_status(order)
+        if order_status['status'] == 'COMPLETE':
+            return self.iceflow.download_order(order)
+
+    def download_orders(self, event=None):
+        if self.last_orders is None:
+            print('No active orders')
+            return None
+        for order in self.last_orders:
+            status = self.iceflow.check_order_status(order)
+            if status == 'COMPLETE':
+                self.iceflow.download_order(order)
