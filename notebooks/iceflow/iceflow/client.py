@@ -295,6 +295,7 @@ class IceflowClient:
                 self.download_hdf5(status['url'])
 
     def download_hdf5(self, url, file_name=None):
+        url = url.replace('int.nsidc', 'nsidc')
         order_data = requests.get(url, stream=True)
         if file_name == '' or file_name is None:
             file_name = url.split('/')[-1].replace('.hdf5', '')
