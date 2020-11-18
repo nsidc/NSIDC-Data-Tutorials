@@ -223,7 +223,7 @@ class IceflowClient:
             'provider': 'icepyx',
             'dataset': params['dataset'],
             'request': params,
-            'reponse': self.is2_query
+            'response': self.is2_query
         }
 
     def _post_iceflow_order(self, params):
