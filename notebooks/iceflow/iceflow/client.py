@@ -292,7 +292,7 @@ class IceflowClient:
         else:
             status = self.check_order_status(order)
             if status['status'] == 'COMPLETE':
-                self.download_hdf5(status['url'])
+                return self.download_hdf5(status['url'])
 
     def download_hdf5(self, url, file_name=None):
         url = url.replace('int.nsidc', 'nsidc')

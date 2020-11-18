@@ -378,4 +378,4 @@ class IceFlowUI:
         for order in self.last_orders:
             status = self.iceflow.check_order_status(order)
             if status == 'COMPLETE':
-                self.iceflow.download_order(order)
+                return self.iceflow.download_order(order)
