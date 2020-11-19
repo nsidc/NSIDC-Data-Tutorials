@@ -1,3 +1,4 @@
+
 # NSIDC-Data-Tutorials
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorial/itslive?urlpath=lab/tree/notebooks/itslive)
@@ -22,12 +23,18 @@ Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing
 
 Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
 
+### [IceFlow](./notebooks/iceflow)
 
-### ITS_LIVE
+**Harmonized data for  pre-IceBridge, ICESat and IceBridge data sets.**
+These Jupyter notebooks are interactive documents to teach students and researchers interested in cryospheric sciences how to access and work with airborne altimetry and related data sets from NASA’s [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission, and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/) and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions using the NSIDC **IceFlow API**
 
-Global land ice velocities.
 
-Demonstrates how to search and access data for ITS_LIVE 
+### [ITS_LIVE](./notebooks/itslive)
+
+**Global land ice velocities.**
+The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
+
+The notebooks on this project how to search and access ITS_LIVE velocity pairs and provides a simple example on how to build a data cube
 
 ## Usage with Binder
 
@@ -144,10 +151,11 @@ Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorial
 
 Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location.
 
-From a command line or terminal window, install the required environment with the following command:
+From a command line or terminal window, install the required environment with the following commands:
 
 ```bash
 conda env create -f binder/environment.yml
+./binder/postBuild
 ```
 
 you should now see that the dependencies were installed and our environment is ready to be used.

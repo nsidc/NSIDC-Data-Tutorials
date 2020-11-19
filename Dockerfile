@@ -12,11 +12,13 @@ RUN apt-get update \
 USER $NB_UID
 
 ADD binder/environment.yml $HOME
+ADD binder/postBuild $HOME
 RUN conda env update -f environment.yml -n base && conda clean --force --yes --all  && rm $HOME/environment.yml && \
 npm cache clean --force && \
 rm -rf /opt/conda/lib/python3.7/site-packages/awscli/examples \
 && find /opt/conda/ -follow -type f -name '*.a' -delete \
 && find /opt/conda/ -follow -type f -name '*.pyc' -delete \
 && fix-permissions /home/$NB_USER && fix-permissions $HOME \
-&& jupyter labextension install @jupyter-widgets/jupyterlab-manager jupyter-offlinenotebook \
-bqplot jupyter-matplotlib jupyter-vuetify
+&& ./postBuild
+
+ENTRYPOINT ["jupyter", "lab","--ip=0.0.0.0","--allow-root"]
