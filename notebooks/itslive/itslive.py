@@ -63,11 +63,8 @@ class itslive_ui:
         self.coverage = resp.json()
         return self.coverage
 
-    def get_granule_urls(self):
+    def get_granule_urls(self, params):
         base_url = 'https://staging.itslive-search.apps.nsidc.org/velocities/urls/'
-        params = self.build_params()
-        # params['compression'] = 'false'
-        # params['serialization'] = 'json'
         resp = requests.get(base_url, params=params, verify=False)
         self.urls = resp.json()
         return self.urls
