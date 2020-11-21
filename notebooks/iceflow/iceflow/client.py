@@ -1,4 +1,5 @@
 import os
+from uuid import uuid4
 import requests
 from joblib import Parallel, delayed
 from datetime import datetime
@@ -220,10 +221,12 @@ class IceflowClient:
         """
         self.is2_query = self.icesat2.query(params)
         return {
+            'id': uuid4(),
             'provider': 'icepyx',
             'dataset': params['dataset'],
             'request': params,
-            'response': self.is2_query
+            'response': self.is2_query,
+            'status': 'PENDING'
         }
 
     def _post_iceflow_order(self, params):
@@ -255,12 +258,17 @@ class IceflowClient:
 
         base_url = f'{self.hermes_api_url}/orders/'
         self.session.headers['referer'] = 'https://valkyrie.request'
-        order['provider'] = 'iceflow'
-        order['dataset'] = params['dataset']
-        order['request'] = hermes_params
-        order['response'] = self.session.post(base_url,
-                                              json=hermes_params,
-                                              verify=False).json()
+        response = self.session.post(base_url,
+                                     json=hermes_params,
+                                     verify=False).json()
+        order = {
+            'id': response['order']['order_id'],
+            'provider': 'iceflow',
+            'dataset': params['dataset'],
+            'request': hermes_params,
+            'response': response,
+            'status': 'PENDING'
+        }
         # now we are going to return the response from Hermes
         return order
 
@@ -286,13 +294,27 @@ class IceflowClient:
         self.icesat2 = is2(self.credentials)
         return self.session
 
+    def download_orders(self, orders):
+        for order in orders:
+            dataset = order['dataset']
+            status = self.check_order_status(order)
+            print(f"dataset: {dataset}, order {order['id']} status is {status['status']}")
+            if status['status'] == 'COMPLETE' and order['status'] != 'DOWNLOADED':
+                print(' >> Downlading order...')
+                data_granule = self.download_order(order)
+                print(f' >> Order Downloaded: {data_granule}')
+
     def download_order(self, order):
-        if order['provider'] == 'icepyx':
-            order['response'].download_granules('./data')
+        if order['provider'] == 'icepyx' and order['status'] != 'DOWNLOADED':
+            granules = order['response'].download_granules('./data')
+            order['status'] = 'DOWNLOADED'
+            return granules
         else:
             status = self.check_order_status(order)
-            if status['status'] == 'COMPLETE':
-                return self.download_hdf5(status['url'])
+            if status['status'] == 'COMPLETE' and order['status'] != 'DOWNLOADED':
+                granule = self.download_hdf5(status['url'])
+                order['status'] = 'DOWNLOADED'
+                return granule
 
     def download_hdf5(self, url, file_name=None):
         url = url.replace('int.nsidc', 'nsidc')
@@ -307,4 +329,5 @@ class IceflowClient:
             for chunk in order_data.iter_content(chunk_size=1024):
                 if chunk:
                     f.write(chunk)
+        print(f'Granule downloaded: data/{file_name}.h5')
         return f'data/{file_name}.h5'

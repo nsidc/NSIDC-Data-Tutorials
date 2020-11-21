@@ -367,15 +367,13 @@ class IceFlowUI:
                 print(f"Order {order['response']['order']['order_id']} for {order['dataset']} is {status}")
 
     def download_order(self, order):
-        order_status = self.iceflow.check_order_status(order)
-        if order_status['status'] == 'COMPLETE':
-            return self.iceflow.download_order(order)
+        return self.iceflow.download_order(order)
 
-    def download_orders(self, event=None):
+    def download_orders(self, event=None, orders=None):
         if self.last_orders is None:
             print('No active orders')
             return None
-        for order in self.last_orders:
-            status = self.iceflow.check_order_status(order)
-            if status == 'COMPLETE':
-                return self.iceflow.download_order(order)
+        if orders is not None:
+            self.iceflow.download_orders(orders)
+        else:
+            self.iceflow.download_orders(self.last_orders)
