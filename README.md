@@ -154,7 +154,7 @@ Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tut
 From a command line or terminal window, install the required environment with the following commands:
 
 ```bash
-conda env create -f binder/environment.yml
+conda env create -f binder/environment.yml && conda activate tutorials
 ./binder/postBuild
 ```
 
@@ -163,7 +163,7 @@ you should now see that the dependencies were installed and our environment is r
 Activate the environment with
 
 ```
-conda activate tutorial
+conda activate tutorials
 ```
 
 Launch the notebook locally with the following command:
