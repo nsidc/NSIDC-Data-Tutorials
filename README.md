@@ -1,6 +1,6 @@
 # NSIDC-Data-Tutorials
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorial/master?urlpath=lab/tree/notebooks)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorials/HEAD)
 
 [![CircleCI](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials.svg?style=svg)](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials)
 
