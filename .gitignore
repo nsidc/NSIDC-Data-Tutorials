@@ -16,6 +16,9 @@ notebook/static/*/built/
 notebook/static/built/
 notebook/static/*/js/main.min.js*
 notebook/static/lab/*bundle.js
+notebooks/itslive/data/*.nc
+notebooks/iceflow/data
+.python-version
 node_modules
 *.py[co]
 __pycache__
