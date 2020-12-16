@@ -1,10 +1,24 @@
+import h5py
 import pandas as pd
+import geopandas as gpd
+from shapely.geometry import Point, Polygon
 
 
 class IceFlowProcessing:
 
-    @staticmethod
-    def get_common_df(hdf_f):
+    def __init__(self, file):
+        self.f = file
+        self.h5 = h5py.File(file, 'r')
+        self.common_df = self.get_common_df(self.h5)
+
+    def to_geopandas(self):
+        geom_df = self.common_df
+        geom_df['geometry'] = list(zip(self.common_df['longitude'], self.common_df['latitude']))
+        geom_df['geometry'] = geom_df['geometry'].apply(Point)
+        geopandas_df = gpd.GeoDataFrame(geom_df, crs={'init': 'epsg:4326'})
+        return geopandas_df
+
+    def get_common_df(self, hdf_f):
         """
         Returns a minimal pandas dataframe for the different IceFlow datasets with the following keys
         latitude,longitude,elevation,time.

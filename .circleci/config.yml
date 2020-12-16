@@ -19,7 +19,7 @@ jobs:
 
             if [[ "${CIRCLE_TAG}" ]]; then
               export TAG=${CIRCLE_TAG}
-            elif [[ "${CIRCLE_BRANCH}" = "master" ]]; then
+            elif [[ "${CIRCLE_BRANCH}" = "main" ]]; then
               export TAG="latest"
             else
               export TAG=$CIRCLE_BRANCH
@@ -67,5 +67,7 @@ workflows:
             tags:
               only: /^.*$/
             branches:
-              only: /^master$/
+              only:
+                - main
+                - dev
 
