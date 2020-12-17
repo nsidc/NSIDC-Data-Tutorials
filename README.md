@@ -1,7 +1,7 @@
 
 # NSIDC-Data-Tutorials
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorials/HEAD)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorial/main?urlpath=lab/tree/notebooks)
 
 [![CircleCI](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials.svg?style=svg)](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials)
 
@@ -11,13 +11,13 @@ This combined repository includes tutorials and code resources provided by the N
 
 ## Tutorials
 
-### SnowEx_ASO_MODIS_Snow
+### [SnowEx_ASO_MODIS_Snow](./notebooks/SnowEx_ASO_MODIS_Snow)
 
 Snow Depth and Snow Cover Data Exploration
 
 Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
 
-### ICESat-2_MODIS_Arctic_Sea_Ice
+### [ICESat-2_MODIS_Arctic_Sea_Ice](./notebooks/ICESat-2_MODIS_Arctic_Sea_Ice)
 
 Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data
 
