@@ -28,8 +28,8 @@ dependencies:
 - pystac=0.5.3
 - ffmpeg=4.3.1
 - descartes=1.1.0
+- jupyterlab=2.2.9
 - s3fs
-- jupyterlab
 - intake-xarray
 - intake-stac
 - flake8
