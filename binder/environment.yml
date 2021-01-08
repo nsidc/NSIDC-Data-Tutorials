@@ -29,7 +29,7 @@ dependencies:
 - ffmpeg=4.3.1
 - descartes=1.1.0
 - jupyterlab=2.2.9
-- nodejs=14.10.0
+- nodejs
 - s3fs
 - intake-xarray
 - intake-stac
