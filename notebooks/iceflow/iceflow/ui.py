@@ -217,7 +217,7 @@ class IceFlowUI:
     def handle_draw(self, target, action, geo_json):
         if self.last_poly is not None:
             self.map.remove_layer(self.last_poly)
-        self.last_poly = GeoJSON(data=geo_json)
+        self.last_poly = GeoJSON(name='Selection', data=geo_json)
         state = self.dc.get_state()
         self.dc.clear()
         self.dc.set_state(state)

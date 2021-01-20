@@ -28,19 +28,19 @@ def filter_layer(df, name, start, end):
         name=name,
         data=json.loads(filtered_frame),
         style={
-            'opacity': 0.5, 'dashArray': '9', 'fillOpacity': 0.1, 'weight': 0.5
+            'opacity': 0.5, 'dashArray': '9', 'fillOpacity': 0.1, 'weight': 0.5, 'color': '#e57373'
         }
     )
     return geo_layer
 
 
 def flights_south(start, end):
-    layer = filter_layer(df_south, 'IceBridge South', start, end)
+    layer = filter_layer(df_south, 'Flightlines Southern Hemisphere', start, end)
     return layer
 
 
 def flights_north(start, end):
-    layer = filter_layer(df_north, 'IceBridge North', start, end)
+    layer = filter_layer(df_north, 'Flightlines Northern Hemisphere', start, end)
     return layer
 
 
