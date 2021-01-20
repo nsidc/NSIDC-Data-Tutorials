@@ -22,6 +22,7 @@ class IceFlowUI:
         self.clear = True
         self.controls = []
         self.credentials = None
+        self.last_poly = None
         self.start_date = datetime(1993, 1, 1)
         self.end_date = datetime.now()
         slider_dates = [(date.strftime(' %Y-%m-%d '), date) for date in
@@ -87,7 +88,7 @@ class IceFlowUI:
             continuous_update=False,
             description='Date Range',
             orientation='horizontal',
-            layout={'width': '90%'})
+            layout={'width': '80%'})
 
         self.granule_count = widgets.Button(description="Get Raw Granule Count",
                                             display='flex',
@@ -145,16 +146,7 @@ class IceFlowUI:
             zoom=5,
             marker=place_marker
         )
-        self.dc = DrawControl(
-            circlemarker={},
-            polyline={},
-            rectangle={
-                "shapeOptions": {
-                    "fillColor": "#cc00cc",
-                    "color": "#cc00cc",
-                    "fillOpacity": 0.5
-                }
-            })
+        self.dc = DrawControl()
         self.file_upload = widgets.FileUpload(
             accept='.json,.geojson,.shp',
             multiple=False  # True to accept multiple files upload else False
@@ -222,14 +214,35 @@ class IceFlowUI:
             for component in self.controls:
                 display(component)
 
+    def handle_draw(self, target, action, geo_json):
+        if self.last_poly is not None:
+            self.map.remove_layer(self.last_poly)
+        self.last_poly = GeoJSON(data=geo_json)
+        state = self.dc.get_state()
+        self.dc.clear()
+        self.dc.set_state(state)
+        self.map.add_layer(self.last_poly)
+
+        # self.dc.clear_polygons()
+
     def display_map(self, map_output, hemisphere=None, extra_layers=True):
         """
         Will render the UI using ipyleaflet and jupyter widgets
         """
         self.map_output = map_output
         self.dc = DrawControl(
+            edit=False,
+            remove=False,
             circlemarker={},
             polyline={},
+            polygon={
+                "shapeOptions": {
+                    "fillColor": "#fca45d",
+                    "color": "#cc00cc",
+                    "fillOpacity": 0.5
+                },
+                "allowIntersection": False
+            },
             rectangle={
                 "shapeOptions": {
                     "fillColor": "#cc00cc",
@@ -237,6 +250,7 @@ class IceFlowUI:
                     "fillOpacity": 0.5
                 }
             })
+        self.dc.on_draw(self.handle_draw)
         if hemisphere is None:
             projection = widget_projections[self.projection.value]
         else:
@@ -253,6 +267,8 @@ class IceFlowUI:
         self.map.add_control(self.dc)
         self.map.add_control(self.layers_control)
         self.map.add_control(self.search_control)
+        if self.last_poly is not None:
+            self.map.add_layer(self.last_poly)
 
         for ib_layer in flight_layers[self.projection.value]:
             self.map.add_layer(ib_layer(self.start_date, self.end_date))
@@ -293,10 +309,10 @@ class IceFlowUI:
         returns the current selection parameters based on the widgets and map state
         """
         self.datasets_iceflow = []
-        if self.dc.last_draw['geometry'] is None:
+        if self.last_poly is None:
             print('You need to select an area using the bbox or polygon tools')
             return None
-        coords = [list(coord) for coord in self.bounding_box(self.dc.last_draw['geometry']['coordinates'][0])]
+        coords = [list(coord) for coord in self.bounding_box(self.last_poly.data['geometry']['coordinates'][0])]
         bbox = f'{coords[0][0]},{coords[0][1]},{coords[1][0]},{coords[1][1]}'
         start = self.dates_range.value[0].date().strftime('%Y-%m-%d')
         end = self.dates_range.value[1].date().strftime('%Y-%m-%d')
@@ -329,13 +345,14 @@ class IceFlowUI:
     def place_data_orders(self, event=None, params=None):
         if params is None:
             params = self.build_parameters()
-        self.authenticate()
         if not self.clear:
             print("There is an active order being processed," +
                   " check the status and wait until that's completed to order again")
             return None
         self.last_orders = self.iceflow.place_data_orders(params)
-        self.clear = False
+        if self.last_orders is not None:
+            self.clear = False
+            print('order placed')
         return self.last_orders
 
     def authenticate(self):
@@ -346,6 +363,10 @@ class IceFlowUI:
         password = self.credentials['password']
         email = self.credentials['email']
         session = self.iceflow.authenticate(user, password, email)
+        if session is not None:
+            print('Authenticated with NASA Earthdata')
+        else:
+            print('Authentication failed')
         return session
 
     def order_status(self, order):

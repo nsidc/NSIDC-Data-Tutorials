@@ -26,9 +26,10 @@ dependencies:
 - zarr=2.5.0
 - intake=0.6.0
 - pystac=0.5.3
-- ffmpeg=4.3.1
 - descartes=1.1.0
 - jupyterlab=2.2.9
+- ipympl=0.5.7
+- tqdm
 - nodejs
 - s3fs
 - intake-xarray
