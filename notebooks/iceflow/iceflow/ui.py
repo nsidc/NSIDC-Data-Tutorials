@@ -295,6 +295,8 @@ class IceFlowUI:
         else:
             with self.out:
                 display(self.map)
+                for component in self.controls:
+                    display(component)
             display(self.out)
 
     def bounding_box(self, points):
