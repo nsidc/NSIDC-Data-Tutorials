@@ -306,7 +306,7 @@ class IceflowClient:
             status = self.check_order_status(order)
             print(f"dataset: {dataset}, order {order['id']} status is {status['status']}")
             if status['status'] == 'COMPLETE' and order['status'] != 'DOWNLOADED':
-                print(' >> Downlading order...')
+                print(' >> Downloading order...')
                 data_granule = self.download_order(order)
                 print(f' >> Order Downloaded: {data_granule}')
             elif status['status'] == 'COMPLETE' and order['status'] == 'DOWNLOADED':
