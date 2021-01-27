@@ -5,15 +5,14 @@ from joblib import Parallel, delayed
 from datetime import datetime
 from cmr import GranuleQuery
 from requests.auth import HTTPBasicAuth
+from tqdm import tqdm
 from .is2 import is2
 
 
 class IceflowClient:
     def __init__(self):
         """
-        Interface to talk to the IceFlow API. The UI renders the northern hemisphere by default
-        The UI can be rendered with the render() method.
-        You can use the state of the widgets to place order(s) to Valkyrie or use the method directly.
+        Client class for IceFlow.
         """
         self.properties = {
             'start_date': datetime(1993, 1, 1),
@@ -206,6 +205,7 @@ class IceflowClient:
             status = response['status'].upper()
             if status == 'COMPLETE':
                 granule_url = response['file_urls']['data'][0]
+                granule_url = granule_url.replace('int.nsidc', 'nsidc')
             else:
                 granule_url = None
             response = {
@@ -251,10 +251,10 @@ class IceflowClient:
             "uid": f"{username}"
         }
         if 'itrf' in params:
-            hermes_params['selection_criteria']['filters']['iceflow_itrf'] = params['itrf']
+            hermes_params['selection_criteria']['filters']['valkyrie_itrf'] = params['itrf']
 
         if 'epoch' in params:
-            hermes_params['selection_criteria']['filters']['iceflow_epoch'] = params['epoch']
+            hermes_params['selection_criteria']['filters']['valkyrie_epoch'] = params['epoch']
 
         base_url = f'{self.hermes_api_url}/orders/'
         self.session.headers['referer'] = 'https://valkyrie.request'
@@ -294,15 +294,23 @@ class IceflowClient:
         self.icesat2 = is2(self.credentials)
         return self.session
 
+    def h5_filename(self, order):
+        dataset = order['dataset']
+        order_id = order['id']
+        today = datetime.today().strftime('%Y%m%d')
+        return f'{dataset}-{today}-{order_id}'
+
     def download_orders(self, orders):
         for order in orders:
             dataset = order['dataset']
             status = self.check_order_status(order)
             print(f"dataset: {dataset}, order {order['id']} status is {status['status']}")
             if status['status'] == 'COMPLETE' and order['status'] != 'DOWNLOADED':
-                print(' >> Downlading order...')
+                print(' >> Downloading order...')
                 data_granule = self.download_order(order)
                 print(f' >> Order Downloaded: {data_granule}')
+            elif status['status'] == 'COMPLETE' and order['status'] == 'DOWNLOADED':
+                print(f"order {order['id']} for {dataset} has been downloaded already")
 
     def download_order(self, order):
         if order['provider'] == 'icepyx' and order['status'] != 'DOWNLOADED':
@@ -311,23 +319,29 @@ class IceflowClient:
             return granules
         else:
             status = self.check_order_status(order)
+            filename = self.h5_filename(order)
             if status['status'] == 'COMPLETE' and order['status'] != 'DOWNLOADED':
-                granule = self.download_hdf5(status['url'])
+                granule = self.download_hdf5(status['url'], filename)
                 order['status'] = 'DOWNLOADED'
                 return granule
 
     def download_hdf5(self, url, file_name=None):
         url = url.replace('int.nsidc', 'nsidc')
         order_data = requests.get(url, stream=True)
+        total_size_in_bytes = int(order_data.headers.get('content-length', 0))
         if file_name == '' or file_name is None:
             file_name = url.split('/')[-1].replace('.hdf5', '')
         # check if file exist.
         if os.path.isfile(f'data/{file_name}.h5'):
             print('File already downloaded, skipping...')
             return None
+        progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
+        # download in 1MB chunks
         with open(f'data/{file_name}.h5', 'wb') as f:
-            for chunk in order_data.iter_content(chunk_size=1024):
+            for chunk in order_data.iter_content(chunk_size=1048576):
+                progress_bar.update(len(chunk))
                 if chunk:
                     f.write(chunk)
+        progress_bar.close()
         print(f'Granule downloaded: data/{file_name}.h5')
         return f'data/{file_name}.h5'
