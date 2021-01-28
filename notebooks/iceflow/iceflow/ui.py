@@ -34,7 +34,7 @@ class IceFlowUI:
         self.username = widgets.Text(
             value='',
             description='User:',
-            placeholder='Your NASA EarthData username ',
+            placeholder='Your EarthData Login username ',
             disabled=False
         )
         self.password = widgets.Password(
@@ -46,7 +46,7 @@ class IceFlowUI:
         self.email = widgets.Text(
             value='',
             description='Email:',
-            placeholder='Your EarthData e-mail',
+            placeholder='Email address',
             disabled=False
         )
         self.credentials_button = widgets.Button(description='Set Credentials', )
