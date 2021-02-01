@@ -88,7 +88,8 @@ class IceFlowUI:
             continuous_update=False,
             description='Date Range',
             orientation='horizontal',
-            layout={'width': '80%'})
+            layout={'width': '90%',
+                    'padding': '5px'})
 
         self.granule_count = widgets.Button(description="Get Raw Granule Count",
                                             display='flex',

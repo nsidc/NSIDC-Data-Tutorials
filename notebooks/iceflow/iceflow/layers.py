@@ -14,9 +14,11 @@ itslive_layer = TileLayer(opacity=1.0,
                           max_zoom=4)
 
 df_north = geopandas.read_file('./iceflow/files/ib_north.json')
+df_north['timestamp'] = df_north['timestamp'].str[:-6]
 df_north['date'] = pd.to_datetime(df_north['timestamp'])
 
 df_south = geopandas.read_file('./iceflow/files/ib_south.json')
+df_south['timestamp'] = df_south['timestamp'].str[:-6]
 df_south['date'] = pd.to_datetime(df_south['timestamp'])
 
 
@@ -28,7 +30,7 @@ def filter_layer(df, name, start, end):
         name=name,
         data=json.loads(filtered_frame),
         style={
-            'opacity': 0.5, 'dashArray': '9', 'fillOpacity': 0.1, 'weight': 0.5, 'color': '#e57373'
+            'opacity': 0.7, 'dashArray': '8', 'fillOpacity': 0.8, 'weight': 1, 'color': '#8bc34a'
         }
     )
     return geo_layer
