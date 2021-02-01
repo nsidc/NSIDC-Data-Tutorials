@@ -64,7 +64,7 @@ class IceFlowProcessing:
         """
         Returns a simple dictionary with key values for different datasets
         """
-        if dataset == 'GLASS':
+        if dataset == 'GLAS':
             data_dict = {
                 'latitude': 'd_lat',
                 'longitude': 'd_lon',
