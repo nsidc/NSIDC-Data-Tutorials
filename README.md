@@ -162,7 +162,8 @@ You should now see that the dependencies were installed and our environment is r
 
 If you are a returning user, please make sure your repository is up to date and run the following to update your environment:
 
-```conda env update -f binder/environment.yml```
+```conda env update -f binder/environment.yml
+```
 
 Activate the environment with
 
