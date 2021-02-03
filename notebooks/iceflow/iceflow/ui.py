@@ -360,9 +360,7 @@ class IceFlowUI:
         if params is None:
             params = self.build_parameters()
         if not self.clear:
-            print("There is an active order being processed," +
-                  " check the status and wait until that's completed to order again")
-            return None
+            print('Warning: There is an active order being processed')
         self.last_orders = self.iceflow.place_data_orders(params)
         if self.last_orders is not None:
             self.clear = False
@@ -412,3 +410,4 @@ class IceFlowUI:
             self.iceflow.download_orders(orders)
         else:
             self.iceflow.download_orders(self.last_orders)
+        self.clear = True
