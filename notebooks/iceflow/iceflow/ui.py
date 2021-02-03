@@ -3,7 +3,7 @@ import ipywidgets as widgets
 from datetime import datetime
 import requests
 from sidecar import Sidecar
-from IPython.display import display
+from IPython.display import display, HTML
 from ipyleaflet import (Map, SearchControl, AwesomeIcon, GeoJSON,
                         Marker, DrawControl, LayersControl)
 from .layers import custom_layers, flight_layers, widget_projections
@@ -82,6 +82,7 @@ class IceFlowUI:
             description='ICESat 2:',
             disabled=False,
         )
+        
         self.dates_range = widgets.SelectionRangeSlider(
             options=slider_dates,
             index=slider_index,
@@ -89,7 +90,8 @@ class IceFlowUI:
             description='Date Range',
             orientation='horizontal',
             layout={'width': '90%',
-                    'padding': '5px'})
+                    'display': 'flex',
+                    'description_width': 'initial'})
 
         self.granule_count = widgets.Button(description="Get Raw Granule Count",
                                             display='flex',
@@ -230,6 +232,15 @@ class IceFlowUI:
         """
         Will render the UI using ipyleaflet and jupyter widgets
         """
+        display(
+            HTML("""
+            <style>
+            .widget-readout {
+                overflow: visible !important;
+            }
+            </style>
+            """)
+        )
         self.map_output = map_output
         self.dc = DrawControl(
             edit=False,

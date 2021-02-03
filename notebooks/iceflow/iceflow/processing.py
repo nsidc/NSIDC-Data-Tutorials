@@ -30,6 +30,7 @@ class IceFlowProcessing:
                                         geometry=gpd.points_from_xy(df['longitude'],
                                                                     df['latitude'],
                                                                     crs='epsg:4326'))
+        geopandas_df = geopandas_df.set_index('time')
         return geopandas_df
 
     @staticmethod
