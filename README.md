@@ -13,13 +13,13 @@ This combined repository includes tutorials and code resources provided by the N
 
 ### [SnowEx_ASO_MODIS_Snow](./notebooks/SnowEx_ASO_MODIS_Snow)
 
-Snow Depth and Snow Cover Data Exploration
+**Snow Depth and Snow Cover Data Exploration**
 
 Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
 
 ### [ICESat-2_MODIS_Arctic_Sea_Ice](./notebooks/ICESat-2_MODIS_Arctic_Sea_Ice)
 
-Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data
+**Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data**
 
 Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
 
@@ -34,7 +34,7 @@ These Jupyter notebooks are interactive documents to teach students and research
 **Global land ice velocities.**
 The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
 
-The notebooks on this project how to search and access ITS_LIVE velocity pairs and provides a simple example on how to build a data cube
+The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
 ## Usage with Binder
 
@@ -147,7 +147,7 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 
 Install miniconda3 (Python 3.7) for your platform from [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
 
-Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Clone or Download' button located at the top right of the repository page.
+Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'.
 
 Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location.
 
@@ -158,7 +158,13 @@ conda env create -f binder/environment.yml && conda activate tutorials
 ./binder/postBuild
 ```
 
-you should now see that the dependencies were installed and our environment is ready to be used.
+You should now see that the dependencies were installed and our environment is ready to be used.
+
+If you are a returning user, please make sure your repository is up to date and run the following to update your environment:
+
+```
+conda env update -f binder/environment.yml
+```
 
 Activate the environment with
 
@@ -174,7 +180,7 @@ jupyter lab
 
 This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.
 
-> **NOTE:** Some times Conda environments change(break) even with pinned down dependencies, if you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
+> **NOTE:** Sometimes Conda environments change (break) even with pinned down dependencies. If you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
 
 
 ## Credit
