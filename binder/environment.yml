@@ -37,7 +37,7 @@ dependencies:
 - flake8
 - jupyter-offlinenotebook
 - sidecar
+- icepyx
 - pip
 - pip:
-  - icepyx
   - python-cmr
