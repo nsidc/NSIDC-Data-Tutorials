@@ -3,6 +3,7 @@ import pandas as pd
 import geopandas as gpd
 from pathlib import Path
 import numpy as np
+from datetime import datetime, timedelta
 
 
 class IceFlowProcessing:
@@ -90,9 +91,11 @@ class IceFlowProcessing:
                 df_data = pd.concat(dfs, sort=True)
                 # Add filename column for book-keeping and reset index
                 df_data = df_data.reset_index(drop=True)
+                EPOCH = datetime(2018, 1, 1, 0, 0, 0)
+                df_data['delta_time'] = df_data['delta_time'].map(lambda x: EPOCH + timedelta(seconds=x))
                 df_data.rename(columns={"delta_time": "time", "h_li": "elevation"}, inplace = True)
-                df_data['time'] = pd.to_datetime(df_data['time'])
-
+                df_data = df_data[['time','latitude','longitude','elevation']]
+                
             df = pd.DataFrame(data=df_data)
 
         geopandas_df = gpd.GeoDataFrame(df,
