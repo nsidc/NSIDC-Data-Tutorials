@@ -2,8 +2,8 @@
 
 ## Summary 
 
-This tutorial introduces the various available airborne and satellite altimetry data spanning missions from 1993 to the present and a python library to access these data sets. 
-The here presented IceFlow python library simplifies accessing and combining data from this long-term record, specifically it deals with the problems of different file formats and coordinate reference systems that both changed multiple times over the years. 
+These tutorial notebooks introduce the various available airborne and satellite altimetry data spanning missions from 1993 to the present and a python library to access these data sets. 
+The here presented IceFlow python library simplifies accessing and combining data from this long-term record. Specifically it deals with the problems of different file formats and coordinate reference systems that both changed multiple times over the years. 
 
 ## Key Learning Objectives
 
