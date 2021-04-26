@@ -1,7 +1,7 @@
 import h5py
 import pandas as pd
 import geopandas as gpd
-from pathlib import Path
+from pathlib import PurePosixPath
 import numpy as np
 from datetime import datetime, timedelta
 
@@ -59,7 +59,7 @@ class IceFlowProcessing:
                         '/gt3r/land_ice_segments/longitude'],
                 }
                 # Convert variable paths to 'Path' objects for easy manipulation
-                variables = [Path(v) for v in VARIABLES[dataproduct]]
+                variables = [PurePosixPath(v) for v in VARIABLES[dataproduct]]
                 # Get set of beams to extract individially as dataframes combining in the end
                 beams = {list(v.parents)[-2].name for v in variables}
                 dfs = []
