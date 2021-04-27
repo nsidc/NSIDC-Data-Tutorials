@@ -39,5 +39,6 @@ dependencies:
 - sidecar
 - icepyx
 - pip
+- geoviews
 - pip:
   - python-cmr
