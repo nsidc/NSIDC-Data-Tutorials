@@ -7,7 +7,7 @@ dependencies:
 - xarray=0.19
 - awscli~=1.20
 - matplotlib-base~=3.4
-- ipyleaflet~=0.14
+- ipyleaflet=0.14
 - shapely=1.7
 - geopandas=0.10
 - h5py=2.10
