@@ -62,3 +62,6 @@ See this [article](https://carpentries.github.io/instructor-training/17-live/) f
 Repying on helper functions stored in a separate module will hide what we are trying to teach and could also decrease the ability of users to recreate code.
 
 The only exception here is if we are teaching writing code.
+
+## Resources
+[Carpentries instructor training](https://carpentries.github.io/instructor-training/)
