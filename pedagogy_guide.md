@@ -8,7 +8,7 @@ content from [divio.com](divio.com) and EarthCube.
 
 ### Have a well defined purpose for your notebook
 What is the purpose of the tutorial?  Each notebook should have a clear description of what it covers.  Focusing on one task
-is better than trying to cover multiple tasks.  See also [Avoid cognitive overload](#avoid_cognitive_load)
+is better than trying to cover multiple tasks.  See also [Avoid Cognitive Overload](#avoid-cognitive-overload)
 
 Describe the purpose or aim of the notebook as an introduction.  If the aim is to produce a plot, include a PNG of the plot to show
 the end result.
@@ -29,7 +29,8 @@ Is the notebook a Tutorial to teach a concept or tool or a How To Guide to show 
 to allow users to understand concepts, whereas How-To Guides are more problem orientated and designed to solve problems that come up during working.  
 
 
-###<a name="avoid_cognitive_overload"></a>Avoid cognitive overload by focusing on one main task to complete
+### Avoid Cognitive Overload 
+Avoid cognitive overload by focusing notebook content on one main task.  Break complex notebooks into several notebooks.
 Not the only or best guide but useful. https://blog.innerdrive.co.uk/4-ways-to-overcome-cognitive-overload?hs_amp=true
 Notebooks should be for a single - short - task.  This avoids cognitive overload.
 
