@@ -3,8 +3,8 @@ Pedagogy is commonly understood as an approach to teaching.  The "Best Practices
 to developing Jupyter Notebooks for tutorials.  These tutorials may be self-guided tutorials intended for users to work through
 on their own; or tutorials taught by an instructor in a workshop or hackathon environment.
 
-The "Best Practices" draw on ideas from the Carpentries and also include some ideas on
-content from divio.com and EarthCube.
+The "Best Practices" draw on ideas from the [Carpentries](https://software-carpentry.org/) and also include some ideas on
+content from [divio.com](divio.com) and EarthCube.
 
 ### Have a well defined purpose for your notebook
 What is the purpose of the tutorial?  Each notebook should have a clear description of what it covers.  Focusing on one task
@@ -30,7 +30,7 @@ to allow users to understand concepts, whereas How-To Guides are more problem or
 
 
 ###<a name="avoid_cognitive_overload"></a>Avoid cognitive overload by focusing on one main task to complete
-__Not the only or best guide but useful__ https://blog.innerdrive.co.uk/4-ways-to-overcome-cognitive-overload?hs_amp=true
+Not the only or best guide but useful. https://blog.innerdrive.co.uk/4-ways-to-overcome-cognitive-overload?hs_amp=true
 Notebooks should be for a single - short - task.  This avoids cognitive overload.
 
 ### Follow best practices for coding but avoid overly complicated code.
