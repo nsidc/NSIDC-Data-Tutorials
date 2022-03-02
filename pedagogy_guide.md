@@ -67,6 +67,6 @@ Repying on helper functions stored in a separate module will hide what we are tr
 The only exception here is if we are teaching writing code.
 
 ## Resources
-[Carpentries instructor training](https://carpentries.github.io/instructor-training/)
-[divio.com documentation guide](divio.com)
-[EarthCube peer-reviewed notebook examples](https://www.earthcube.org/notebooks)
+[Carpentries instructor training](https://carpentries.github.io/instructor-training/)  
+[divio.com documentation guide](divio.com)  
+[EarthCube peer-reviewed notebook examples](https://www.earthcube.org/notebooks)  
