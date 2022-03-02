@@ -4,7 +4,7 @@ to developing Jupyter Notebooks for tutorials.  These tutorials may be self-guid
 on their own; or tutorials taught by an instructor in a workshop or hackathon environment.
 
 The "Best Practices" draw on ideas from the [Carpentries](https://software-carpentry.org/) and also include some ideas on
-content from [divio.com](divio.com) and EarthCube.
+content from [divio.com](divio.com) and [EarthCube notebooks](https://www.earthcube.org/notebooks).
 
 ### Have a well defined purpose for your notebook
 What is the purpose of the tutorial?  Each notebook should have a clear description of what it covers.  Focusing on one task
@@ -68,3 +68,5 @@ The only exception here is if we are teaching writing code.
 
 ## Resources
 [Carpentries instructor training](https://carpentries.github.io/instructor-training/)
+[divio.com documentation guide](divio.com)
+[EarthCube peer-reviewed notebook examples](https://www.earthcube.org/notebooks)
