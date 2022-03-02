@@ -25,9 +25,8 @@ Thirty minutes is a good duration to aim for.
 
 ### Consider the aim/objective of the note book
 Is the notebook a Tutorial to teach a concept or tool or a How To Guide to show how to perform a task?  Is the notebook intended to be self guided or taught by an instructor in a workshop?
-[divio.com](https://documentation.divio.com/structure/) provide a good overview of the differences between Tutorials and How-To Guides; both describe practical steps but Tutorials designed
-to allow users to understand concepts, whereas How-To Guides are more problem orientated and designed to solve problems that come up during working.  
 
+[divio.com](https://documentation.divio.com/structure/) provide a good overview of the differences between Tutorials and How-To Guides; both describe practical steps but Tutorials are designed to help users to understand concepts, whereas How-To Guides are more problem orientated and designed to solve problems that come up during working.  
 
 ### Avoid Cognitive Overload 
 Avoid cognitive overload by focusing notebook content on one main task.  Break complex notebooks into several notebooks.
@@ -35,17 +34,18 @@ Not the only or best guide but useful. https://blog.innerdrive.co.uk/4-ways-to-o
 Notebooks should be for a single - short - task.  This avoids cognitive overload.
 
 ### Follow best practices for coding but avoid overly complicated code.
-Code needs to be understandable rather than efficient.  Avoiding trying to write code as a 'developer'.
-
 Aim to follow best practices for coding but also avoid overly complicated code that obscures the teaching aim.  For example, there is no need to
-include code to manage errors and exceptions.  Tutorial code does not need to be efficient but does need to be understandable.
+include code to manage errors and exceptions.
+
+Code needs to be understandable rather than efficient.  Avoiding trying to write code as a 'developer'.
 
 ### Avoid long code blocks
 If a code block is so long that users cut-and-paste the code or press shift-enter then they are not learning, just copying.  The Carpentries advocate live-coding,
-where an instructor types code in real-time, correcting mistakes as the go and describing what they are doing.  This approach helps with pacing and length of content.
-While most useful in workshops, thinking of writing code live, even for self-guided tutorials, will help keep coding manageable and cognitive load manageable.
+where an instructor types code in real-time, correcting mistakes as they go and describing what they are doing.  This approach helps with pacing and length of content.
 
-Short code blocks also help break tasks into understandable steps.  Think in terms of what steps do we need to understand to complete a task <include and example here>.
+While most useful in workshops, thinking of writing code live, even for self-guided tutorials, will help keep coding manageable and the cognitive load manageable.
+
+Short code blocks also help break tasks into understandable steps.  Think in terms of what steps do we need to understand to complete a task.
 
 ### Use standard or well-established packages (unless introducing a new package)
 Aim to use packages either from the standard library or well-established packages.  Obscure packages or packages that are no longer
@@ -57,7 +57,7 @@ Live coding is where an instructor types code in real-time, talking through what
 See this [article](https://carpentries.github.io/instructor-training/17-live/) from the Carpentries for more on live coding. 
   
 ### Use small data sets to reduce download time and make it quicker for a user to work through the tutorial
-Users want to focus on learning how to perform tasks and not spend a lot of time downloading data.  Select sample datasets and files that take a __maximum of 3 minutes__ to download. This may require creating files and datasets that are subsets of NSIDC hosted data. 
+Users want to focus on learning how to perform tasks and not spend a lot of time downloading data.  Select sample datasets and files that take a __maximum of 3 minutes__ to download. In some caes, you may have to create files and datasets that are subsets of NSIDC hosted data. 
   
 Download times may vary depending on the environment and platform where tutorials are being executed.  Tutorials designed for use in a cloud instance may be able to use larger datasets. 
 
