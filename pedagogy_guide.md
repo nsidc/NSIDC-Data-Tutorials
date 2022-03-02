@@ -57,6 +57,9 @@ Live coding is where an instructor types code in real-time, talking through what
 See this [article](https://carpentries.github.io/instructor-training/17-live/) from the Carpentries for more on live coding. 
   
 ### Use small data sets to reduce download time and make it quicker for a user to work through the tutorial
+Users want to focus on learning how to perform tasks and not spend a lot of time downloading data.  Select sample datasets and files that take a __maximum of 3 minutes__ to download. This may require creating files and datasets that are subsets of NSIDC hosted data. 
+  
+Download times may vary depending on the environment and platform where tutorials are being executed.  Tutorials designed for use in a cloud instance may be able to use larger datasets. 
 
 ### Avoid writing helper functions in a separate module
 Repying on helper functions stored in a separate module will hide what we are trying to teach and could also decrease the ability of users to recreate code.
