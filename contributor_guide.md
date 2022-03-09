@@ -1,13 +1,18 @@
-# How to Contribute
+# Contribution Guide
 
-## Overview
+## What to contribute
 
 We welcome contributions in many forms;  
+- Share a use case, example or idea for a new tutorial
+- Submit a new tutorial
+- Update an existing tutorial
+- Submit bug reports and feature request
 - Fix typos
-- New tutorials
 - Add documentation
-- Suggest new approaches
-- Update methods
+
+
+
+## How to contribute
 
 If you are not part of NSIDC please follow a __Forking Workflow__.  If you are part of NSIDC, you can follow a __Forking Workflow__ or follow a standard __Git Workflow__.
 
@@ -30,18 +35,18 @@ A recipe for contributing is given below.
 _Do we need a code of conduct?_
 
 
-## Fork the `nsidc/NSIDC-Data-Tutorials` repository
+### Fork the `nsidc/NSIDC-Data-Tutorials` repository
 
 _add a screenshot showing the fork button_
 
-## Clone your private repository
+### Clone your private repository
 
 _add screenshot of clone button_
 
-## Create a new branch
+### Create a new branch
 
-## Do some work
+### Do some work
 
-## Push work to private repository
+### Push work to private repository
 
-## Create a pull request
+### Create a pull request
