@@ -8,7 +8,7 @@ content from [divio.com](divio.com) and [EarthCube notebooks](https://www.earthc
 
 ### Have a well defined purpose for your notebook
 What is the purpose of the tutorial?  Each notebook should have a clear description of what it covers.  Focusing on one task
-is better than trying to cover multiple tasks.  See also [Avoid Cognitive Overload](#avoid-cognitive-overload)
+is better than trying to cover multiple tasks.  See also [Avoid Cognitive Overload](#avoid-cognitive-overload).
 
 Describe the purpose or aim of the notebook as an introduction.  If the aim is to produce a plot, include a PNG of the plot to show
 the end result.
