@@ -17,7 +17,7 @@ the end result.
 List the learning objectives after the notebook description.
 
 ### Consider your audience
-Are they beginners with no experience of writing code, or are they experienced coders who just want to find the best way to read some data 
+Are they beginners with no experience of writing code, or are they experienced coders who just want to find the best way to read some data. 
 
 ### Consider the duration of the tutorial
 Try to keep the time required to complete a notebook short.  This speaks to focusing on one task.  Users may give-up or loose interest if notebooks require too much time.
