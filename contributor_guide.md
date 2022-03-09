@@ -1,6 +1,17 @@
 # How to Contribute
 
 ## Overview
+
+We welcome contributions in many forms;  
+- Fix typos
+- New tutorials
+- Add documentation
+- Suggest new approaches
+- Update methods
+
+If you are not part of NSIDC please follow a __Forking Workflow__.  If you are part of NSIDC, you can follow a __Forking Workflow__
+or follow a standard __Git Workflow__.
+
 We follow the __git workflow__ described [here](https://www.asmeurer.com/git-workflow/).
 This is a __Forking Workflow__.  This is fundamentally different from other workflows in
 that `nsidc/NSIDC-Data-Tutorials` repository is _Forked_ creating a "copy" under a user's
