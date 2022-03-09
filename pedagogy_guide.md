@@ -52,7 +52,7 @@ Aim to use packages either from the standard library or well-established package
 maintained may introduce too many dependencies or end up breaking code.  The only exception here is if we are introducing a new package.
 
 ### Use Live Coding for In-Person Tutorials
-Live coding is where an instructor types code in real-time, talking through what they are doing, instead of cuting-and-pasting or just running code blocks.  Participants follow along also typing code.  This approach has advantages for pacing.  An instructor can only go as quickly as they can type.  Students get practice typing code.  Students also get to see mistakes, error messages, and solutions.
+Live coding is where an instructor types code in real-time, talking through what they are doing, instead of cutting-and-pasting or just running code blocks.  Participants follow along also typing code.  This approach has advantages for pacing.  An instructor can only go as quickly as they can type.  Students get practice typing code.  Students also get to see mistakes, error messages, and solutions.
   
 See this [article](https://carpentries.github.io/instructor-training/17-live/) from the Carpentries for more on live coding. 
   
