@@ -1,6 +1,6 @@
 # Contribution Guide
 
-## What to contribute
+## Ways to contribute
 
 We welcome contributions in many forms;  
 - Share a use case, example or idea for a new tutorial
