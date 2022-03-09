@@ -20,9 +20,13 @@ A recipe for contributing is given below.
 _Do we need a code of conduct?_
 
 
-## Fork the `nsidc/NSIDC-Data-Tutorials`
+## Fork the `nsidc/NSIDC-Data-Tutorials` repository
+
+_add a screenshot showing the fork button_
 
 ## Clone your private repository
+
+_add screenshot of clone button_
 
 ## Create a new branch
 
