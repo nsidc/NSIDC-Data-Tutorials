@@ -10,7 +10,8 @@ We welcome contributions in many forms;
 - Fix typos
 - Add documentation
 
-
+If you would like to contribute, check the _Issues_ by clicking on the _Issues_ tab.
+Someone might already have a similar idea.  If not, then create a new issue and submit your sugestion.
 
 ## How to contribute
 
