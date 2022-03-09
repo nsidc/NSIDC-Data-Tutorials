@@ -62,7 +62,7 @@ Users want to focus on learning how to perform tasks and not spend a lot of time
 Download times may vary depending on the environment and platform where tutorials are being executed.  Tutorials designed for use in a cloud instance may be able to use larger datasets. 
 
 ### Avoid writing helper functions in a separate module
-Repying on helper functions stored in a separate module will hide what we are trying to teach and could also decrease the ability of users to recreate code.
+Relying on helper functions stored in a separate module will hide what we are trying to teach and could also decrease the ability of users to recreate code.
 
 The only exception here is if we are teaching writing code.
 
