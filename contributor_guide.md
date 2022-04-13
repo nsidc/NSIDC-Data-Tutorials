@@ -33,7 +33,7 @@ A more in depth discussion of the __Forking Workflow__ can be found
 
 A recipe for contributing is given below.
 
-_Do we need a code of conduct?_
+Please read out [code of conduct](CODE_OF_CONDUCT.md)
 
 
 ### Fork the `nsidc/NSIDC-Data-Tutorials` repository
