@@ -38,17 +38,25 @@ Please read out [code of conduct](CODE_OF_CONDUCT.md)
 
 ### Fork the `nsidc/NSIDC-Data-Tutorials` repository
 
-_add a screenshot showing the fork button_
+Forking creates a copy of the official `NSIDC-Data-Tutorials` repository as a personal repository with the same name.  You can add new content and make changes to this _forked_ repository.  These changes will not be made in the official repository until you create a _pull request_.
+
+![Forking Button](images/forking_nsidc_data_tutorials.png)
 
 ### Clone your private repository
 
-_add screenshot of clone button_
+The forked repository `<your_github_username>/NSIDC-Data-Tutorials` needs to be cloned to your local machine.  To do this, click on the green _Code_ button in the forked repository and copy the repository url. 
+
+![Cloning repo](images/cloning_nsidc_data_tutorials.png)
+
+This url will be `git@github.com:<your_github_username>/NSIDC-Data-Tutorials.git`
+
+Then on your local machine type.  You can just paste in the repository url.
 
 ```
 $ git clone git@github.com:<your_github_username>/NSIDC-Data-Tutorials.git
 ```
 
-This creates a directory `NSIDC-Data-Tutorials`.  
+This creates a directory `NSIDC-Data-Tutorials`.  `cd` into the NSIDC-Data-Tutorials directory.  You are now ready to create new content or make changes.
 
 
 ### Get any changes made to the remote repo
@@ -56,6 +64,8 @@ This creates a directory `NSIDC-Data-Tutorials`.
 Each time you start a new feature or notebook, it is __best-practice__ to pull any changes from the official remore repository.  This is done in two steps.
 
 - _Fetch_ changes to the official repo by clicking on the _Fetch upstream_ button.  If there are changes to fetch, the green _Compare and merge_ button will be highlighted.  Click this button.  Your private remote repo is now up-to-date with the official repo.
+
+![Fetch upstream button](images/fetch_upstream_nsidc_data_tutorials.png(
 
 - Now you have to __pull__ those changes to your local repo.
 
