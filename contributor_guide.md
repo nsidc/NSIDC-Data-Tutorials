@@ -65,7 +65,7 @@ Each time you start a new feature or notebook, it is __best-practice__ to pull a
 
 - _Fetch_ changes to the official repo by clicking on the _Fetch upstream_ button.  If there are changes to fetch, the green _Compare and merge_ button will be highlighted.  Click this button.  Your private remote repo is now up-to-date with the official repo.
 
-![Fetch upstream button](images/fetch_upstream_nsidc_data_tutorials.png(
+![Fetch upstream button](images/fetch_upstream_nsidc_data_tutorials.png)
 
 - Now you have to __pull__ those changes to your local repo.
 
