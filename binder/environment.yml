@@ -1,6 +1,7 @@
-name: tutorials
+name: nsidc-tutorials
 channels:
 - conda-forge
+- nodefaults
 dependencies:
 - python=3.9
 - pangeo-notebook
