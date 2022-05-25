@@ -74,12 +74,12 @@ $ git pull           # Fetch and merge changes
 
 ### Create a new branch
 
-Creating a new local branch ensures that development work is kept separate from the `main` branch.  Once the new feature or tutorial is complete and free from error, it can be merged with the main environment.
+Creating a new local branch ensures that development work is kept separate from the `main` branch.  Once the new feature or tutorial is complete and free from error, it can be merged with the main branch.
 
 A step-by-step sequence of commands to create a new branch is below.
 
 ```
-$ git branch                    # this list branches
+$ git branch                    # this lists branches
 $ git branch new_feature        # create a new branch
 $ git checkout new_feature      # switch to new_branch
 $ git branch                    # You should see the new branch highlghted in green or with an asterisk to show that is the
@@ -92,7 +92,7 @@ This can also be done in a single command.
 $ git checkout -b new_branch
 ```
 
-You are now ready to add a new notebook or do dome other work.
+You are now ready to add a new notebook or do some other work.
 
 ### Do some work
 
@@ -124,7 +124,7 @@ Creating a pull request notifies other developers that you have new work to merg
 
 Usually you will see a _Make Pull Request_ button in the branch of your forked repo.
 
-Click this button.  You will be given options to of branches to compare your new_branch with.  Usually this will be the `main` branch.  Add a description of what you have done to help other developers review your work.  You can also assign reviewers.
+Click this button.  You will be given options of branches to compare your new_branch with.  Usually this will be the `main` branch.  Add a description of what you have done to help other developers review your work.  You can also assign reviewers.
 
 Reviewers then review your work.  They may suggest some changes or fixes.
 
