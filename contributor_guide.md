@@ -6,7 +6,7 @@ We welcome contributions in many forms;
 - Share a use case, example or idea for a new tutorial
 - Submit a new tutorial
 - Update an existing tutorial
-- Submit bug reports and feature request
+- Submit bug reports and feature requests
 - Fix typos
 - Add documentation
 
@@ -20,7 +20,7 @@ We follow a __Forking Workflow__.  This approach allows contributions from outsi
 A detailed recipe for contributing using the __Forking Workflow__ is given below.  However, to orient you and provide a roadmap, the workflow is described here briefly.   
 
 In a __Forking Workflow__ the `nsidc/NSIDC-Data-Tutorials` repository is _Forked_ creating a "copy" under a user's
-private repository; e.g. `<your_github_username>/NSIDC-Data-Tutorials`, where `<your_github_username>` is your github name.  This "copy" is just a `git clone` of
+private repository; e.g. `<your_github_username>/NSIDC-Data-Tutorials`, where `<your_github_username>` is the contributors github name.  This "copy" is just a `git clone` of
 `nsidc/NSIDC-Data-Tutorials`.  Contributors then follow a __Branching Workflow__; create a branch,
 do some work, commit the changes, and push work to their private repository
 (`<your_github_username>/NSIDC-Data-Tutorials`).  They then create a pull request, which, once approved, is
