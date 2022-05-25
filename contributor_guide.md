@@ -21,11 +21,11 @@ We follow a __Forking Workflow__.  This approach allows contributions from outsi
 
 A detailed recipe for contributing using the __Forking Workflow__ is given below.  However, to orient you and provide a roadmap, the workflow is described here briefly.   
 
-In a __Forking Workflow__ the `nsidc/NSIDC-Data-Tutorials` repository is _Forked_ creating a "copy" under a user's
-private repository; e.g. `<your_github_username>/NSIDC-Data-Tutorials`, where `<your_github_username>` is the contributors github name.  This "copy" is just a `git clone` of
-`nsidc/NSIDC-Data-Tutorials`.  Contributors then follow a __Branching Workflow__; create a branch,
-do some work, commit the changes, and push work to their private repository
-(`<your_github_username>/NSIDC-Data-Tutorials`).  They then create a pull request, which, once approved, is
+In a __Forking Workflow__ the `nsidc/NSIDC-Data-Tutorials` repository is _Forked_ creating a "copy" under a your
+private repository; e.g. `<your_github_username>/NSIDC-Data-Tutorials`, where `<your_github_username>` is your github name.  This "copy" is just a `git clone` of
+`nsidc/NSIDC-Data-Tutorials`.  To add content or make changes to existing content, you follow a __Branching Workflow__; create a branch,
+do some work, commit the changes, and push work to your private repository
+(`<your_github_username>/NSIDC-Data-Tutorials`).  Once you have completed the work, you then create a pull request, which, once approved, is
 merged into the central `nsidc/NSIDC-Data-Tutorials`.
 
 An alternative description of a __Forking Workflow__ can be found [here](https://www.asmeurer.com/git-workflow/).
