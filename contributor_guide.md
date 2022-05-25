@@ -13,6 +13,8 @@ We welcome contributions in many forms;
 If you would like to contribute, check the _Issues_ by clicking on the _Issues_ tab.
 Someone might already have a similar idea.  If not, then create a new issue and submit your suggestion.
 
+Please read our [code of conduct](CODE_OF_CONDUCT.md)
+
 ## How to contribute
 
 We follow a __Forking Workflow__.  This approach allows contributions from outside of NSIDC.
@@ -29,8 +31,6 @@ merged into the central `nsidc/NSIDC-Data-Tutorials`.
 An alternative description of a __Forking Workflow__ can be found [here](https://www.asmeurer.com/git-workflow/).
 A more in depth discussion of the __Forking Workflow__ can be found
 [here](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow)
-
-Please read our [code of conduct](CODE_OF_CONDUCT.md)
 
 ### Fork the `nsidc/NSIDC-Data-Tutorials` repository
 
