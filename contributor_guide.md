@@ -11,34 +11,32 @@ We welcome contributions in many forms;
 - Add documentation
 
 If you would like to contribute, check the _Issues_ by clicking on the _Issues_ tab.
-Someone might already have a similar idea.  If not, then create a new issue and submit your sugestion.
+Someone might already have a similar idea.  If not, then create a new issue and submit your suggestion.
 
 ## How to contribute
 
-If you are not part of NSIDC please follow a __Forking Workflow__.  If you are part of NSIDC, you can follow a __Forking Workflow__ or follow a standard __Git Workflow__.
+We follow a __Forking Workflow__.  This approach allows contributions from outside of NSIDC.
 
-We follow the __git workflow__ described [here](https://www.asmeurer.com/git-workflow/).
-This is a __Forking Workflow__.  This is fundamentally different from other workflows in
-that `nsidc/NSIDC-Data-Tutorials` repository is _Forked_ creating a "copy" under a user's
-private repository; e.g. `user/NSIDC-Data-Tutorials`.  This "copy" is just a `git clone` of
-`nsidc/NSIDC-Data-Tutorials`.  Contributors then follow a branching workflow; create a branch,
+A detailed recipe for contributing using the __Forking Workflow__ is given below.  However, to orient you and provide a roadmap, the workflow is described here briefly.   
+
+In a __Forking Workflow__ the `nsidc/NSIDC-Data-Tutorials` repository is _Forked_ creating a "copy" under a user's
+private repository; e.g. `<your_github_username>/NSIDC-Data-Tutorials`, where `<your_github_username>` is your github name.  This "copy" is just a `git clone` of
+`nsidc/NSIDC-Data-Tutorials`.  Contributors then follow a __Branching Workflow__; create a branch,
 do some work, commit the changes, and push work to their private repository
-(`user/NSIDC-Data-Tutorials`).  They then create a pull request, which, once approved, is
+(`<your_github_username>/NSIDC-Data-Tutorials`).  They then create a pull request, which, once approved, is
 merged into the central `nsidc/NSIDC-Data-Tutorials`.
 
-This approach allows contributions from outside of NSIDC.
-
+An alternative description of a __Forking Workflow__ can be found [here](https://www.asmeurer.com/git-workflow/).
 A more in depth discussion of the __Forking Workflow__ can be found
 [here](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow)
 
-A recipe for contributing is given below.
-
-Please read out [code of conduct](CODE_OF_CONDUCT.md)
-
+Please read our [code of conduct](CODE_OF_CONDUCT.md)
 
 ### Fork the `nsidc/NSIDC-Data-Tutorials` repository
 
 Forking creates a copy of the official `NSIDC-Data-Tutorials` repository as a personal repository with the same name.  You can add new content and make changes to this _forked_ repository.  These changes will not be made in the official repository until you create a _pull request_.
+
+To _Fork_ the `nsidc/NSIDC-Data-Tutorials` click on the Fork button in the top right corner of the main repo web page.  This will automatically create a repo `<your_github_username>/NSIDC-Data-Tutorials`.
 
 ![Forking Button](images/forking_nsidc_data_tutorials.png)
 
@@ -76,14 +74,14 @@ $ git pull           # Fetch and merge changes
 
 ### Create a new branch
 
-Creating a new local branch ensures that development work is kept separate from the `main` branch.  Once the new feature or tutorial is complete and free from error, it can be merged with the main environmen.
+Creating a new local branch ensures that development work is kept separate from the `main` branch.  Once the new feature or tutorial is complete and free from error, it can be merged with the main environment.
 
 A step-by-step sequence of commands to create a new branch is below.
 
 ```
 $ git branch                    # this list branches
 $ git branch new_feature        # create a new branch
-$ git checkout new_feature   # switch to new_branch
+$ git checkout new_feature      # switch to new_branch
 $ git branch                    # You should see the new branch highlghted in green or with an asterisk to show that is the
                                 # branch you are on
 ```
@@ -103,19 +101,19 @@ Creating a new notebook, adding new code or documentation, and making changes fo
 ```
 <Do some work>
 $ git add <new_or_modified_file>                     # Stage a file or files
-$ git commit -m 'a short note saying what was done'  # commit those files
+$ git commit -m 'a short note saying what was done and why'  # commit those files
 <Do some more work>
 $ git add <new_or_modified_file>
-$ git commit -m 'a short note saying what was done'
+$ git commit -m 'a short note saying what was done and why'
 .
 .
 .
 ```
 
-The idea is that commits provide a checkpoint for work done to a repo.  The messages tell other developers what has been done.  If necessary, those commits can be discarded or the repo __rewound__ to undo those changes.  Because of this, it is best to keep commits relatively small and atomic.  For example, ...
+The idea is that commits provide a checkpoint for work done to a repo.  The messages tell other developers what has been done.  If necessary, those commits can be discarded or the repo __rewound__ to undo those changes.  Because of this, it is best to keep commits relatively small and atomic.
 
 ### Push work to private repository
-When you are ready to share your work you push it to your forked copy of the main repo
+When you are ready to share your work you push it to your forked copy of the main repo.  
 
 ```
 $ git push origin new_branch
@@ -126,12 +124,14 @@ Creating a pull request notifies other developers that you have new work to merg
 
 Usually you will see a _Make Pull Request_ button in the branch of your forked repo.
 
-Click this button.  You will be given options to of branches to compare your new_branch with.  Usually this will be the `main` branch.  Add a description of what you have done to help other developers review your work.  You can assign reviewers.
+Click this button.  You will be given options to of branches to compare your new_branch with.  Usually this will be the `main` branch.  Add a description of what you have done to help other developers review your work.  You can also assign reviewers.
 
 Reviewers then review your work.  They may suggest some changes or fixes.
 
 You can continue to push changes to the pull request until it is merged.  That way you can make changes, fix typos etc.
 
-It is good practice to delete the new_branch.
-
 Once everyone is happy, the pull request is merged.
+
+It is good practice to delete the new_branch once the pull request has been merged.
+
+Happy Coding!
