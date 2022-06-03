@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:latest
+FROM jupyter/base-notebook:2022-02-17
 
 USER root
 
