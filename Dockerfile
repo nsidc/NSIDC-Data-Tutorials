@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:latest
+FROM jupyter/base-notebook:2022-02-17
 
 USER root
 
@@ -6,15 +6,15 @@ USER root
 # features (e.g., download as all possible file formats)
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update \
- && apt-get install -yq --no-install-recommends git \
+ && apt-get install -yq --no-install-recommends git jq \
  && apt-get clean  && apt autoremove && rm -rf /var/lib/apt
 
 USER $NB_UID
 
 ADD binder/environment.yml $HOME
-RUN conda env update -f environment.yml -n base && conda clean --force --yes --all  && rm $HOME/environment.yml && \
+RUN mamba env update -f environment.yml -n base && conda clean --force --yes --all  && rm $HOME/environment.yml && \
 npm cache clean --force && \
-rm -rf /opt/conda/lib/python3.7/site-packages/awscli/examples \
+rm -rf /opt/conda/lib/python3.9/site-packages/awscli/examples \
 && find /opt/conda/ -follow -type f -name '*.a' -delete \
 && find /opt/conda/ -follow -type f -name '*.pyc' -delete \
 && fix-permissions /home/$NB_USER && fix-permissions
