@@ -1,0 +1,23 @@
+name: nsidc-itslive
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - jupyterlab=3
+  - fiona
+  - ipyleaflet
+  - ipympl
+  - matplotlib-base
+  - pandas
+  - pyproj
+  - s3fs
+  - sidecar
+  - shapely
+  - xarray
+  - markdown
+  - voila
+  - zarr
+platforms:
+  - linux-64
+  - osx-64
+  - win-64

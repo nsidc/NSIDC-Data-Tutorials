@@ -1,42 +1,25 @@
-name: nsidc-tutorials
+name: nsidc-iceflow
 channels:
 - conda-forge
 dependencies:
 - python=3.9
 - pangeo-notebook
-- xarray
 - matplotlib-base
 - ipyleaflet
-- shapely
 - geopandas
 - h5py
-- h5netcdf
-- netcdf4
-- geopy
-- pyresample
-- earthdata~=0.3
-- fiona
-- gql
-- zarr
 - ipympl
-- descartes
-- rasterio
 - plotly
 - joblib
 - cartopy
-- pystac-client
-- s3fs
 - vaex
 - tqdm
-- intake-xarray
-- intake-stac
-- jupyter-offlinenotebook
 - sidecar
 - icepyx
-- geoviews
 - pip
 - pip:
   - python-cmr
 platforms:
   - linux-64
   - osx-64
+  - win-64
