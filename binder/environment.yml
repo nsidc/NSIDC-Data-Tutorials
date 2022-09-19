@@ -10,11 +10,12 @@ dependencies:
 - shapely
 - geopandas
 - h5py
+- h5pyd
 - h5netcdf
 - netcdf4
 - geopy
 - pyresample
-- earthdata~=0.3
+- earthdata
 - fiona
 - gql
 - zarr
@@ -40,3 +41,4 @@ dependencies:
 platforms:
   - linux-64
   - osx-64
+  - win-64
