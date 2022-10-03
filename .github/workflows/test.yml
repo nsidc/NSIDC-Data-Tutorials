@@ -1,0 +1,81 @@
+name: Test Notebooks
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  runtime-linux:
+    name: Linux
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          mamba-version: "*"
+          activate-environment: tutorials-linux
+          environment-file: binder/conda-linux-64.lock
+      - name: Bash
+        shell: bash -l {0}
+        run: |
+          conda info
+          conda list
+
+  runtime-mac:
+    name: MacOSX
+    runs-on: "macos-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          mamba-version: "*"
+          activate-environment: tutorials-osx
+          environment-file: binder/conda-osx-64.lock
+      - name: Sh
+        shell: sh -l {0}
+        run: |
+          conda info
+          conda list
+      - name: Bash
+        shell: bash -l {0}
+        run: |
+          conda info
+          conda list
+
+  runtime-win:
+    name: Windows
+    runs-on: "windows-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+    steps:
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          mamba-version: "*"
+          activate-environment: tutorials-windows
+          environment-file: binder/conda-win-64.lock
+      - name: PowerShell
+        shell: powershell
+        run: |
+          conda info
+          conda list
+      - name: PowerShell Core
+        shell: pwsh
+        run: |
+          conda info
+          conda list
+      - name: Cmd.exe
+        shell: cmd /C CALL {0}
+        run: >-
+          conda info && conda list

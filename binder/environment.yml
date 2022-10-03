@@ -17,7 +17,6 @@ dependencies:
 - pyresample
 - earthdata
 - fiona
-- gql
 - zarr
 - ipympl
 - descartes
@@ -38,7 +37,8 @@ dependencies:
 - pip
 - pip:
   - python-cmr
+  - pipreqsnb
 platforms:
-  - linux-64
-  - osx-64
-  - win-64
+- linux-64
+- osx-64
+- win-64
