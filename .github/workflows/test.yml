@@ -6,13 +6,13 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  mamba-forge:
+  posix:
     name: Runtime (${{ matrix.os }}, Mambaforge)
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "macos", "windows"]
+        os: ["ubuntu", "macos"]
         include:
           - os: ubuntu
             environment-file: binder/conda-linux-64.lock
@@ -20,10 +20,6 @@ jobs:
             miniforge-version: latest
           - os: macos
             environment-file: binder/conda-osx-64.lock
-            miniforge-variant: Mambaforge
-            miniforge-version: latest
-          - os: windows
-            environment-file: binder/conda-win-64.lock
             miniforge-variant: Mambaforge
             miniforge-version: latest
     steps:
@@ -44,6 +40,21 @@ jobs:
           conda config --show
           printenv | sort
 
+
+  windows:
+    name: Runtime (${{ matrix.os }}, Mambaforge)
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          environment-file: binder/conda-win-64.lock
+          miniforge-variant: Mambaforge
+          miniforge-version: latest
+          use-mamba: true
+
       - name: PowerShell
         shell: powershell
         run: |
@@ -55,6 +66,7 @@ jobs:
         run: |
           conda info
           conda list
+
       - name: Cmd.exe
         shell: cmd /C CALL {0}
         run: >-
