@@ -6,21 +6,35 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  runtime-linux:
-    name: Linux
-    runs-on: "ubuntu-latest"
+  mamba-forge:
+    name: Runtime (${{ matrix.os }}, Mambaforge)
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        os: ["ubuntu", "macos", "windows"]
+        include:
+          - os: ubuntu
+            environment-file: binder/conda-linux-64.lock
+            miniforge-variant: Mambaforge
+            miniforge-version: latest
+          - os: macos
+            environment-file: binder/conda-osx-64.lock
+            miniforge-variant: Mambaforge
+            miniforge-version: latest
+          - os: windows
+            environment-file: binder/conda-win-64.lock
+            miniforge-variant: Mambaforge
+            miniforge-version: latest
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: ${{ matrix.python-version }}
-          mamba-version: "*"
-          activate-environment: tutorials-linux
-          environment-file: binder/conda-linux-64.lock
+          environment-file: ${{ matrix.environment-file }}
+          miniforge-variant: ${{ matrix.miniforge-variant }}
+          miniforge-version: ${{ matrix.miniforge-version }}
+          use-mamba: true
+
       - name: Bash
         shell: bash -l {0}
         run: |
@@ -30,52 +44,12 @@ jobs:
           conda config --show
           printenv | sort
 
-  runtime-mac:
-    name: MacOSX
-    runs-on: "macos-latest"
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-          mamba-version: "*"
-          activate-environment: tutorials-osx
-          environment-file: binder/conda-osx-64.lock
-      - name: Sh
-        shell: sh -l {0}
-        run: |
-          conda info
-          conda list
-      - name: Bash
-        shell: bash -l {0}
-        run: |
-          conda info
-          conda list
-
-  runtime-win:
-    name: Windows
-    runs-on: "windows-latest"
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-          mamba-version: "*"
-          activate-environment: tutorials-windows
-          environment-file: binder/conda-win-64.lock
       - name: PowerShell
         shell: powershell
         run: |
           conda info
           conda list
+
       - name: PowerShell Core
         shell: pwsh
         run: |
