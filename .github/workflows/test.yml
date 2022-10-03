@@ -42,7 +42,7 @@ jobs:
 
 
   windows:
-    name: Runtime (${{ matrix.os }}, Mambaforge)
+    name: Runtime Windows Mambaforge
     runs-on: windows-latest
     strategy:
       fail-fast: false
