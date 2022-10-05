@@ -35,10 +35,8 @@ dependencies:
 - sidecar
 - icepyx
 - geoviews
+- pipreqsnb
 - pip
-- pip:
-  - python-cmr
-  - pipreqsnb
 platforms:
 - linux-64
 - osx-64
