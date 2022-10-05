@@ -39,6 +39,7 @@ jobs:
           conda config --show-sources
           conda config --show
           printenv | sort
+          find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
 
   windows:
