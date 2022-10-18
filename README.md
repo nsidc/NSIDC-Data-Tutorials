@@ -145,7 +145,7 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 
 ## Usage with Mamba/Conda
 
-Note: If we already have conda or mamba installed we can skip this step.
+> Note: If we already have conda or mamba installed we can skip the first step.
 
 1. Install mambaforge (Python 3.9+) for your platform from [mamba documentation](https://mamba.readthedocs.io/en/latest/installation.html)
 
@@ -156,17 +156,17 @@ Note: If we already have conda or mamba installed we can skip this step.
 
 Linux 
 ```bash
-conda create -n nsidc-tutorials --file binder/conda-linux-64.lock
+mamba create -n nsidc-tutorials --file binder/conda-linux-64.lock
 ```
 
 OSX
 ```bash
-conda create -n nsidc-tutorials --file binder/conda-osx-64.lock
+mamba create -n nsidc-tutorials --file binder/conda-osx-64.lock
 ```
 
 Windows 
 ```bash
-conda create -n nsidc-tutorials --file binder/conda-win-64.lock
+mamba create -n nsidc-tutorials --file binder/conda-win-64.lock
 ```
 
 You should now see that the dependencies were installed and our environment is ready to be used.
@@ -193,7 +193,7 @@ Although the nsidc-tutorial environment should run all the notebooks in this rep
 
 ```bash
 cd notebooks/itslive 
-conda create -n nsidc-itslive --file environment/conda-linux-64.lock
+mamba create -n nsidc-itslive --file environment/conda-linux-64.lock
 conda activate nsidc-itslive
 jupyter lab
 ```
