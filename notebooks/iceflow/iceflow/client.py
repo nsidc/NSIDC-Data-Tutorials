@@ -275,22 +275,30 @@ class IceflowClient:
     def _create_earthdata_authenticated_session(self):
         s = requests.session()
         auth_url = f'{self.hermes_api_url}/earthdata/auth/'
-        nsidc_resp = s.get(auth_url, timeout=10, allow_redirects=True)
-        print(f"REDIRECT: {nsidc_resp.url}")
+        nsidc_resp = s.get(auth_url, timeout=10, allow_redirects=False)        
         auth_cred = HTTPBasicAuth(self.credentials['username'], self.credentials['password'])
-        auth_resp = s.get(nsidc_resp.url,
+        auth_resp = s.get(nsidc_resp.headers['Location'],
                           auth=auth_cred,
-                          allow_redirects=False,
+                          allow_redirects=True,
                           timeout=10)
-        if auth_resp.status_code == 404 and nsidc_resp.url == "https://nsidc.org/apps/orders/api/earthdata/auth_finish/None":
+        
+        if not (auth_resp.ok):  # type: ignore
+            if auth_resp.status_code == 404 or auth_resp.status_code == 500:
+                # HERMES bug
+                self.session = s
+                # Now we create a icesat2 instance so we can query for ATL data using icepyx
+                self.icesat2 = is2(self.credentials)
+                return self.session
+
+            print(nsidc_resp.url)
+            print(f'Authentication with Earthdata Login failed first with:\n{auth_resp.text}')
+            return None
+        
+        else:  # type: ignore
             self.session = s
             # Now we create a icesat2 instance so we can query for ATL data using icepyx
             self.icesat2 = is2(self.credentials)
             return self.session
-        else:  # type: ignore
-            print(nsidc_resp.url)
-            print(f'Authentication with Earthdata Login failed with:\n{auth_resp.text}')
-            return None
 
     def h5_filename(self, order):
         dataset = order['dataset']
