@@ -189,7 +189,7 @@ This should open a browser window with the JupyterLab IDE, showing your current 
 
 ### Tutorial Environments
 
-Although the nsidc-tutorial environment should run all the notebooks in this repository, we also include tutorial-specific environments that will only contain the dependencies for them. If we don't want to "pollute" our conda environments and we are only going to work with one of the tutorials we recommend to use them instead of the `nsdic-tutorial` environment. The steps to install them are exactly the same but the environment files are inside the environment folders in each of the tutorials. e.g. for ITS_LIVE
+Although the nsidc-tutorial environment should run all the notebooks in this repository, we also include tutorial-specific environments that will only contain the dependencies for them. If we don't want to "pollute" our conda environments and we are only going to work with one of the tutorials we recommend to use them instead of the `nsidc-tutorial` environment. The steps to install them are exactly the same but the environment files are inside the environment folders in each of the tutorials. e.g. for ITS_LIVE
 
 ```bash
 cd notebooks/itslive 
