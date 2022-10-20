@@ -8,7 +8,7 @@ class is2:
     """
     def __init__(self, credentials):
         self.credentials = credentials
-        cap_url = 'https://n5eil02u.ecs.nsidc.org/egi/capabilities/ATL06.003.xml'
+        cap_url = 'https://n5eil02u.ecs.nsidc.org/egi/capabilities/ATL06.005.xml'
         self._session = Earthdata.Earthdata(
             uid=credentials['username'],
             email=credentials['email'],

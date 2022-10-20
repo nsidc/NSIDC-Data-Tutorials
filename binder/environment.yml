@@ -4,19 +4,20 @@ channels:
 dependencies:
 - python=3.9
 - pangeo-notebook
+- gdal=3.5
 - xarray
 - matplotlib-base
 - ipyleaflet
 - shapely
 - geopandas
 - h5py
+- h5pyd
 - h5netcdf
 - netcdf4
 - geopy
 - pyresample
-- earthdata~=0.3
+- earthdata
 - fiona
-- gql
 - zarr
 - ipympl
 - descartes
@@ -34,6 +35,9 @@ dependencies:
 - sidecar
 - icepyx
 - geoviews
+- pipreqsnb
 - pip
-- pip:
-  - python-cmr
+platforms:
+- linux-64
+- osx-64
+- win-64
