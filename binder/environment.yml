@@ -6,7 +6,7 @@ dependencies:
 - pangeo-notebook
 - gdal=3.5
 - xarray
-- matplotlib-base
+- matplotlib-base~=3.5
 - ipyleaflet
 - shapely
 - geopandas
