@@ -5,6 +5,7 @@ dependencies:
 - python=3.9
 - pangeo-notebook
 - gdal=3.5
+- awscli
 - xarray
 - matplotlib-base~=3.5
 - ipyleaflet
