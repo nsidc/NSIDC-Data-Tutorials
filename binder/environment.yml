@@ -16,7 +16,7 @@ dependencies:
 - netcdf4
 - geopy
 - pyresample
-- earthdata
+- earthaccess
 - fiona
 - zarr
 - ipympl
