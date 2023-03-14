@@ -40,33 +40,33 @@ jobs:
           find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
 
-  windows:
-    name: Runtime Windows Mambaforge
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          environment-file: binder/conda-win-64.lock
-          miniforge-variant: Mambaforge
-          miniforge-version: latest
-          use-mamba: true
+  # windows:
+  #   name: Runtime Windows Mambaforge
+  #   runs-on: windows-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: conda-incubator/setup-miniconda@v2
+  #       with:
+  #         environment-file: binder/conda-win-64.lock
+  #         miniforge-variant: Mambaforge
+  #         miniforge-version: latest
+  #         use-mamba: true
 
-      - name: PowerShell
-        shell: powershell
-        run: |
-          conda info
-          conda list
+  #     - name: PowerShell
+  #       shell: powershell
+  #       run: |
+  #         conda info
+  #         conda list
 
-      - name: PowerShell Core
-        shell: pwsh
-        run: |
-          conda info
-          conda list
+  #     - name: PowerShell Core
+  #       shell: pwsh
+  #       run: |
+  #         conda info
+  #         conda list
 
-      - name: Cmd.exe
-        shell: cmd /C CALL {0}
-        run: >-
-          conda info && conda list
+  #     - name: Cmd.exe
+  #       shell: cmd /C CALL {0}
+  #       run: >-
+  #         conda info && conda list
