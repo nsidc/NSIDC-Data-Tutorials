@@ -18,7 +18,7 @@ dependencies:
 - netcdf4
 - geopy
 - pyresample
-- earthaccess>=0.5.0
+- earthaccess>=0.5.1
 - fiona
 - zarr
 - ipympl
@@ -43,4 +43,4 @@ dependencies:
   - awscli
 platforms:
 - linux-64
-- osx-64
+- osx-6
