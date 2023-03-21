@@ -3,21 +3,22 @@ channels:
 - conda-forge
 dependencies:
 - python=3.9
-- pangeo-notebook
+# - pangeo-notebook
 - fsspec>=2022.10
 - gdal=3.6
-- numpy
 - xarray
 - matplotlib-base>=3.5
 - ipyleaflet
 - shapely
+- numpy=1.23.5 # datasharder bug
 - geopandas
 - h5py
 - h5netcdf
-- netcdf4~=1.6.2
+# - netcdf4~=1.6.2
+- netcdf4
 - geopy
 - pyresample
-- earthaccess>=0.5.0
+- earthaccess>=0.5.1
 - fiona
 - zarr
 - ipympl
@@ -42,4 +43,4 @@ dependencies:
   - awscli
 platforms:
 - linux-64
-- osx-64
+- osx-6
