@@ -3,8 +3,8 @@ name: Test Notebooks
 on:
   push:
     paths:
-      - 'notebooks'
-      - 'binder'
+      - notebooks/**
+      - binder/**
       - '.github/workflows/'
   pull_request:
     types: [opened, synchronize]
