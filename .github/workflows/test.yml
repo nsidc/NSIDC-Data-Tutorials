@@ -52,6 +52,7 @@ jobs:
       - name: Bash
         shell: bash -l {0}
         run: |
+          conda list | sort
           printenv | sort
           find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
@@ -84,5 +85,4 @@ jobs:
         shell: bash
         run: |
           printenv | sort
-          find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
