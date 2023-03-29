@@ -43,4 +43,5 @@ dependencies:
   - awscli
 platforms:
 - linux-64
-- osx-6
+- osx-64
+- win-64

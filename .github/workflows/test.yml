@@ -2,8 +2,16 @@ name: Test Notebooks
 
 on:
   push:
+    paths:
+      - 'notebooks'
+      - 'binder'
+      - '.github/workflows/'
   pull_request:
     types: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   posix:
@@ -23,7 +31,17 @@ jobs:
             miniforge-variant: Mambaforge
             miniforge-version: latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Cache conda
+        uses: actions/cache@v3
+        env:
+          # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 0
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+            hashFiles(format('{0}', matrix.environment-file))  }}
       - uses: conda-incubator/setup-miniconda@v2
         with:
           environment-file: ${{ matrix.environment-file }}
@@ -40,33 +58,25 @@ jobs:
           find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
 
-  # windows:
-  #   name: Runtime Windows Mambaforge
-  #   runs-on: windows-latest
-  #   strategy:
-  #     fail-fast: false
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: conda-incubator/setup-miniconda@v2
-  #       with:
-  #         environment-file: binder/conda-win-64.lock
-  #         miniforge-variant: Mambaforge
-  #         miniforge-version: latest
-  #         use-mamba: true
+  windows:
+    name: Runtime Windows Mambaforge
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          environment-file: binder/conda-win-64.lock
+          miniforge-variant: Mambaforge
+          miniforge-version: latest
+          use-mamba: true
 
-  #     - name: PowerShell
-  #       shell: powershell
-  #       run: |
-  #         conda info
-  #         conda list
+      - name: bash
+        shell: bash
+        run: |
+          conda info
+          conda list
+          printenv | sort
+          find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
-  #     - name: PowerShell Core
-  #       shell: pwsh
-  #       run: |
-  #         conda info
-  #         conda list
-
-  #     - name: Cmd.exe
-  #       shell: cmd /C CALL {0}
-  #       run: >-
-  #         conda info && conda list
