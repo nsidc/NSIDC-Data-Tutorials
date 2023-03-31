@@ -40,7 +40,7 @@ dependencies:
 - mamba>=1.0
 - pip
 - pip:
-  - awscli
+  - awscliv2
 platforms:
 - linux-64
 - osx-64
