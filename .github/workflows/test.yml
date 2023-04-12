@@ -14,25 +14,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  posix:
-    name: Runtime (${{ matrix.os }}, micromamba)
-    runs-on: ${{ matrix.os }}-latest
+  linux:
+    name: Linux tests
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        os: ["ubuntu", "macos"]
-        include:
-          - os: ubuntu
-            environment-file: binder/conda-linux-64.lock
-          - os: macos
-            environment-file: binder/conda-osx-64.lock
     steps:
       - uses: actions/checkout@v3
       - name: "Install Conda environment with Micromamba"
         uses: mamba-org/provision-with-micromamba@main
         with:
           cache-env: true
-          environment-file: ${{ matrix.environment-file }}
+          environment-file: binder/conda-linux-64.lock
           environment-name: nsidc-tutorials
 
       - name: "Verify micromamba"
@@ -62,25 +55,35 @@ jobs:
         shell: bash -l {0}
         run: |
           jupyter kernelspec list
-          find . -type f -name "*.ipynb"
           find . -type f -name "*.ipynb" | xargs -I F quarto render "F" --execute --execute-daemon
 
-  windows:
-    name: Runtime Windows Mambaforge
-    runs-on: windows-latest
+  win-osx:
+    name: Runtime (${{ matrix.os }}, micromamba)
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
+      matrix:
+        os: ["windows", "macos"]
+        include:
+          - os: windows
+            environment-file: binder/conda-win-64.lock
+          - os: macos
+            environment-file: binder/conda-osx-64.lock
     steps:
       - uses: actions/checkout@v3
       - name: "Install Conda environment with Micromamba"
         uses: mamba-org/provision-with-micromamba@main
         with:
           cache-env: true
-          environment-file: binder/conda-win-64.lock
+          environment-file: ${{ matrix.environment-file }}
           environment-name: nsidc-tutorials
 
-      - name: bash
-        shell: bash
+      - name: "Verify micromamba"
+        shell: bash -l {0}
         run: |
+          micromamba info
+          jupyter kernelspec list
+          which python
           printenv | sort
+
 
