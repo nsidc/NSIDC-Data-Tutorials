@@ -33,7 +33,7 @@ jobs:
             docker save -o build/saved-docker-image.tar ${DOCKER_IMAGE}:${TAG}
             echo "${DOCKER_IMAGE}:${TAG}" > build/docker-image-name.txt
       - persist_to_workspace:
-          root: ~/tutorials
+          root: ~/tutorials/binder
           paths:
             - build
 

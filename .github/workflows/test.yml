@@ -63,7 +63,7 @@ jobs:
         run: |
           jupyter kernelspec list
           find . -type f -name "*.ipynb"
-          find . -type f -name "*.ipynb" | xargs -i quarto render {} --execute --execute-daemon
+          find . -type f -name "*.ipynb" | xargs -I quarto render {} --execute --execute-daemon
 
   windows:
     name: Runtime Windows Mambaforge
