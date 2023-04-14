@@ -1,8 +1,10 @@
-## Glacier Tutorial
-This tutorial demonstrates how to access, download, spatially subset and visualize the following two glacier data sets available from NSIDC:
-MEaSUREs Greenland Ice Mapping Project (GIMP) Digital Elevation Model from GeoEye and WorldView Imagery
-MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR
+## Search, Download and Plot multiple GeoTIFFs
+In this tutorial we demonstrate how to programmatically access and download NSIDC DAAC data (that are available in GeoTIFF format) to your local computer. We then walk through the steps for cropping and resampling one GeoTIFF based on the extent and and pixel size of another GeoTIFF, with the end goal of plotting one on top of the other. 
 
-It demonstrates how to use a shapefile or other vector-based spatial data formats to search for data within an area and download the appropriate DEM and velocity data. Then, the DEM will be spatially subset based on the extent of the velocity file and then both files will be plotted.  
+We use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
+
+* [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
+* [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
+
 
 
