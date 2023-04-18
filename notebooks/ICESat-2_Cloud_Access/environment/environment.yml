@@ -1,0 +1,18 @@
+name: ICESat2_cloud_access 
+channels:
+ - conda-forge
+dependencies:
+ - python ~=3.10
+
+ ###################################################
+ # Imported dependencies and extensions            #
+ ###################################################
+
+ - libgfortran ~= 3.0
+ - jupyterlab
+ - matplotlib
+ - cartopy
+ - dask
+ - xarray
+ - openpyxl
+ - pytest

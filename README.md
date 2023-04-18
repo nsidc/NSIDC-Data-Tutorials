@@ -36,6 +36,12 @@ The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) proj
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
+### [ICESat-2_Cloud_Access](./noteboks/ICESat-2_Cloud_Access)
+
+**Accessing and working with ICESat-2 Data in the Cloud**
+
+Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
+
 ## Usage with Binder
 
 The Binder button above allows you to explore and run the notebook in a shared cloud computing environment without the need to install dependencies on your local machine. Note that this option will not directly download data to your computer; instead the data will be downloaded to the cloud environment.
