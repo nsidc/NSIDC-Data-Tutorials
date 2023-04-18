@@ -8,11 +8,7 @@ dependencies:
  # Imported dependencies and extensions            #
  ###################################################
 
- - libgfortran ~= 3.0
  - jupyterlab
- - matplotlib
- - cartopy
- - dask
+ - earthaccess
+ - hvplot
  - xarray
- - openpyxl
- - pytest
