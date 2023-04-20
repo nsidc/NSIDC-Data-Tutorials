@@ -9,6 +9,6 @@ dependencies:
  ###################################################
 
  - jupyterlab
- - earthaccess
+ - earthaccess=0.5.0
  - hvplot
  - xarray
