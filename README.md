@@ -36,7 +36,7 @@ The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) proj
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
-### [ICESat-2_Cloud_Access](./noteboks/ICESat-2_Cloud_Access)
+### [ICESat-2_Cloud_Access](./notebooks/ICESat-2_Cloud_Access)
 
 **Accessing and working with ICESat-2 Data in the Cloud**
 
