@@ -7,7 +7,7 @@
 
 ## Summary
 
-This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives.
+This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported. 
 
 ## Tutorials
 
@@ -35,6 +35,12 @@ These Jupyter notebooks are interactive documents to teach students and research
 The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
+
+### [ICESat-2_Cloud_Access](./notebooks/ICESat-2_Cloud_Access)
+
+**Accessing and working with ICESat-2 Data in the Cloud**
+
+Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
 
 ## Usage with Binder
 
@@ -143,33 +149,39 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 
 8. You can now interact with the notebooks to explore and access data.
 
-## Usage with Conda
+## Usage with Mamba/Conda
 
-Install miniconda3 (Python 3.7) for your platform from [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
+> Note: If we already have conda or mamba installed we can skip the first step.
 
-Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'.
+1. Install mambaforge (Python 3.9+) for your platform from [mamba documentation](https://mamba.readthedocs.io/en/latest/installation.html)
 
-Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location.
 
-From a command line or terminal window, install the required environment with the following commands:
+2. Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'. Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location. 
 
+3. From a command line or terminal window, install the required environment with the following commands:
+
+Linux 
 ```bash
-conda env create -f binder/environment.yml && conda activate tutorials
-./binder/postBuild
+mamba create -n nsidc-tutorials --file binder/conda-linux-64.lock
+```
+
+OSX
+```bash
+mamba create -n nsidc-tutorials --file binder/conda-osx-64.lock
+```
+
+Windows 
+```bash
+mamba create -n nsidc-tutorials --file binder/conda-win-64.lock
 ```
 
 You should now see that the dependencies were installed and our environment is ready to be used.
 
-If you are a returning user, please make sure your repository is up to date and run the following to update your environment:
-
-```
-conda env update -f binder/environment.yml
-```
 
 Activate the environment with
 
 ```
-conda activate tutorials
+conda activate nsidc-tutorials
 ```
 
 Launch the notebook locally with the following command:
@@ -179,6 +191,20 @@ jupyter lab
 ```
 
 This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.
+
+
+### Tutorial Environments
+
+Although the nsidc-tutorial environment should run all the notebooks in this repository, we also include tutorial-specific environments that will only contain the dependencies for them. If we don't want to "pollute" our conda environments and we are only going to work with one of the tutorials we recommend to use them instead of the `nsidc-tutorial` environment. The steps to install them are exactly the same but the environment files are inside the environment folders in each of the tutorials. e.g. for ITS_LIVE
+
+```bash
+cd notebooks/itslive 
+mamba create -n nsidc-itslive --file environment/conda-linux-64.lock
+conda activate nsidc-itslive
+jupyter lab
+```
+
+This should create a pinned environment that should be fully reproducible across platforms.
 
 > **NOTE:** Sometimes Conda environments change (break) even with pinned down dependencies. If you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
 

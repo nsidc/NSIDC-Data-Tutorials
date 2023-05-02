@@ -1,0 +1,22 @@
+name: nsidc-icesat2
+channels:
+- conda-forge
+dependencies:
+- python=3.9
+- pangeo-notebook
+- xarray
+- matplotlib-base
+- shapely
+- pandas
+- geopandas
+- h5py
+- pyresample
+- pyproj
+- fiona
+- cartopy
+- icepyx
+- pip
+platforms:
+  - linux-64
+  - osx-64
+  - win-64

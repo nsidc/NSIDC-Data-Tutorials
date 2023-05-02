@@ -1,0 +1,72 @@
+name: Test Notebooks
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  posix:
+    name: Runtime (${{ matrix.os }}, Mambaforge)
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu", "macos"]
+        include:
+          - os: ubuntu
+            environment-file: binder/conda-linux-64.lock
+            miniforge-variant: Mambaforge
+            miniforge-version: latest
+          - os: macos
+            environment-file: binder/conda-osx-64.lock
+            miniforge-variant: Mambaforge
+            miniforge-version: latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          environment-file: ${{ matrix.environment-file }}
+          miniforge-variant: ${{ matrix.miniforge-variant }}
+          miniforge-version: ${{ matrix.miniforge-version }}
+          use-mamba: true
+
+      - name: Bash
+        shell: bash -l {0}
+        run: |
+          conda info
+          conda list
+          printenv | sort
+          find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
+
+
+  # windows:
+  #   name: Runtime Windows Mambaforge
+  #   runs-on: windows-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: conda-incubator/setup-miniconda@v2
+  #       with:
+  #         environment-file: binder/conda-win-64.lock
+  #         miniforge-variant: Mambaforge
+  #         miniforge-version: latest
+  #         use-mamba: true
+
+  #     - name: PowerShell
+  #       shell: powershell
+  #       run: |
+  #         conda info
+  #         conda list
+
+  #     - name: PowerShell Core
+  #       shell: pwsh
+  #       run: |
+  #         conda info
+  #         conda list
+
+  #     - name: Cmd.exe
+  #       shell: cmd /C CALL {0}
+  #       run: >-
+  #         conda info && conda list

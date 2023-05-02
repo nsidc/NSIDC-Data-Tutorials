@@ -1,0 +1,25 @@
+name: nsidc-iceflow
+channels:
+- conda-forge
+dependencies:
+- python=3.9
+- pangeo-notebook
+- matplotlib-base
+- ipyleaflet
+- geopandas
+- h5py
+- ipympl
+- plotly
+- joblib
+- cartopy
+- vaex
+- tqdm
+- sidecar
+- icepyx
+- pip
+- pip:
+  - python-cmr
+platforms:
+  - linux-64
+  - osx-64
+  - win-64

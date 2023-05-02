@@ -1,1 +1,11 @@
+curl
+git
+jq
+htop
+tmux
+tree
+vim
 neovim
+net-tools
+iproute2
+ffmpeg

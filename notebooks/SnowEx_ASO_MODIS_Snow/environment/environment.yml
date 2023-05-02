@@ -1,0 +1,21 @@
+name: nsidc-tutorials
+channels:
+- conda-forge
+dependencies:
+- python=3.9
+- pangeo-notebook
+- xarray
+- earthaccess
+- matplotlib-base
+- shapely
+- geopandas
+- h5py
+- pyresample
+- fiona
+- descartes
+- rasterio
+- cartopy
+platforms:
+- linux-64
+- osx-64
+- win-64

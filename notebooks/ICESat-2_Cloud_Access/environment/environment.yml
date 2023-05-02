@@ -1,0 +1,14 @@
+name: ICESat2_cloud_access 
+channels:
+ - conda-forge
+dependencies:
+ - python ~=3.10
+
+ ###################################################
+ # Imported dependencies and extensions            #
+ ###################################################
+
+ - jupyterlab
+ - earthaccess
+ - hvplot
+ - xarray
