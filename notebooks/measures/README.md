@@ -1,5 +1,5 @@
 ## Search, Download and Plot multiple GeoTIFFs
-In this tutorial we demonstrate how to programmatically access and download NSIDC DAAC data (that are available in GeoTIFF format) to your local computer. We then walk through the steps for cropping and resampling one GeoTIFF based on the extent and and pixel size of another GeoTIFF, with the end goal of plotting one on top of the other. 
+In this tutorial we demonstrate how to programmatically access and download GeoTIFF files from the NSIDC DAAC data to your local computer. We then walk through the steps for cropping and resampling one GeoTIFF based on the extent and pixel size of another GeoTIFF, with the end goal of plotting one on top of the other. 
 
 We use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
 
