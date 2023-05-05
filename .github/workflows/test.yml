@@ -2,71 +2,88 @@ name: Test Notebooks
 
 on:
   push:
+    paths:
+      - notebooks/**
+      - binder/**
+      - '.github/workflows/'
   pull_request:
     types: [opened, synchronize]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  posix:
-    name: Runtime (${{ matrix.os }}, Mambaforge)
+  linux:
+    name: Linux tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install Conda environment with Micromamba"
+        uses: mamba-org/provision-with-micromamba@main
+        with:
+          cache-env: true
+          environment-file: binder/conda-linux-64.lock
+          environment-name: nsidc-tutorials
+
+      - name: "Verify micromamba"
+        shell: bash -l {0}
+        run: |
+          micromamba info
+          jupyter kernelspec list
+          which python
+          printenv | sort
+
+      - name: "Verify that libraries used in notebooks are present in the environment"
+        shell: bash -l {0}
+        run: |
+          conda list | sort
+          printenv | sort
+          find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path '*/iceflow/*'  | xargs -I % python .github/workflows/scan_notebooks.py -n %
+
+      - name: "Setup Quarto"
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.1.251
+
+      - name: "Execute notebooks with Quarto"
+        env:
+          EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+        shell: bash -l {0}
+        run: |
+          jupyter kernelspec list
+          find . -type f -name "*.ipynb" | xargs -I F quarto render "F" --execute --execute-daemon
+
+  win-osx:
+    name: Runtime (${{ matrix.os }}, micromamba)
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "macos"]
+        os: ["windows", "macos"]
         include:
-          - os: ubuntu
-            environment-file: binder/conda-linux-64.lock
-            miniforge-variant: Mambaforge
-            miniforge-version: latest
+          - os: windows
+            environment-file: binder/conda-win-64.lock
           - os: macos
             environment-file: binder/conda-osx-64.lock
-            miniforge-variant: Mambaforge
-            miniforge-version: latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: actions/checkout@v3
+      - name: "Install Conda environment with Micromamba"
+        uses: mamba-org/provision-with-micromamba@main
         with:
+          cache-env: true
           environment-file: ${{ matrix.environment-file }}
-          miniforge-variant: ${{ matrix.miniforge-variant }}
-          miniforge-version: ${{ matrix.miniforge-version }}
-          use-mamba: true
+          environment-name: nsidc-tutorials
 
-      - name: Bash
+      - name: "Verify micromamba"
         shell: bash -l {0}
         run: |
-          conda info
-          conda list
+          micromamba info
+          jupyter kernelspec list
+          which python
           printenv | sort
-          find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path "*/iceflow/*" | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
 
-  # windows:
-  #   name: Runtime Windows Mambaforge
-  #   runs-on: windows-latest
-  #   strategy:
-  #     fail-fast: false
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: conda-incubator/setup-miniconda@v2
-  #       with:
-  #         environment-file: binder/conda-win-64.lock
-  #         miniforge-variant: Mambaforge
-  #         miniforge-version: latest
-  #         use-mamba: true
-
-  #     - name: PowerShell
-  #       shell: powershell
-  #       run: |
-  #         conda info
-  #         conda list
-
-  #     - name: PowerShell Core
-  #       shell: pwsh
-  #       run: |
-  #         conda info
-  #         conda list
-
-  #     - name: Cmd.exe
-  #       shell: cmd /C CALL {0}
-  #       run: >-
-  #         conda info && conda list

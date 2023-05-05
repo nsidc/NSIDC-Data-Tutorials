@@ -2,6 +2,10 @@ name: env-lock
 channels:
   - conda-forge
 dependencies:
+  - python=3.9
+  # https://github.com/conda/conda-lock/issues/381
+  - conda=22.9
   - conda-lock=1.2.1
   - mamba>=1.0
+  - lockfile
   - pip
