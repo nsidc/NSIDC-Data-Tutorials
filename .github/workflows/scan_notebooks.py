@@ -26,9 +26,9 @@ def ensure_environment(notebook, libraries):
 
 def scan_notebook(notebook_path):
     notebook_path = notebook_path.replace(" ", "\\ ")
-    command = f"pipreqsnb {notebook_path} --print"
+    command = f"pipreqsnb {notebook_path} --print --debug"
 
-    libraries = []
+    libraries = set()
     p = subprocess.Popen(
         command,
         shell=True,
@@ -42,8 +42,10 @@ def scan_notebook(notebook_path):
         parsed_out = inline.decode("UTF-8").lower()
         if "==" in parsed_out:
             library = parsed_out.split("==")[0]
-            libraries.append(library)
-    print(libraries)
+            if library.lower() == "gdal":
+                library = "osgeo"
+            libraries.add(library)
+    print(list(libraries))
 
     ensure_environment(notebook_path, libraries)
 
