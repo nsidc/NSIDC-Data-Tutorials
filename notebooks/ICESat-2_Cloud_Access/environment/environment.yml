@@ -12,3 +12,5 @@ dependencies:
  - earthaccess
  - hvplot
  - xarray
+ - ipywidgets
+ - h5netcdf
