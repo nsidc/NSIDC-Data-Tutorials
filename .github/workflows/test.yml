@@ -24,7 +24,7 @@ jobs:
         uses: mamba-org/provision-with-micromamba@main
         with:
           cache-env: true
-          environment-file: binder/conda-linux-64.lock
+          environment-file: binder/environment.yml
           environment-name: nsidc-tutorials
 
       - name: "Verify micromamba"
