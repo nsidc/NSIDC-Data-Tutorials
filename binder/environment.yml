@@ -13,11 +13,10 @@ dependencies:
 - geopandas
 - h5py
 - h5netcdf
-# - netcdf4~=1.6.2
-- netcdf4
+- netcdf4=1.6.2
 - geopy
 - pyresample
-- earthaccess>=0.5.1
+- earthaccess>=0.5.2
 - fiona
 - zarr
 - ipympl
@@ -35,7 +34,7 @@ dependencies:
 - icepyx
 - geoviews
 - pipreqsnb
-- conda-lock=1.2.1
+- conda-lock>=1.2.1
 - mamba>=1.0
 - pip
 - pip:
