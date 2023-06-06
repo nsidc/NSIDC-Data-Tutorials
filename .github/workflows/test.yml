@@ -50,12 +50,12 @@ jobs:
 
       - name: "Execute notebooks with Quarto"
         env:
-          EARTHDATA_USERNAME: ${{ secrets.EDL_USERNAME }}
-          EARTHDATA_PASSWORD: ${{ secrets.EDL_PASSWORD }}
+          EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
+          EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         shell: bash -l {0}
         run: |
           jupyter kernelspec list
-          find . -type f -name "*.ipynb" | xargs -I F quarto render "F" --execute --execute-daemon
+          find notebooks -type f -name "*.ipynb" | xargs -I F quarto render "F" --execute --execute-daemon
 
   win-osx:
     name: Runtime (${{ matrix.os }}, micromamba)
