@@ -47,13 +47,6 @@ jobs:
         with:
           version: 1.1.251
 
-      - name: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-        with:
-          version: 2     # default
-          verbose: false # default
-          arch: amd64    # allowed values: amd64, arm64
-
       - name: "Execute notebooks with Quarto"
         env:
           EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
@@ -61,7 +54,7 @@ jobs:
         shell: bash -l {0}
         run: |
           jupyter kernelspec list
-          find notebooks -type f -name "*.ipynb" | xargs -I F quarto render "F" --execute --execute-daemon
+          find notebooks -type f -name "*.ipynb" -not -path '*\.ipynb_checkpoints/*' -not -path '*endered*'  | xargs -I F quarto render "F" --execute --execute-daemon
 
   win-osx:
     name: Runtime (${{ matrix.os }}, micromamba)
