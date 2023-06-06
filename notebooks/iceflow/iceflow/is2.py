@@ -1,5 +1,4 @@
 import icepyx as ipx
-from icepyx.core import Earthdata
 
 
 class is2:
@@ -8,21 +7,13 @@ class is2:
     """
     def __init__(self, credentials):
         self.credentials = credentials
-        cap_url = 'https://n5eil02u.ecs.nsidc.org/egi/capabilities/ATL06.005.xml'
-        self._session = Earthdata.Earthdata(
-            uid=credentials['username'],
-            email=credentials['email'],
-            pswd=credentials['password'],
-            capability_url=cap_url)
-        self._session._start_session()
 
     def query(self, parameters):
         dataset = parameters['dataset']
         date_range = [parameters['start'], parameters['end']]
         bounding_box = [round(float(coord), 4) for coord in parameters['bbox'].split(',')]
         query = ipx.Query(dataset, bounding_box, date_range)
-        query._email = self.credentials['email']
-        query._session = self._session.session
+        query.earthdata_login()
         return query
 
     def simplify_atl03(self, files, variables, filters):
