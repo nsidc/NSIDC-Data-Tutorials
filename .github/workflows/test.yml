@@ -1,12 +1,11 @@
 name: Test Notebooks
 
 on:
-  push:
+  pull_request:
     paths:
       - notebooks/**
       - binder/**
       - '.github/workflows/'
-  pull_request:
     types: [opened, synchronize]
 
 concurrency:
