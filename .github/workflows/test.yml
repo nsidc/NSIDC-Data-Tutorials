@@ -33,13 +33,12 @@ jobs:
           micromamba info
           jupyter kernelspec list
           which python
+          conda list | sort
           printenv | sort
 
       - name: "Verify that libraries used in notebooks are present in the environment"
         shell: bash -l {0}
         run: |
-          conda list | sort
-          printenv | sort
           find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path '*/iceflow/*'  | xargs -I % python .github/workflows/scan_notebooks.py -n %
 
       - name: "Setup Quarto"
@@ -53,7 +52,6 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         shell: bash -l {0}
         run: |
-          jupyter kernelspec list
           find notebooks -type f -name "*.ipynb" -not -path '*\.ipynb_checkpoints/*' -not -path '*endered*'  | xargs -I F quarto render "F" --execute --execute-daemon
 
   win-osx:
