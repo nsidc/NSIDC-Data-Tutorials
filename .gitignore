@@ -1,6 +1,7 @@
 MANIFEST
 notebook/Outputs
 build
+bin
 dist
 _build
 docs/man/*.gz
