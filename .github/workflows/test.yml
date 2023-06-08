@@ -66,8 +66,10 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         shell: bash -l {0}
         run: |
-          echo "Notebooks to execute: ${{ steps.changed-files.outputs.all_changed_files }}"
-          echo -e ${{ steps.changed-files.outputs.all_changed_files }} | xargs -I F quarto render "F" --execute --execute-daemon
+          for notebook in ${{ steps.changed-files.outputs.added_files }}; do
+            echo "Executing ${notebook} ..."
+            quarto render $notebook --execute --execute-daemon
+          done
 
   win-osx:
     name: Runtime (${{ matrix.os }}, micromamba)
