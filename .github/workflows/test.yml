@@ -34,9 +34,20 @@ jobs:
           jupyter kernelspec list
           which python
           conda list | sort
-          printenv | sort
+
+      - name: "List updated notebooks"
+        id: changed-files
+        uses: tj-actions/changed-files@v36
+        with:
+          # since_last_remote_commit: true
+          separator: "\n"
+          files: |
+            **/*.ipynb
+          files_ignore: |
+            **/*endered*.ipynb
 
       - name: "Verify that libraries used in notebooks are present in the environment"
+        if: steps.changed-files.outputs.any_changed == 'true'
         shell: bash -l {0}
         run: |
           find notebooks -type f -iname \*.ipynb  -not -path '*\.ipynb_checkpoints/*' -not -path '*/iceflow/*'  | xargs -I % python .github/workflows/scan_notebooks.py -n %
@@ -46,17 +57,10 @@ jobs:
         with:
           version: 1.1.251
 
-      - name: "List updated notebooks"
-        id: changed-files
-        uses: tj-actions/changed-files@v36
-        with:
-          # since_last_remote_commit: true
-          files: |
-            **/*.ipynb
-          files_ignore: |
-            **/*endered*.ipynb
+
 
       - name: "Execute notebooks with Quarto"
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           EARTHDATA_USERNAME: ${{ secrets.EARTHDATA_USERNAME }}
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
