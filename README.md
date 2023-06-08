@@ -3,7 +3,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorial/main?urlpath=lab/tree/notebooks)
 
-[![CircleCI](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials.svg?style=svg)](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials)
+[![Test Notebooks](https://github.com/nsidc/NSIDC-Data-Tutorials/actions/workflows/test.yml/badge.svg)](https://github.com/nsidc/NSIDC-Data-Tutorials/actions/workflows/test.yml)
 
 ## Summary
 
