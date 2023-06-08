@@ -80,6 +80,4 @@ jobs:
         run: |
           micromamba info
           jupyter kernelspec list
-          which python
           printenv | sort
-
