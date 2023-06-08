@@ -20,8 +20,6 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: "Install Conda environment with Micromamba"
         uses: mamba-org/provision-with-micromamba@main
         with:
@@ -48,9 +46,15 @@ jobs:
         with:
           version: 1.1.251
 
-      - name: Get changed files
+      - name: "List updated notebooks"
         id: changed-files
         uses: tj-actions/changed-files@v36
+        with:
+          # since_last_remote_commit: true
+          files: |
+            **/*.ipynb
+          files_ignore: |
+            **/*endered*.ipynb
 
       - name: "Execute notebooks with Quarto"
         env:
@@ -58,10 +62,8 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         shell: bash -l {0}
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-          find notebooks -type f -name "*.ipynb" -not -path '*\.ipynb_checkpoints/*' -not -path '*endered*'  | xargs -I F quarto render "F" --execute --execute-daemon
+          echo "Notebooks to execute: ${{ steps.changed-files.outputs.all_changed_files }}"
+          echo -e ${{ steps.changed-files.outputs.all_changed_files }} | xargs -I F quarto render "F" --execute --execute-daemon
 
   win-osx:
     name: Runtime (${{ matrix.os }}, micromamba)
