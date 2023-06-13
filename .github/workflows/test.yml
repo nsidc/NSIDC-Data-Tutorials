@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: "Install Conda environment with Micromamba"
-        uses: mamba-org/provision-with-micromamba@main
+        uses: mamba-org/setup-micromamba
         with:
           cache-env: true
           environment-file: binder/environment.yml
@@ -69,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: "Install Conda environment with Micromamba"
-        uses: mamba-org/provision-with-micromamba@main
+        uses: mamba-org/setup-micromamba
         with:
           cache-env: true
           environment-file: ${{ matrix.environment-file }}
