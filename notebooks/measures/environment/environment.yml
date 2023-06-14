@@ -1,0 +1,11 @@
+name: measures
+channels:
+- conda-forge
+dependencies:
+- python=3.9
+- gdal=3.6
+- matplotlib-base>=3.5
+- numpy=1.23.5
+- earthaccess>=0.5.1
+- rasterio~=1.3.6
+- affine

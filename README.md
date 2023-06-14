@@ -3,7 +3,7 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nsidc/NSIDC-Data-Tutorial/main?urlpath=lab/tree/notebooks)
 
-[![CircleCI](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials.svg?style=svg)](https://circleci.com/gh/nsidc/NSIDC-Data-Tutorials)
+[![Test Notebooks](https://github.com/nsidc/NSIDC-Data-Tutorials/actions/workflows/test.yml/badge.svg)](https://github.com/nsidc/NSIDC-Data-Tutorials/actions/workflows/test.yml)
 
 ## Summary
 
@@ -41,6 +41,17 @@ The notebooks on this project demonstrate how to search and access ITS_LIVE velo
 **Accessing and working with ICESat-2 Data in the Cloud**
 
 Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
+
+### [MEaSUREs](./notebooks/measures)
+
+**Download, crop, resample, and plot multiple GeoTIFFs**
+
+This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other. 
+
+We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
+
+* [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
+* [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
 
 ## Usage with Binder
 
