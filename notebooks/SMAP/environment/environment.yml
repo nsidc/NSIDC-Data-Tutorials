@@ -1,0 +1,29 @@
+name: smap-tutorial
+channels:
+- conda-forge
+dependencies:
+- python=3.9 
+- xarray
+- matplotlib-base>=3.5
+- numpy=1.23.5
+- geopandas
+- h5py
+- h5netcdf
+- netcdf4=1.6.2
+- geopy
+- pyresample
+- earthaccess>=0.5.2
+- fiona
+- rasterio~=1.3.6
+- cartopy
+- vaex
+- jupyter-offlinenotebook
+- sidecar
+- geoviews
+- pipreqsnb
+- conda-lock>=1.2.1
+- mamba>=1.0
+platforms:
+- linux-64
+- osx-64
+- win-64
