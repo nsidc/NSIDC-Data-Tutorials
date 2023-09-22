@@ -16,7 +16,7 @@ dependencies:
 - netcdf4=1.6.2
 - geopy
 - pyresample
-- earthaccess>=0.5.2
+- earthaccess>=0.6.1
 - fiona
 - zarr
 - ipympl
@@ -35,9 +35,11 @@ dependencies:
 - pipreqsnb
 - conda-lock>=1.2.1
 - mamba>=1.0
+- coiled
 - pip
 - pip:
   - git+https://github.com/icesat2py/icepyx.git
+  - git+https://github.com/ICESat2-SlideRule/h5coro.git@main
   - awscliv2
 platforms:
 - linux-64
