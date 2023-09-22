@@ -1,5 +1,32 @@
 ## Based on the READ function form Younghyun Koo for the sea ice tutorial at the IS2 hackweek
 
+'''
+Code to read s3 file without earthaccess open
+
+from itertools import chain
+for year, granules in atl10.items():
+    
+    data_links = list(
+        chain.from_iterable(
+            granule.data_links(access="direct") for granule in granules
+            )
+    )
+data_links[0]
+
+from readers import get_credentials
+
+file = data_links[0]
+
+h5coro.config(errorChecking=True, verbose=False, enableAttributes=False)
+
+h5obj = h5coro.H5Coro(file.replace("s3://",""), s3driver.S3Driver, credentials=get_credentials(file))
+
+h5obj.readDatasets(["gt1l/freeboard_segment/beam_fb_height"], block=True)
+
+for dataset in h5obj:
+    print(dataset)
+'''
+
 from itertools import product
 from pqdm.threads import pqdm
 
