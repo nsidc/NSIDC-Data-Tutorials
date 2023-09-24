@@ -126,6 +126,9 @@ def read_atl10_local(files, executors):
         return tracks
     
     df = pqdm(files, read_atl10, n_jobs=executors)
+
+    if len(df) == 0:
+        raise ValueError("Empty list returned from read_atl10")
     combined = pd.concat([t[0] for t in df if type(t) is list])
     
     return combined
