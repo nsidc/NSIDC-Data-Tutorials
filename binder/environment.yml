@@ -35,7 +35,7 @@ dependencies:
 - pipreqsnb
 - conda-lock>=1.2.1
 - mamba>=1.0
-- coiled
+- coiled>=0.9.30
 - pip
 - pip:
   - git+https://github.com/icesat2py/icepyx.git
