@@ -4,11 +4,11 @@
 
 In this set of three tutorials we demonstrate how to search for, download and plot SMAP data. Tutorial 1 demonstrates how to search for and download SMAP data using the `earthaccess` library. The second tutorial demonstrates how to read in and plot the data downloaded in Tutorial 1. And Tutorial 3 provides information on the surface quality and retrieval quality flags. 
 
-We use the [SMAP L3 Radiometer Global Daily 36 km EASE-Grid Soil Moisture, Version 8](https://nsidc.org/data/SPL3SMP/versions/8) data set as an example
+We use the [SMAP L3 Radiometer Global Daily 36 km EASE-Grid Soil Moisture, Version 8](https://nsidc.org/data/SPL3SMP/versions/8) data set as an example.
 
 **NOTE** these notebooks are an updated version of the notebooks orginially published in this [repo](https://github.com/nsidc/smap_python_notebooks/tree/main). The notebooks are based on notebooks originally provided to NSIDC by Adam Purdy. Jennifer Roebuck of NSIDC applied the following updates:
 * Used `earthaccess` instead of `requests` for authentication, searching for and downloading the data. This reduced the code to just a few lines.
-* Used the latest version of SPL3SMP (version 8).
+* Used a more recent version of SPL3SMP (version 8).
 * Replaced the use of `Basemap` with `cartopy`. 
 * Updated the surface quality flag names to reflect the ones used in the latest version. 
 * Minor text edits to provide additional information where necessary.
