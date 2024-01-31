@@ -1,0 +1,29 @@
+name: GitHub Issue to JIRA
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Jira issue
+    steps:
+    - name: Login
+      uses: atlassian/gajira-login@v3    # Required for authenticating to Jira
+      env:
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+    - name: Create
+      id: create
+      uses: atlassian/gajira-create@v3
+      with:
+        project: CRYO
+        issuetype: Story
+        summary: "GitHub Issue: ${{ github.event.issue.title }}"
+        description: "${{ github.event.issue.body }}.\n\nCreated on GitHub by user ${{ github.actor }}"
+
+    - name: Log created issue
+      run: echo "Issue ${{ steps.create.outputs.issue }} was created"
