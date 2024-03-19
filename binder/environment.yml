@@ -25,6 +25,8 @@ dependencies:
 - plotly
 - joblib
 - cartopy
+- icepyx
+- h5coro
 - pystac-client
 - vaex
 - intake-xarray
@@ -38,8 +40,6 @@ dependencies:
 - coiled>=0.9.30
 - pip
 - pip:
-  - git+https://github.com/icesat2py/icepyx.git
-  - git+https://github.com/ICESat2-SlideRule/h5coro.git@main
   - awscliv2
 platforms:
 - linux-64
