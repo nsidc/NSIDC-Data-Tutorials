@@ -1,5 +1,14 @@
 # IceFlow Point Cloud Data Access
 
+> [!CAUTION]
+> The IceFlow notebooks and supporting code have some known problems and users
+> should exercise caution. It is likely that users will run into errors while
+> interacting with the notebooks. Requests for ITRF transformations are not
+> currently working as expected. We recommend users look at the `corrections`
+> notebook for information about how to apply ITRF transformations to data
+> themselves. IceFlow is currently under maintenence, and we hope to resolve
+> some of these issues soon.
+
 ## Summary
 
 The IceFlow python library simplifies accessing and combining data from several of NASA's cryospheric altimetry missions, including ICESat/GLAS, Operation IceBridge, and ICESat-2. In particular, IceFlow harmonizes the various file formats and georeferencing parameters across several of the missions' data sets, allowing you to analyze data across the multi-decadal time series.
