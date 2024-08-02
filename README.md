@@ -25,6 +25,15 @@ Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrate
 
 ### [IceFlow](./notebooks/iceflow)
 
+> [!CAUTION]
+> The IceFlow notebooks and supporting code have some known problems and users
+> should exercise caution. It is likely that users will run into errors while
+> interacting with the notebooks. Requests for ITRF transformations are not
+> currently working as expected. We recommend users look at the `corrections`
+> notebook for information about how to apply ITRF transformations to data
+> themselves. IceFlow is currently under maintenence, and we hope to resolve
+> some of these issues soon.
+
 **Harmonized data for  pre-IceBridge, ICESat and IceBridge data sets.**
 These Jupyter notebooks are interactive documents to teach students and researchers interested in cryospheric sciences how to access and work with airborne altimetry and related data sets from NASA’s [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission, and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/) and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions using the NSIDC **IceFlow API**
 
