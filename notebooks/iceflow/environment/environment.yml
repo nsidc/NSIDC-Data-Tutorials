@@ -3,23 +3,10 @@ channels:
 - conda-forge
 dependencies:
 - python=3.9
-- pangeo-notebook
-- matplotlib-base
-- ipyleaflet
-- geopandas
-- h5py
-- ipympl
-- plotly
-- joblib
-- cartopy
-- vaex
-- tqdm
-- sidecar
-- icepyx
-- pip
-- pip:
-  - python-cmr
-platforms:
-  - linux-64
-  - osx-64
-  - win-64
+- pyproj ~=3.6.1
+- numpy ~=2.0.1
+- matplotlib-base ~=3.8.3
+# provides jupyter lab
+- pangeo-notebook ~=2024.07.24
+# Interactive matplotlib in jupyter notebooks
+- ipympl ~=0.9.3
