@@ -6,6 +6,7 @@ dependencies:
 - fsspec>=2022.10
 - gdal=3.6
 - xarray
+- rioxarray
 - matplotlib-base>=3.5
 - ipyleaflet
 - shapely
