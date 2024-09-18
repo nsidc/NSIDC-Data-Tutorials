@@ -45,11 +45,21 @@ The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) proj
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
-### [ICESat-2_Cloud_Access](./notebooks/ICESat-2_Cloud_Access)
+### [ICESat-2_Cloud_Access Notebooks](./notebooks/ICESat-2_Cloud_Access)
+
+These notebooks demonstrate how to search and access ICESat-2 from the NASA Earthdata Cloud:
 
 **Accessing and working with ICESat-2 Data in the Cloud**
 
 Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
+
+**UPDATE: IS2-CS2 NOTEBOOK TITLE**
+
+UPDATE: Description
+
+**Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud**
+
+This notebook utilizes several libraries to performantly search, access, read, and grid ATL10 data over the Ross Sea, Antarctica including `earthaccess`, `h5coro`, and `geopandas`. The notebook provides further guidance on how to scale this analysis to the entire continent, running the same workflow from a script that can be run from your laptop using [Coiled](https://www.coiled.io/).
 
 ### [MEaSUREs](./notebooks/measures)
 
