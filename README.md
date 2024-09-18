@@ -11,40 +11,6 @@ This combined repository includes tutorials and code resources provided by the N
 
 ## Tutorials
 
-### [SnowEx_ASO_MODIS_Snow](./notebooks/SnowEx_ASO_MODIS_Snow)
-
-**Snow Depth and Snow Cover Data Exploration**
-
-Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
-
-### [ICESat-2_MODIS_Arctic_Sea_Ice](./notebooks/ICESat-2_MODIS_Arctic_Sea_Ice)
-
-**Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data**
-
-Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
-
-### [IceFlow](./notebooks/iceflow)
-
-> [!CAUTION]
-> The IceFlow notebooks and supporting code have some known problems and users
-> should exercise caution. It is likely that users will run into errors while
-> interacting with the notebooks. Requests for ITRF transformations are not
-> currently working as expected. We recommend users look at the `corrections`
-> notebook for information about how to apply ITRF transformations to data
-> themselves. IceFlow is currently under maintenence, and we hope to resolve
-> some of these issues soon.
-
-**Harmonized data for  pre-IceBridge, ICESat and IceBridge data sets.**
-These Jupyter notebooks are interactive documents to teach students and researchers interested in cryospheric sciences how to access and work with airborne altimetry and related data sets from NASA’s [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission, and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/) and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions using the NSIDC **IceFlow API**
-
-
-### [ITS_LIVE](./notebooks/itslive)
-
-**Global land ice velocities.**
-The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
-
-The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
-
 ### [ICESat-2_Cloud_Access Notebooks](./notebooks/ICESat-2_Cloud_Access)
 
 These notebooks demonstrate how to search and access ICESat-2 from the NASA Earthdata Cloud:
@@ -71,6 +37,39 @@ We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measur
 
 * [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
 * [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
+
+### [SnowEx_ASO_MODIS_Snow](./notebooks/SnowEx_ASO_MODIS_Snow)
+
+**Snow Depth and Snow Cover Data Exploration**
+
+Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
+
+### [ICESat-2_MODIS_Arctic_Sea_Ice](./notebooks/ICESat-2_MODIS_Arctic_Sea_Ice)
+
+**Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data**
+
+Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
+
+### [ITS_LIVE](./notebooks/itslive)
+
+**Global land ice velocities.**
+The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
+
+The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
+
+### [IceFlow](./notebooks/iceflow)
+
+> [!CAUTION]
+> The IceFlow notebooks and supporting code have some known problems and users
+> should exercise caution. It is likely that users will run into errors while
+> interacting with the notebooks. Requests for ITRF transformations are not
+> currently working as expected. We recommend users look at the `corrections`
+> notebook for information about how to apply ITRF transformations to data
+> themselves. IceFlow is currently under maintenence, and we hope to resolve
+> some of these issues soon.
+
+**Harmonized data for  pre-IceBridge, ICESat and IceBridge data sets.**
+These Jupyter notebooks are interactive documents to teach students and researchers interested in cryospheric sciences how to access and work with airborne altimetry and related data sets from NASA’s [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission, and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/) and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions using the NSIDC **IceFlow API**
 
 ## Usage with Binder
 
