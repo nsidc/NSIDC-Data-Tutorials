@@ -13,14 +13,15 @@ This notebook demonstrates searching for cloud-hosted ICESat-2 data and directly
 4. Visualize the land ice heights using `hvplot`.
 
 ### [UPDATE:IS2-CS2](./UPDATE-NOTEBOOK-FILENAME.ipynb)
-UPDATE: This notebook demonstrates...
+This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our instance from their ftp storage lcoation and accessed locally.  
 
 #### Key Learning Objectives 
-UPDATE
-1. Objective 1
-2. Objective 2
-3. Objective 3
-4. Objective 4
+1. use `earthaccess` to search for ICESat-2 ATL10 data using a spatial filter
+2. open cloud-hosted files using direct access to the ICESat-2 S3 bucket; 
+3. use cs2eo script to download files into your hub instance
+3. load an HDF5 group into an `xarray.Dataset`;  
+4. visualize freeboards using `hvplot`.
+5. map the locations of ICESat-2 and CryoSat-2 freeboards using `cartopy`
 
 ### [Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud](./ATL10-h5coro_rendered.ipynb)
 This notebook utilizes several libraries to performantly search, access, read, and grid ATL10 data over the Ross Sea, Antarctica including `earthaccess`, `h5coro`, and `geopandas`. The notebook provides further guidance on how to scale this analysis to the entire continent, running the same workflow from a script that can be run from your laptop using [Coiled](https://www.coiled.io/).
