@@ -19,9 +19,9 @@ These notebooks demonstrate how to search and access ICESat-2 from the NASA Eart
 
 Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
 
-**UPDATE: IS2-CS2 NOTEBOOK TITLE**
+**Plotting ICESat-2 and CryoSat-2 Freeboards**
 
-UPDATE: Description
+This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our instance from their ftp storage lcoation and accessed locally.
 
 **Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud**
 
