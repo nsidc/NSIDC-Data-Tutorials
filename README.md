@@ -21,7 +21,7 @@ Originally presented to the UWG (User Working Group) in May 2022, this tutorial 
 
 **Plotting ICESat-2 and CryoSat-2 Freeboards**
 
-This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our instance from their ftp storage lcoation and accessed locally.
+This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.
 
 **Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud**
 
