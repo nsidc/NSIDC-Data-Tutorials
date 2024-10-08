@@ -12,8 +12,8 @@ This notebook demonstrates searching for cloud-hosted ICESat-2 data and directly
 3. Load a HDF5 group into an `xarray.Dataset`;
 4. Visualize the land ice heights using `hvplot`.
 
-### [Plotting ICESat-2 and CryoSat-2 Freeboards](./ICESat2-CryoSat2.ipynb)
-This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.  
+### [Plotting ICESat-2 and CryoSat-2 Freeboards](./ICESat2-CryoSat2-Coincident.ipynb)
+This notebook demonstrates plotting coincident ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.  
 
 #### Key Learning Objectives 
 1. use `earthaccess` to search for ICESat-2 ATL10 data using a spatial filter
