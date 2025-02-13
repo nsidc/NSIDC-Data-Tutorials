@@ -9,7 +9,7 @@ This notebook demonstrates searching for cloud-hosted ICESat-2 data and directly
 #### Key Learning Objectives 
 1. Use `earthaccess` to search for ICESat-2 data using spatial and temporal filters and explore search results;
 2. Open data granules using direct access to the ICESat-2 S3 bucket;
-3. Load a HDF5 group into an `xarray.Dataset`;
+3. Load a HDF5 group into an `xarray.DataTree`;
 4. Visualize the land ice heights using `hvplot`.
 
 ### [Plotting ICESat-2 and CryoSat-2 Freeboards](./ICESat2-CryoSat2-Coincident.ipynb)
