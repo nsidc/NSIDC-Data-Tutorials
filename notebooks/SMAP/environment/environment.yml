@@ -10,13 +10,16 @@ dependencies:
 - rioxarray
 - h5netcdf
 - dask
-#- netcdf4=1.6.2
-#- numpy=1.23.5
-#- matplotlib-base>=3.5
-
 - matplotlib
 - cartopy
 - affine
+- numpy<2.1
+
+#- vaex
+#- jupyter-offlinenotebook
+#- sidecar
+#- geoviews
+
 - pipreqsnb
 - conda-lock>=1.2.1
 - mamba>=1.0
