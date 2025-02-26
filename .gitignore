@@ -20,6 +20,7 @@ notebook/static/lab/*bundle.js
 notebooks/itslive/data/*.nc
 notebooks/iceflow/data
 notebooks/*/Outputs
+notebooks/SMAP/data
 .python-version
 node_modules
 *.py[co]
