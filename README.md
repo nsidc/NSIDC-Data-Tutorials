@@ -57,7 +57,7 @@ The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) proj
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
-### [IceFlow](./notebooks/iceflow)
+### [Altimetry_Harmonization](./notebooks/altimetry_harmonization)
 
 These Jupyter notebooks are interactive documents to teach students and
 researchers interested in cryospheric sciences about airborne altimetry and
