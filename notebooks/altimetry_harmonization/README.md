@@ -1,8 +1,8 @@
-# IceFlow Point Cloud Data Access
+# Altimetry Harmonization
 
 ## Summary
 
-The IceFlow notebooks provide information about how to access and work with
+These notebooks provide information about how to access and work with
 airborne altimetry and related data sets from NASA’s
 [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission,
 and satellite altimetry data from
@@ -15,8 +15,8 @@ The [0_introduction.ipynb](./0_introduction.ipynb) notebbook provides a
 descriptive background on the data.
 
 The [corrections.ibynb](./corrections.ibynb) notebook prodvides a small example
-of how to perform an ITRF coordinate transformations to facilitate data
-comparison across datasets.
+of how to perform ITRF coordinate transformations to facilitate data comparison
+across datasets.
 
 
 ## Setup
@@ -28,10 +28,5 @@ on several ways (using Binder, Docker, or Conda) to do this.
 
 ## Key Learning Objectives
 
-1. Learn the basics about the data sets (pre-IceBridge, IceBridge, ICESat/GLAS and ICESat-2) served by the IceFlow library.
-
-2. Learn to access these data sets using the IceFlow user interface widget.
-
-3. Learn to access these data sets using the IceFlow API.
-
-4. Learn to read and analyze the data using IceFlow.
+1. Learn the basics about the data sets (pre-IceBridge, IceBridge, ICESat/GLAS and ICESat-2).
+2. Learn about how ITRF coordinate transformations facilitate data comparison across datasets.
