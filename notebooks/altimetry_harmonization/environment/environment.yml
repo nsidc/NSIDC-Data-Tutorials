@@ -1,4 +1,4 @@
-name: nsidc-iceflow
+name: nsidc-altimetry-harmonization
 channels:
 - conda-forge
 dependencies:
