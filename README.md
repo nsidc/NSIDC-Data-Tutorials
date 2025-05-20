@@ -11,6 +11,33 @@ This combined repository includes tutorials and code resources provided by the N
 
 ## Tutorials
 
+### [ICESat-2_Cloud_Access Notebooks](./notebooks/ICESat-2_Cloud_Access)
+
+These notebooks demonstrate how to search and access ICESat-2 from the NASA Earthdata Cloud:
+
+**Accessing and working with ICESat-2 Data in the Cloud**
+
+Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
+
+**Plotting ICESat-2 and CryoSat-2 Freeboards**
+
+This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.
+
+**Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud**
+
+This notebook utilizes several libraries to performantly search, access, read, and grid ATL10 data over the Ross Sea, Antarctica including `earthaccess`, `h5coro`, and `geopandas`. The notebook provides further guidance on how to scale this analysis to the entire continent, running the same workflow from a script that can be run from your laptop using [Coiled](https://www.coiled.io/).
+
+### [MEaSUREs](./notebooks/measures)
+
+**Download, crop, resample, and plot multiple GeoTIFFs**
+
+This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other. 
+
+We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
+
+* [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
+* [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
+
 ### [SnowEx_ASO_MODIS_Snow](./notebooks/SnowEx_ASO_MODIS_Snow)
 
 **Snow Depth and Snow Cover Data Exploration**
@@ -23,6 +50,13 @@ Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessi
 
 Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
 
+### [ITS_LIVE](./notebooks/itslive)
+
+**Global land ice velocities.**
+The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
+
+The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
+
 ### [IceFlow](./notebooks/iceflow)
 
 These Jupyter notebooks are interactive documents to teach students and
@@ -31,31 +65,6 @@ related data sets from NASA’s
 [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission,
 and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/)
 and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions.
-
-
-### [ITS_LIVE](./notebooks/itslive)
-
-**Global land ice velocities.**
-The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) project facilitates ice sheet, ice shelf and glacier research by providing a globally comprehensive and temporally dense multi-sensor record of land ice velocity and elevation with low latency. Scene-pair velocities were generated from satellite optical and radar imagery.
-
-The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
-
-### [ICESat-2_Cloud_Access](./notebooks/ICESat-2_Cloud_Access)
-
-**Accessing and working with ICESat-2 Data in the Cloud**
-
-Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
-
-### [MEaSUREs](./notebooks/measures)
-
-**Download, crop, resample, and plot multiple GeoTIFFs**
-
-This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other. 
-
-We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
-
-* [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
-* [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
 
 ## Usage with Binder
 
