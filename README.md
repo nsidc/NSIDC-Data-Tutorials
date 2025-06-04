@@ -57,14 +57,20 @@ The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) proj
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
-### [Altimetry_Harmonization](./notebooks/altimetry_harmonization)
+### IceFlow
 
-These Jupyter notebooks are interactive documents to teach students and
-researchers interested in cryospheric sciences about airborne altimetry and
-related data sets from NASA’s
-[IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission,
-and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/)
-and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions.
+> [!WARNING]
+> The IceFlow tutorials have been removed. The Jupyter notebooks and associated
+> code have been moved to a standalone
+> [iceflow](https://github.com/nsidc/iceflow) Python library. See the [iceflow
+> documentation](https://iceflow.readthedocs.io/en/latest/) for the latest
+> information on how to access and work with airborne altimetry and related data
+> sets from NASA’s
+> [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission,
+> and satellite altimetry data from
+> [ICESat/GLAS](https://icesat.gsfc.nasa.gov/icesat/) and
+> [ICESat-2](https://icesat-2.gsfc.nasa.gov/).
+
 
 ## Usage with Binder
 
