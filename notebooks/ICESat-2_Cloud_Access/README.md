@@ -13,6 +13,8 @@ This notebook demonstrates searching for cloud-hosted ICESat-2 data and directly
 4. Visualize the land ice heights using `hvplot`.
 
 ### [Plotting ICESat-2 and CryoSat-2 Freeboards](./ICESat2-CryoSat2-Coincident.ipynb)
+*This tutorial was originally used for a data access workshop during the Cryo2Ice symposium in September 2024.  Content represents a snapshot in time, and will not be updated.*
+
 This notebook demonstrates plotting coincident ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.  
 
 #### Key Learning Objectives 
