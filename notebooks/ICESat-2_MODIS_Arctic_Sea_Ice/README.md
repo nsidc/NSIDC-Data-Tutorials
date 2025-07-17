@@ -1,10 +1,10 @@
 # Warning:  Data access is no longer possible using the method described in this tutorial
 
-This tutorial was developed for a workshop presented at AGU 2019 and represents a snapshot in time.  The data access method described below was developed to access data within NSIDC DAAC’s legacy, on premises archive.  Data have since migrated to the NASA Earthdata Cloud and are not accessible as described below.  NASA Earthdata Cloud data are freely accessible for download or in-region (AWS us-west-2) access to anyone with an Earthdata Login.  We are developing material to replace the instructions presented here.  In the meantime, we recommend the following tutorials for programmatic data access:
+This tutorial was developed for a workshop presented at AGU 2019 and represents a snapshot in time.  The data access method described below was developed to access data within NSIDC DAAC’s legacy, on-premises archive.  Data have since migrated to the NASA Earthdata Cloud and are not accessible as described below.  NASA Earthdata Cloud data are freely accessible for download or in-region (AWS us-west-2) access to anyone with an Earthdata Login.  We are developing material to replace the instructions presented here.  In the meantime, we recommend the following tutorials for programmatic data access:
 
 https://github.com/nsidc/NSIDC-Data-Tutorials/tree/main/notebooks/ICESat-2_Cloud_Access
 
-https://nasa-openscapes.github.io/earthdata-cloud-cookbook/tutorials/IS2_Harmony.html
+https://nasa-openscapes.github.io/earthdata-cloud-cookbook/tutorials/IS2_Harmony
 
 For more information regarding the migration and data access from NASA Earthdata Cloud please go here:
 
