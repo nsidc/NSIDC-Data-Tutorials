@@ -1,17 +1,18 @@
 # Snow Depth and Snow Cover Data Exploration 
 
-## Summary 
+## Overview
 
-This tutorial demonstrates how to access and compare coincident snow data from the National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC) across in-situ, airborne, and satellite platforms from NASA's SnowEx, ASO, and MODIS data sets, respectively.  
+This tutorial demonstrates how to access and compare coincident snow data from in-situ Ground Pentrating Radar (GPR) measurements, and airborne and satellite platforms from NASA's SnowEx, ASO, and MODIS data sets. All data are available from the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). 
 
-## Key Learning Objectives
+## What you will learn in this tutorial
 
-1. Learn about the coverage, resolution, and structure of snow data sets from NASA's SnowEx, ASO, and MODIS data sets. 
+In this tutorial you will learn:
 
-2. Learn how to find and download spatiotemporally coincident data across in-situ, airborne, and satellite observations.
-
-3. Learn how to read data into Python from CSV and GeoTIFF formats.
-
-4. Learn how to subset data based on a buffered area. 
-
-5. Learn how to extract and visualize raster values at point locations.
+1. what snow data and information is available from NSIDC and the resources available to search and access this data;
+2. how to search and access spatiotemporally coincident data across in-situ, airborne, and satellite observations.
+3. how to read SnowEx GPR data into a Geopandas GeoDataFrame;
+4. how to read ASO snow depth data from GeoTIFF files using xarray;
+5. how to read MODIS Snow Cover data from HDF-EOS files using xarray;
+6. how to subset gridded data using a bounding box;
+5. how to extract and visualize raster values at point locations;
+6. how to save output as shapefile.
