@@ -16,3 +16,23 @@ In this tutorial you will learn:
 6. how to subset gridded data using a bounding box;
 5. how to extract and visualize raster values at point locations;
 6. how to save output as shapefile.
+
+## Setup
+
+We recommend creating a virtual environment to run this notebook.  This can be with `mamba` or `conda`.  We recommend `mamba`.
+
+```
+mamba env update -f environment/environment.yml
+```
+
+This will create an environment called `nsidc-tutorials-snowex`. You can activate the environment with the command:
+
+```
+mamba activate nsidc-tutorials-snowex
+```
+
+You will now have a virtual environment with all the required packages.  You can start a `jupyter lab` with
+
+```
+jupyter lab
+```
