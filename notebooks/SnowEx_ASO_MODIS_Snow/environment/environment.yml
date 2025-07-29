@@ -1,19 +1,24 @@
-name: nsidc-tutorials
+name: nsidc-tutorials-snowex
 channels:
 - conda-forge
 dependencies:
-- python=3.9
-- pangeo-notebook
-- xarray
+- python=3.12
+
+- jupyterlab
+- jupyter_contrib_nbextensions
+
 - earthaccess
-- matplotlib-base
-- shapely
-- geopandas
+
+- xarray
+- rioxarray
+- dask
+- bottleneck
 - h5py
-- pyresample
-- fiona
-- descartes
-- rasterio
+- libgdal-hdf4
+
+- geopandas
+
+- matplotlib
 - cartopy
 platforms:
 - linux-64
