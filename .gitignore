@@ -49,3 +49,13 @@ package-lock.json
 geckodriver.log
 *.iml
 
+# For SnowEx_ASO_MODIS_Snow
+notebooks/SnowEx_ASO_MODIS_Snow/download
+
+# Shape files
+*.cpg
+*.dbf
+*.prj
+*.shp
+*.shx
+
