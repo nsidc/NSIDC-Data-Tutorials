@@ -35,3 +35,9 @@ or
 ```
 conda activate nsidc-tutorial-icesat2-apps
 ```
+
+You can now launch Jupyter Lab and navigate to `working_with_icesat2_sea_ice_data.ipynb`.
+
+## Bugs
+
+<Add-link-to-github-issues>
