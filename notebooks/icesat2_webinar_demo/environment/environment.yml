@@ -1,0 +1,30 @@
+name: nsidc-tutorial-icesat2-apps
+channels:
+- conda-forge
+dependencies:
+- python=3.12
+
+- jupyterlab
+- jupyter_contrib_nbextensions
+
+- earthaccess
+
+- xarray
+- rioxarray
+- dask
+- bottleneck
+- h5py
+- libgdal-hdf4
+
+- geopandas
+
+- matplotlib
+- cartopy
+
+# For development
+- nbdime
+
+platforms:
+- linux-64
+- osx-64
+- win-64
