@@ -17,6 +17,7 @@ dependencies:
 - netcdf4
 - h5netcdf
 - libgdal-hdf4
+- python-dateutil
 
 - geopandas
 
