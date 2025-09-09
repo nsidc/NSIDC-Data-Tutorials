@@ -5,7 +5,7 @@ on:
     paths:
       - notebooks/**
       - binder/**
-      - '.github/workflows/'
+      - ".github/workflows/"
     types: [opened, synchronize]
 
 concurrency:
@@ -24,7 +24,7 @@ jobs:
         uses: mamba-org/setup-micromamba@v1
         with:
           cache-env: true
-          environment-file: binder/conda-linux-64.lock
+          environment-file: binder/conda-lock.yml
           environment-name: nsidc-tutorials
 
       - name: "Verify micromamba"
@@ -54,7 +54,6 @@ jobs:
         run: |
           find notebooks -type f -name "*.ipynb" -not -path '*\.ipynb_checkpoints/*' -not -path '*endered*' -not -path '*SnowEx*'  | xargs -I F quarto render "F"  --execute-daemon-restart
 
-
   win-osx:
     name: Runtime (${{ matrix.os }}, micromamba)
     runs-on: ${{ matrix.os }}-latest
@@ -64,9 +63,9 @@ jobs:
         os: ["windows", "macos"]
         include:
           - os: windows
-            environment-file: binder/conda-win-64.lock
+            environment-file: binder/conda-lock.yml
           - os: macos
-            environment-file: binder/conda-osx-64.lock
+            environment-file: binder/conda-lock.yml
     steps:
       - uses: actions/checkout@v3
       - name: "Install Conda environment with Micromamba"
