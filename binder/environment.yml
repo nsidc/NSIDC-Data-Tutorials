@@ -1,53 +1,53 @@
 name: nsidc-tutorials
 channels:
-- conda-forge
+  - conda-forge
 dependencies:
-- python=3.12
-- fsspec>=2022.10
-- gdal>=3.6
-- xarray
-- rioxarray
-- matplotlib-base>=3.5
-- ipyleaflet
-- shapely
-- numpy>=1.23.5
-- geopandas
-- h5py
-- h5netcdf
-- netcdf4
-- geopy
-- pyresample
-- earthaccess>=0.9.0
-- fiona
-- zarr<=3.0.0a
-- ipympl
-- descartes
-- rasterio
-- plotly
-- joblib
-- cartopy
-- icepyx
-- h5coro
-- pystac-client
-- jupyter-offlinenotebook
-- jupyterlab=4.2
-- sidecar
-- geoviews
-- holoviews
-- panel
-- datashader
-- dask
-- distributed
-- dask-labextension
-- pipreqsnb
-- conda-lock
-- mamba
-- coiled
-- pip
-- pip:
-  - awscliv2
-  - specklia # Cryosat client
+  - python=3.12
+  - fsspec>=2022.10
+  - gdal>=3.6
+  - xarray<=2025.6.0
+  - rioxarray
+  - matplotlib-base>=3.5
+  - ipyleaflet
+  - shapely
+  - numpy>=1.23.5
+  - geopandas
+  - h5py
+  - h5netcdf
+  - netcdf4
+  - geopy
+  - pyresample
+  - fiona
+  - zarr<=3.0.0a
+  - ipympl
+  - descartes
+  - rasterio
+  - plotly
+  - joblib
+  - cartopy
+  - icepyx
+  - h5coro
+  - pystac-client
+  - jupyter-offlinenotebook
+  - jupyterlab<=4.3.1
+  - sidecar
+  - geoviews
+  - holoviews
+  - panel
+  - datashader
+  - dask
+  - distributed
+  - dask-labextension
+  - pipreqsnb
+  - conda-lock
+  - mamba
+  - coiled
+  - awscli
+  - pip
+  - pip:
+      - specklia
+      - git+https://github.com/nsidc/earthaccess.git
 platforms:
-- linux-64
-- osx-64
-- win-64
+  - linux-64
+  - osx-64
+  - win-64
