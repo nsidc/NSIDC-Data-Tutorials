@@ -25,7 +25,6 @@ dependencies:
   - plotly
   - joblib
   - cartopy
-  - icepyx
   - h5coro
   - pystac-client
   - jupyter-offlinenotebook
@@ -47,6 +46,7 @@ dependencies:
   - pip:
       - specklia
       - git+https://github.com/nsidc/earthaccess.git
+      - icepyx
 platforms:
   - linux-64
   - osx-64
