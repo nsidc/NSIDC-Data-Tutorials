@@ -18,7 +18,7 @@ dependencies:
   - geopy
   - pyresample
   - fiona
-  - zarr<=3.0.0a
+  - zarr
   - ipympl
   - descartes
   - rasterio
@@ -42,6 +42,9 @@ dependencies:
   - mamba
   - coiled
   - awscli
+  - obstore
+  - kerchunk
+  - virtualizarr
   - pip
   - pip:
       - specklia
