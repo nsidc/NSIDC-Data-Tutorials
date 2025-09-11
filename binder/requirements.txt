@@ -1,2 +1,0 @@
-specklia
-git+https://github.com/nsidc/earthaccess.git
