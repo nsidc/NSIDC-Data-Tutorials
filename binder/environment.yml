@@ -1,48 +1,56 @@
 name: nsidc-tutorials
 channels:
-- conda-forge
+  - conda-forge
 dependencies:
-- python=3.9
-- fsspec>=2022.10
-- gdal=3.6
-- xarray
-- rioxarray
-- matplotlib-base>=3.5
-- ipyleaflet
-- shapely
-- numpy=1.23.5 # datasharder bug
-- geopandas
-- h5py
-- h5netcdf
-- netcdf4=1.6.2
-- geopy
-- pyresample
-- earthaccess>=0.9.0
-- fiona
-- zarr
-- ipympl
-- descartes
-- rasterio~=1.3.6
-- plotly
-- joblib
-- cartopy
-- icepyx
-- h5coro
-- pystac-client
-- vaex
-- intake-xarray
-- intake-stac
-- jupyter-offlinenotebook
-- sidecar
-- geoviews
-- pipreqsnb
-- conda-lock>=1.2.1
-- mamba>=1.0
-- coiled>=0.9.30
-- pip
-- pip:
-  - awscliv2
+  - python=3.12
+  - fsspec>=2022.10
+  - gdal>=3.6
+  - xarray<=2025.6.0
+  - rioxarray
+  - matplotlib-base>=3.5
+  - ipyleaflet
+  - shapely
+  - numpy>=1.23.5
+  - geopandas
+  - h5py
+  - h5netcdf
+  - netcdf4
+  - geopy
+  - pyresample
+  - fiona
+  - zarr
+  - ipympl
+  - descartes
+  - rasterio
+  - plotly
+  - joblib
+  - cartopy
+  - h5coro
+  - pystac-client
+  - jupyter-offlinenotebook
+  - jupyterlab<=4.3.1
+  - sidecar
+  - geoviews
+  - holoviews
+  - panel
+  - datashader
+  - dask
+  - distributed
+  - dask-labextension
+  - pipreqsnb
+  - conda-lock
+  - mamba
+  - coiled
+  - awscli
+  - obstore
+  - kerchunk
+  - virtualizarr
+  - pip
+  - pip:
+      - specklia
+      - git+https://github.com/nsidc/earthaccess.git
+      - icepyx
 platforms:
-- linux-64
-- osx-64
-- win-64
+  - linux-64
+  - osx-64
+  - win-64
