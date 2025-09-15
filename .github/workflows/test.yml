@@ -52,7 +52,7 @@ jobs:
           EARTHDATA_PASSWORD: ${{ secrets.EARTHDATA_PASSWORD }}
         shell: bash -l {0}
         run: |
-          find notebooks -type f -name "*.ipynb" -not -path '*\.ipynb_checkpoints/*' -not -path '*endered*' -not -path '*SnowEx*'  | xargs -I F quarto render "F"  --execute-daemon-restart
+          find notebooks -type f -name "*.ipynb" -not -path '*\.ipynb_checkpoints/*' -not -path '*endered*' -not -path '*iceflow*'  | xargs -I F quarto render "F"  --execute-daemon-restart
 
   win-osx:
     name: Runtime (${{ matrix.os }}, micromamba)
