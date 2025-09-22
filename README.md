@@ -7,7 +7,7 @@
 
 ## Summary
 
-This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported. 
+This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported.
 
 ## Tutorials
 
@@ -31,7 +31,7 @@ This notebook utilizes several libraries to performantly search, access, read, a
 
 **Download, crop, resample, and plot multiple GeoTIFFs**
 
-This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other. 
+This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other.
 
 We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
 
@@ -71,7 +71,6 @@ The notebooks on this project demonstrate how to search and access ITS_LIVE velo
 > [ICESat/GLAS](https://icesat.gsfc.nasa.gov/icesat/) and
 > [ICESat-2](https://icesat-2.gsfc.nasa.gov/).
 
-
 ## Usage with Binder
 
 The Binder button above allows you to explore and run the notebook in a shared cloud computing environment without the need to install dependencies on your local machine. Note that this option will not directly download data to your computer; instead the data will be downloaded to the cloud environment.
@@ -79,7 +78,6 @@ The Binder button above allows you to explore and run the notebook in a shared c
 ## Usage with Docker
 
 ### On Mac OSX or Linux
-
 
 1. Install [Docker](https://docs.docker.com/install/). Use the left-hand navigation to select the appropriate install depending on operating system.
 
@@ -126,7 +124,6 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 5. Open up a web browser and copy one of the URLs as instructed above.
 
 6. You will be brought to a Jupyter Notebook interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the **`work`** folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
-
 
 ### On Windows
 
@@ -185,28 +182,15 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 
 1. Install mambaforge (Python 3.9+) for your platform from [mamba documentation](https://mamba.readthedocs.io/en/latest/installation.html)
 
-
-2. Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'. Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location. 
+2. Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'. Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location.
 
 3. From a command line or terminal window, install the required environment with the following commands:
 
-Linux 
 ```bash
-mamba create -n nsidc-tutorials --file binder/conda-linux-64.lock
-```
-
-OSX
-```bash
-mamba create -n nsidc-tutorials --file binder/conda-osx-64.lock
-```
-
-Windows 
-```bash
-mamba create -n nsidc-tutorials --file binder/conda-win-64.lock
+mamba create -n nsidc-tutorials --file binder/conda-lock.yml
 ```
 
 You should now see that the dependencies were installed and our environment is ready to be used.
-
 
 Activate the environment with
 
@@ -222,14 +206,13 @@ jupyter lab
 
 This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.
 
-
 ### Tutorial Environments
 
 Although the nsidc-tutorial environment should run all the notebooks in this repository, we also include tutorial-specific environments that will only contain the dependencies for them. If we don't want to "pollute" our conda environments and we are only going to work with one of the tutorials we recommend to use them instead of the `nsidc-tutorial` environment. The steps to install them are exactly the same but the environment files are inside the environment folders in each of the tutorials. e.g. for ITS_LIVE
 
 ```bash
 cd notebooks/itslive 
-mamba create -n nsidc-itslive --file environment/conda-linux-64.lock
+mamba create -n nsidc-itslive --file environment/conda-lock.yml
 conda activate nsidc-itslive
 jupyter lab
 ```
@@ -237,7 +220,6 @@ jupyter lab
 This should create a pinned environment that should be fully reproducible across platforms.
 
 > **NOTE:** Sometimes Conda environments change (break) even with pinned down dependencies. If you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
-
 
 ## Credit
 

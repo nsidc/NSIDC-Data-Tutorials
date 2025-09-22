@@ -1,4 +1,4 @@
-FROM pangeo/base-image:2023.01.13
+FROM pangeo/base-image:2025.01.24
 
 
 USER $NB_UID
