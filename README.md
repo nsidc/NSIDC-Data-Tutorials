@@ -7,9 +7,36 @@
 
 ## Summary
 
-This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported. 
+This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported.
 
 ## Tutorials
+
+### [ICESat-2_Cloud_Access Notebooks](./notebooks/ICESat-2_Cloud_Access)
+
+These notebooks demonstrate how to search and access ICESat-2 from the NASA Earthdata Cloud:
+
+**Accessing and working with ICESat-2 Data in the Cloud**
+
+Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
+
+**Plotting ICESat-2 and CryoSat-2 Freeboards**
+
+This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.
+
+**Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud**
+
+This notebook utilizes several libraries to performantly search, access, read, and grid ATL10 data over the Ross Sea, Antarctica including `earthaccess`, `h5coro`, and `geopandas`. The notebook provides further guidance on how to scale this analysis to the entire continent, running the same workflow from a script that can be run from your laptop using [Coiled](https://www.coiled.io/).
+
+### [MEaSUREs](./notebooks/measures)
+
+**Download, crop, resample, and plot multiple GeoTIFFs**
+
+This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other.
+
+We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
+
+* [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
+* [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
 
 ### [SnowEx_ASO_MODIS_Snow](./notebooks/SnowEx_ASO_MODIS_Snow)
 
@@ -23,12 +50,6 @@ Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessi
 
 Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
 
-### [IceFlow](./notebooks/iceflow)
-
-**Harmonized data for  pre-IceBridge, ICESat and IceBridge data sets.**
-These Jupyter notebooks are interactive documents to teach students and researchers interested in cryospheric sciences how to access and work with airborne altimetry and related data sets from NASA’s [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission, and satellite altimetry data from [ICESat](https://icesat.gsfc.nasa.gov/icesat/) and [ICESat-2](https://icesat-2.gsfc.nasa.gov/) missions using the NSIDC **IceFlow API**
-
-
 ### [ITS_LIVE](./notebooks/itslive)
 
 **Global land ice velocities.**
@@ -36,22 +57,19 @@ The Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) proj
 
 The notebooks on this project demonstrate how to search and access ITS_LIVE velocity pairs and provide a simple example on how to build a data cube.
 
-### [ICESat-2_Cloud_Access](./notebooks/ICESat-2_Cloud_Access)
+### IceFlow
 
-**Accessing and working with ICESat-2 Data in the Cloud**
-
-Originally presented to the UWG (User Working Group) in May 2022, this tutorial demonstrates how to search for ICESat-2 data hosted in the Earthdata Cloud and how to directly access it from an Amazon Web Services (AWS) Elastic Compute Cloud (EC2) instance using the `earthaccess` package.
-
-### [MEaSUREs](./notebooks/measures)
-
-**Download, crop, resample, and plot multiple GeoTIFFs**
-
-This tutorial guides you through programmatically accessing and downloading GeoTIFF files from the NSIDC DAAC to your local computer. We then crop and resample one GeoTIFF based on the extent and pixel size of another GeoTIFF, then plot one on top of the other. 
-
-We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measures) (Making Earth System data records for Use in Research Environments) program as an example:
-
-* [MEaSUREs Greenland Ice Mapping Project (GrIMP) Digital Elevation Model from GeoEye and WorldView Imagery, Version 2 (NSIDC-0715)](https://nsidc.org/data/nsidc-0715/versions/2)
-* [MEaSUREs Greenland Ice Velocity: Selected Glacier Site Velocity Maps from InSAR, Version 4 (NSIDC-0481)](https://nsidc.org/data/nsidc-0481/versions/4)
+> [!WARNING]
+> The IceFlow tutorials have been removed. The Jupyter notebooks and associated
+> code have been moved to a standalone
+> [iceflow](https://github.com/nsidc/iceflow) Python library. See the [iceflow
+> documentation](https://iceflow.readthedocs.io/en/latest/) for the latest
+> information on how to access and work with airborne altimetry and related data
+> sets from NASA’s
+> [IceBridge](https://www.nasa.gov/mission_pages/icebridge/index.html) mission,
+> and satellite altimetry data from
+> [ICESat/GLAS](https://icesat.gsfc.nasa.gov/icesat/) and
+> [ICESat-2](https://icesat-2.gsfc.nasa.gov/).
 
 ## Usage with Binder
 
@@ -60,7 +78,6 @@ The Binder button above allows you to explore and run the notebook in a shared c
 ## Usage with Docker
 
 ### On Mac OSX or Linux
-
 
 1. Install [Docker](https://docs.docker.com/install/). Use the left-hand navigation to select the appropriate install depending on operating system.
 
@@ -107,7 +124,6 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 5. Open up a web browser and copy one of the URLs as instructed above.
 
 6. You will be brought to a Jupyter Notebook interface running through the Docker container. The left side of the interface displays your local directory structure. Navigate to the **`work`** folder of the `NSIDC-Data-Tutorials` repository folder. You can now interact with the notebooks to explore and access data.
-
 
 ### On Windows
 
@@ -166,28 +182,15 @@ If you started your container with the `-d`/`--detach` option, check `docker log
 
 1. Install mambaforge (Python 3.9+) for your platform from [mamba documentation](https://mamba.readthedocs.io/en/latest/installation.html)
 
-
-2. Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'. Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location. 
+2. Download the [NSIDC-Data-Tutorials](https://github.com/nsidc/NSIDC-Data-Tutorials) repository from Github by clicking the green 'Code' button located at the top right of the repository page and clicking 'Download Zip'. Unzip the file, and open a command line or terminal window in the NSIDC-Data-Tutorials folder's location.
 
 3. From a command line or terminal window, install the required environment with the following commands:
 
-Linux 
 ```bash
-mamba create -n nsidc-tutorials --file binder/conda-linux-64.lock
-```
-
-OSX
-```bash
-mamba create -n nsidc-tutorials --file binder/conda-osx-64.lock
-```
-
-Windows 
-```bash
-mamba create -n nsidc-tutorials --file binder/conda-win-64.lock
+mamba create -n nsidc-tutorials --file binder/conda-lock.yml
 ```
 
 You should now see that the dependencies were installed and our environment is ready to be used.
-
 
 Activate the environment with
 
@@ -203,14 +206,13 @@ jupyter lab
 
 This should open a browser window with the JupyterLab IDE, showing your current working directory on the left-hand navigation. Navigate to the tutorial folder of choice and click on their associated *.ipynb files to get started.
 
-
 ### Tutorial Environments
 
 Although the nsidc-tutorial environment should run all the notebooks in this repository, we also include tutorial-specific environments that will only contain the dependencies for them. If we don't want to "pollute" our conda environments and we are only going to work with one of the tutorials we recommend to use them instead of the `nsidc-tutorial` environment. The steps to install them are exactly the same but the environment files are inside the environment folders in each of the tutorials. e.g. for ITS_LIVE
 
 ```bash
 cd notebooks/itslive 
-mamba create -n nsidc-itslive --file environment/conda-linux-64.lock
+mamba create -n nsidc-itslive --file environment/conda-lock.yml
 conda activate nsidc-itslive
 jupyter lab
 ```
@@ -218,7 +220,6 @@ jupyter lab
 This should create a pinned environment that should be fully reproducible across platforms.
 
 > **NOTE:** Sometimes Conda environments change (break) even with pinned down dependencies. If you run into an issue with dependencies for the tutorials please open an issue and we'll try to fix it as soon as possible.
-
 
 ## Credit
 
