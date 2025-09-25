@@ -4,7 +4,7 @@
 
 This set of three tutorials demonstrates how to search for, download and plot SMAP data using `xarray` and how to make the SMAP data into a georeferenced dataset. 
 
-We use the [SMAP L3 Radiometer Global Daily 36 km EASE-Grid Soil Moisture, Version 8](https://nsidc.org/data/SPL3SMP/versions/8) data set as an example.
+We use the [SMAP L3 Radiometer Global Daily 36 km EASE-Grid Soil Moisture, Version 8](https://nsidc.org/data/SPL3SMP/versions/9) data set as an example.
 
 [working_with_smap_data_in_xarray](notebooks/SMAP/working_with_smap_in_xarray.ipynb) demonstrates how to search for and download SMAP data using `earthaccess`, and how to load a single group into an `xarray.Dataset` using `open_dataset`.  It also shows how to add informative dimension names and geospatial coordinates to the dataset so that the data variables can be plotted and analyzed using the powerful `xarray` methods.
 
