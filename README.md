@@ -52,13 +52,13 @@ Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessi
 
 *Archive* Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.  *Warning:* This notebook has *not* been updated to access data from NASA Earthdata Cloud.
 
-### [Accessing, reading, and plotting SMAP data](./notebooks/SMAP)
+### [SMAP](./notebooks/SMAP)
 
-**Working with SMAP data using Python**
+**Accessing, reading, and plotting SMAP data**
 
 This tutorial is based on the notebooks originally provided to NSIDC by Adam Purdy. Updates were made by Jennifer Roebuck and Andy Barrett of NSIDC to include the latest version of SMAP data and use earthaccess for authentication, searching for and downloading the data. These notebooks also demonstrate reading and plotting SMAP data, and contain useful supporting information.
 
-### [Working with ICESat-2 Sea Ice Products]).notebooks/icesat2_webinar_demo)
+### [icesat-2_webinar_demo](./notebooks/icesat2_webinar_demo)
 
 **Working with ICESat-2 Sea Ice Products using earthaccess and xarray.DataTree**
 
