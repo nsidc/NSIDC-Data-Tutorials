@@ -7,7 +7,9 @@
 
 ## Summary
 
-This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported.
+This combined repository includes tutorials and code resources provided by the NASA National Snow and Ice Data Center Distributed Active Archive Center (NSIDC DAAC). Most were developed to support a workshop or other live event.  In many cases the content represents a snapshot in time, and might not be current best practice.  Some tutorials present data access patterns for retired on premises archives that will no longer work now that data have migrated to the NASA Earhtdata Cloud environment. We've posted warnings in those cases.  Up to date information on data access patterns can be found in the [NSIDC Data Cookbook]([https://github.com/nsidc/NSIDC-Data-Cookbook](https://nsidc.github.io/NSIDC-Data-Cookbook/). 
+
+These tutorials are provided as Python-based Jupyter notebooks that provide guidance on working with various data products, including how to access, subset, transform, and visualize data. Each tutorial can be accessed by navigating to the /notebooks folder of this repository. Please see the README files associated with each individual tutorial folder for more information on each tutorial and their learning objectives. Please note that all branches outside of `Main` should be considered in development and are not supported.
 
 ## Tutorials
 
@@ -21,7 +23,7 @@ Originally presented to the UWG (User Working Group) in May 2022, this tutorial 
 
 **Plotting ICESat-2 and CryoSat-2 Freeboards**
 
-This notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.
+Originally presented at the Cryo2Ice Symposium in September 2024, this notebook demonstrates plotting ICESat-2 and CryoSat-2 data in the same map from within an AWS ec2 instance.  ICESat-2 data are accessed via "direct S3 access" using `earthaccess`.  CryoSat-2 data are downloaded to our cloud instance from their ftp storage lcoation and accessed locally.
 
 **Processing Large-scale Time Series of ICESat-2 Sea Ice Height in the Cloud**
 
@@ -42,13 +44,25 @@ We will use two data sets from the NASA [MEaSUREs](https://nsidc.org/data/measur
 
 **Snow Depth and Snow Cover Data Exploration**
 
-Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook.
+Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessing and Analyzing Snow Data at the NSIDC DAAC" on May 6, 2020, this tutorial provides guidance on how to discover, access, and couple snow data across varying geospatial scales from NASA's SnowEx, Airborne Snow Observatory, and Moderate Resolution Imaging Spectroradiometer (MODIS) missions. The tutorial highlights the ability to search and access data by a defined region, and combine and compare snow data across different data formats and scales using a Python-based Jupyter Notebook. These notebooks have been updated to access data in the NASA Earthdata Cloud environment.
 
 ### [ICESat-2_MODIS_Arctic_Sea_Ice](./notebooks/ICESat-2_MODIS_Arctic_Sea_Ice)
 
 **Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data**
 
-Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.
+*Archive* Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.  *Warning:* This notebook has *not* been updated to access data from NASA Earthdata Cloud.
+
+### [Accessing, reading, and plotting SMAP data](./notebooks/SMAP)
+
+**Working with SMAP data using Python**
+
+This tutorial is based on the notebooks originally provided to NSIDC by Adam Purdy. Updates were made by Jennifer Roebuck and Andy Barrett of NSIDC to include the latest version of SMAP data and use earthaccess for authentication, searching for and downloading the data. These notebooks also demonstrate reading and plotting SMAP data, and contain useful supporting information.
+
+### [Working with ICESat-2 Sea Ice Products]).notebooks/icesat2_webinar_demo)
+
+**Working with ICESat-2 Sea Ice Products using earthaccess and xarray.DataTree**
+
+Originally presented during the August 2025 NASA Earthdata Webinar [Laser Altimetry Applications for a Changing World: Working with ICESat-2 Sea Ice Data](https://www.earthdata.nasa.gov/learn/webinars/laser-altimetry-applications-changing-world-working-icesat-2-sea-ice-data), this tutorial demonstrates accessing, reading and plotting ICESat-2 Sea Ice data (ATL07) using earthaccess and xarray.DataTree.
 
 ### [ITS_LIVE](./notebooks/itslive)
 
