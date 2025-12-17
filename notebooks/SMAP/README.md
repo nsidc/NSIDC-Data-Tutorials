@@ -22,6 +22,8 @@ All notebooks are self contained, so there is no particular order to run them.  
 * Minor text edits to provide additional information where necessary.
 * Moved the tutorials to the standard NSIDC tutorials template. 
 
+The notebooks were modified by Andy Barrett of NSIDC to take advantage of `xarray.DataTree` and modern tooling.  This involved a rewrite of the notebooks and using version 9 of SPL3SMP.
+
 ### Set up
 
 To run the notebook provided in this folder, please see the [NSIDC-Data-Tutorials repository readme](https://github.com/nsidc/NSIDC-Data-Tutorials#readme) for instructions on several ways (using Binder, Docker, or Conda) to do this.
