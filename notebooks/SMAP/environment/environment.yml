@@ -9,9 +9,17 @@ dependencies:
 - xarray
 - rioxarray
 - h5netcdf
+- dask
 - matplotlib
 - cartopy
 - affine
+- numpy<2.1
+
+#- vaex
+#- jupyter-offlinenotebook
+#- sidecar
+#- geoviews
+
 - pipreqsnb
 - conda-lock>=1.2.1
 - mamba>=1.0
