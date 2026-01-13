@@ -50,7 +50,9 @@ Originally demonstrated through the NASA Earthdata Webinar "Let It Snow! Accessi
 
 **Getting the most out of NSIDC DAAC data: Discovering, Accessing, and Harmonizing Arctic Remote Sensing Data**
 
-*Warning:* This notebook has *not* been updated to access data from NASA Earthdata Cloud. Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.  
+> [!WARNING]  
+> Data access is no longer possible using the method described in this tutorial, because of the migration of data to the NASA Earthdata Cloud environment.
+Originally presented during the 2019 AGU Fall Meeting, this tutorial demonstrates the NSIDC DAAC's data discovery, access, and subsetting services, along with basic open source resources used to harmonize and analyze data across multiple products. The tutorial is provided as a series of Python-based Jupyter Notebooks, focusing on sea ice height and ice surface temperature data from NASA’s ICESat-2 and MODIS missions, respectively, to characterize Arctic sea ice.  
 
 ### [SMAP](./notebooks/SMAP)
 
