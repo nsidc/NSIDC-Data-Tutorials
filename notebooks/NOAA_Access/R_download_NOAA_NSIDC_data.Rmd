@@ -1,0 +1,88 @@
+
+
+---
+title: "How to download NOAA@NSIDC data using R"
+output: html_notebook
+---
+
+## 1. Tutorial Overview 
+This notebook demonstrates how to download NOAA@NSIDC data using R, it includes examples for downloading a single file and all the files in a directory.
+
+### Credits
+This notebook was developed by Jennifer Roebuck of NSIDC.
+
+For questions regarding the notebook or to report problems, please create a new issue in the [NSIDC-Data-Tutorials repo](https://github.com/nsidc/NSIDC-Data-Tutorials/issues)
+
+### Learning Objectives
+
+By the end of this demonstration you will be able to:
+
+1. Download a single file from a NOAA@NSIDC data set
+2. Download all the files in a directory on the NOAA@NSIDC HTTPS server 
+
+### Prerequisites 
+
+1. The library `rvest` installed 
+
+### Time requirement 
+
+Allow approximately 5 to 10 minutes to complete this tutorial.
+
+## 2. Tutorial steps 
+
+### Import necessary libraries
+We need to import the following libraries.
+```{r}
+library(base)
+library(rvest)
+```
+
+### Set working directory
+We need to set the directory we wish to download our files to. Edit the variable below to include the path to the directory where you wish to store the downloaded data.
+```{r}
+setwd("/Users/jero7025/Documents/NOAA/HTTPS_switch")
+```
+
+
+### Downloading a single file 
+This demonstrates how to download a single file, we will use the Sea Ice Index (G02135) data set as an example.
+```{r}
+# set the url for the file you want to download
+url <- "https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/geotiff/2023/05_May/S_20230501_concentration_v3.0.tif"
+
+# set the name of the file you are downloading
+destination <- "S_20230501_concentration_v3.0.tif"
+
+# download the file 
+download.file(url, destination, mode = "wb")
+```
+
+### Downloading all the files in a directory
+This demonstrates downloading all of the files in a single directory, again we will use the Sea Ice Index (G02135) data set as an example. 
+```{r}
+# set the URL for the directory you want to download files from
+url <- "https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/geotiff/2023/05_May" 
+
+# read html content from url
+page <- read_html(url)
+
+# Get a list of the files listed in the directory at this url
+files <- page %>% html_nodes("a") %>% html_attr("href")
+
+for(i in 2:length(files)){
+  # generate the url for each of the files 
+  u <- paste(url,files[i], sep="/")
+  # download each of the files
+  download.file(u,files[i], mode = "wb")
+}
+
+
+```
+
+## 3. Learning outcomes recap
+
+We have learned how to:
+1. Download a single file from a NOAA@NSIDC data set
+2. Download all the files in a directory related to a NOAA@NSIDC data set. 
+
+
