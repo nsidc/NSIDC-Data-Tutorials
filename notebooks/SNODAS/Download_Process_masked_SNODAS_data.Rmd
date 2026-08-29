@@ -1,0 +1,214 @@
+---
+title: "How to download and work with SNDOAS data"
+output: html_notebook
+---
+
+## 1. Tutorial Overview 
+This notebook demonstrates how to download and unzip masked SNODAS files that are from after October 2013 and select one variable and compile it into a RasterStack for quick visualization and finally save as a .grd file.
+
+### Credits
+This tutorial is based on an R script written in 2021 by Cara Thompson at New Mexico State University and has been converted to a tutorial with some minor additions by Jennifer Roebuck of NSIDC.
+
+For questions regarding the tutorial or to report problems, please create a new issue in the [NSIDC-Data-Tutorials repo](https://github.com/nsidc/NSIDC-Data-Tutorials/issues)
+
+### Learning Objectives
+
+By the end of this demonstration you will be able to:
+1. Download and unzip masked SNODAS files
+2. Convert the files to .bil format and put them in a RasterStack
+3. Quickly visualize the rasters of the data
+4. Save the RasterStack as .grd file
+
+### Prerequisites
+1. The following libraries should already be installed: R.utils, rvest, dplyr, raster, sp, maptools, and data.table.
+
+
+### Time requirement
+Allow approximately 20 minutes to complete this tutorial.
+
+## 2. Tutorial steps 
+
+### Load necessary libraries
+```{r}
+library(R.utils)
+library(rvest)
+library(dplyr)
+library(raster)
+library(sp)
+library(maptools)
+library(data.table)
+```
+
+### Download SNODAS data
+We will download all the SNODAS masked files for June 2023. If you wish to download masked files from a different time period you can modify the path in the url variable below. 
+
+```{r}
+# set the URL for the SNODAS directory we want to download files from
+url <- "https://noaadata.apps.nsidc.org/NOAA/G02158/masked/2023/06_Jun" 
+
+# read html content from url
+page <- read_html(url)
+
+# Get a list of the files listed in the directory at this url
+files <- page %>% html_nodes("a") %>% html_attr("href")
+
+for(i in 2:length(files)){
+  # generate the url for each of the files 
+  u <- paste(url,files[i], sep="/")
+  # download each of the files
+  download.file(u,files[i], mode = "wb")
+}
+```
+
+We will save the working directory path to a variable.
+```{r}
+WD <- getwd()
+```
+
+### Read in the SNODAS files
+Next, we read in the .tar files as a list containing .tar
+```{r}
+files_1 <- list.files(path = WD, pattern = "*.tar", full.names = T, recursive = T)
+```
+
+Decompress the .tar files into the working directory
+```{r}
+asd <- sapply(files_1, untar)
+```
+
+### Select the variable we wish to use
+There are eight parameters from SNODAS, each has an associated ID code which is used the filename. A full description of the ID codes can be found in Table 1 of the [SNODAS user guide](https://nsidc.org/sites/default/files/g02158-v001-userguide_2_1.pdf). We will choose one of the parameters to compile all the files related to this parameter.
+
+We can uncomment one of the variables below that corresponds to the parameter we are interested in. In this tutorial we will use the snow depth parameter as an example. 
+
+```{r}
+id_code = "us_ssmv11036tS" # Snow Depth
+#id_code = "us_ssmv11034tS" # SWE
+#id_code = "us_ssmv11044bS" # Snow melt runoff at base of snow pack
+#id_code = "us_ssmv11050IL00" # Sublimation from the snow pack
+#id_code = "us_ssmv11039IL00" # sublimation of blowing snow
+#id_code = "us_ssmv11038wS" # snow pack average temperature
+#id_code = "us_ssmv01025SIL01" # Solid precipitation 
+#id_code = "us_smsv01025SIL00" # Liquid precipitation
+```
+
+Now we will compile all the files that contain this id_code in the filename i.e. a .dat.gz file and .txt.gz file for each day of data that we downloaded.
+
+```{r}
+files_2 <- list.files(path = WD, pattern = id_code, full.names = T, recursive = T)
+files_2
+```
+
+Decompress all the .gz files.
+```{r}
+dcompSD <- sapply(files_2, gunzip, remove=T)
+```
+
+We will create a new directory for these uncompressed files and move them over.
+```{r}
+dir.create("Snow Depth")
+file.copy(dcompSD, "Snow Depth")
+```
+
+### Convert the .dat files to .bil
+Next we need to convert the .dat files to .bil so they can be read as rasters.
+
+```{r}
+files <- list.files(path=paste(WD,"/Snow Depth",sep=""), pattern="*.dat", full.names = T)
+newfiles <- gsub(".dat$", ".bil", files)
+file.rename(files, newfiles)
+newfiles
+```
+
+### Create a text file header for each file
+Now we will create a corresponding text header file for each .bil file using the associated .txt file that was downloaded. 
+
+**Please note** that the parameters used in the m_post_2013 variable below are specific to SNODAS masked files for October 2013 onwards. If you wish to process masked files prior to October 2013 then you would need to change ulxmap and ulymap to the following:
+ulxmap -124.72958333333334
+ulymap 52.870416666666664
+
+If you wish to process unmasked files prior to October 2013 then you would need to change nrow, ncols, ulxmap and ulymap to the following:
+nrows 4096
+ncols 8192
+ulxmap -130.51291666666665
+ulymap 58.228750000000005
+
+If you wish to process unmasked files from October 2013 onwards then you would need to change the nrows, ncols, ulxmap and ulymap to the following:
+nrows 4096
+ncols 8192
+ulxmap -130.51250000000002
+ulymap 58.229166666666664
+```{r}
+
+mylist<- list.files(path=paste(WD,"/Snow Depth",sep=""), pattern = "*.bil", full.names = T)
+m_post_2013<-"SNODAS Snow Depth Description = 
+nrows 3351
+ncols 6935
+nbands 1
+nbits 16
+pixeltype signedint
+byteorder M
+layout dat
+ulxmap -124.72916666666667
+ulymap 52.87083333333334
+xdim 0.00833333333
+ydim 0.00833333333
+pixeltype SIGNEDINT
+nodata -9999"
+
+
+mylist.hdr<-paste(mylist,".hdr",sep="")
+
+for(i in mylist.hdr) {
+  write(m_post_2013,i)
+}
+
+```
+
+Change the file type of the header text files from .bil.hdr to .hdr since the .bil file is already separate.
+
+```{r}
+files4 <- list.files(path=paste(WD,"/Snow Depth",sep=""), pattern="*.bil.hdr", full.names = T)
+newfiles <- gsub(".bil.hdr$", ".hdr", files4)
+file.rename(files4, newfiles)
+newfiles
+```
+
+### Create a RasterStack of all the rasters
+Create a RasterStack of all the snow depth raster files. 
+```{r}
+list.ras <- list.files(path=paste(WD,"/Snow Depth",sep=""), pattern = ".bil", full.names = T)
+list.ras
+ras_stack <- stack(list.ras)
+ras_stack
+```
+
+### Plot RasterStack
+Now we define a projection for the RasterStack and plot each of the rasters (must be in the format of what it is in, not what you want it to be). Please note that SNODAS data are point estimates in latitude/longitude coordinates with the horizontal datum WGS 84 thus the decision to project the data and the choice of projection is up to the user. In this tutorial we will use Geographic longitude/latitude.
+
+```{r}
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84")
+proj4string(ras_stack) <- crs.geo
+ras_stack
+plot(ras_stack)
+```
+
+### Save RasterStack
+Save the RasterStack to a new directory. We will write in the "raster"/native format to preserve layer names (i.e. dates). There is no attribute table because there is only one attribute per file (snow depth in mm).
+
+```{r}
+#create a new directory Rasters
+dir.create(paste(WD,"/Snow Depth","/Rasters",sep=""))
+fp <- paste(WD,"/Snow Depth","/Rasters",sep="")
+#save the RasterStack as a .grd file
+writeRaster(ras_stack,filename=file.path(fp,"ras_stack.grd"), format="raster", progress="text", options=c("INTERLEAVE=BAND","COMPRESS=LZW"))
+
+```
+
+## 3. Learning outcomes recap
+
+We have learned how to:
+1. Download and unzip masked SNODAS files
+2. Convert the files to .bil format and put them in a raster stack
+3. Quickly visualize the rasters of the data
+4. Save the raster stack as .grd file
